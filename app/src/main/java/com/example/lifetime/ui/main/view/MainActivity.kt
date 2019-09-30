@@ -1,16 +1,15 @@
 package com.example.lifetime.ui.main.view
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import com.example.lifetime.R
-import com.example.lifetime.ui.main.SubmitDialog
+import com.example.lifetime.ui.base.view.BaseActivity
+import com.example.lifetime.ui.addperson.view.AddPersonDialog
 import com.example.lifetime.ui.main.interactor.MainMVPInteractor
 import com.example.lifetime.ui.main.presenter.MainMVPPresenter
-import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
-class MainActivity : DaggerAppCompatActivity(), MainMVPView {
+class MainActivity : BaseActivity(), MainMVPView {
 
     private lateinit var button: AppCompatButton
 
@@ -31,7 +30,7 @@ class MainActivity : DaggerAppCompatActivity(), MainMVPView {
 
 
     override fun openUserDialog() {
-        SubmitDialog(this).show()
+        AddPersonDialog().show(supportFragmentManager,null)
     }
 
     override fun onDestroy() {

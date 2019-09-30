@@ -1,6 +1,8 @@
 package com.example.lifetime.ui.main.view
 
-interface MainMVPView {
+import com.example.lifetime.ui.base.view.MVPView
+
+interface MainMVPView : MVPView{
 
     fun openUserDialog()
 
