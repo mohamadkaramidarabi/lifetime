@@ -11,7 +11,4 @@ abstract class ActivityBuilder {
 
     @ContributesAndroidInjector(modules = [MainActivityModule::class])
     abstract fun bindMainActivity(): MainActivity
-
-    @ContributesAndroidInjector
-    abstract fun bindAddPersionDialog(): AddPersonDialog
 }

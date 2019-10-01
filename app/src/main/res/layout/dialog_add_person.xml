@@ -16,7 +16,7 @@
     <EditText
         android:gravity="center"
         android:padding="10dp"
-        android:id="@+id/person_name_edit_text"
+        android:id="@+id/nameEdt"
         android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -24,7 +24,7 @@
     <TextView
         android:gravity="center"
         android:padding="10dp"
-        android:id="@+id/person_birth_date_text_view"
+        android:id="@+id/birthdataPicker"
         android:layout_marginBottom="20dp"
         android:text="۱۳۹۸/۰۱/۰۱"
         android:textSize="20sp"
@@ -35,7 +35,7 @@
 
     <Button
         android:layout_gravity="center"
-        android:id="@+id/submit_button"
+        android:id="@+id/submitButton"
         android:textSize="24sp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"

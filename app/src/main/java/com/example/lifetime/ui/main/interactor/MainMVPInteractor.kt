@@ -1,4 +1,6 @@
 package com.example.lifetime.ui.main.interactor
 
-interface MainMVPInteractor {
+import com.example.lifetime.ui.base.interactor.MVPInteractor
+
+interface MainMVPInteractor : MVPInteractor {
 }
