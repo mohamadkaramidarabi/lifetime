@@ -7,4 +7,5 @@ import com.example.lifetime.ui.base.presenter.MVPPresenter
 
 interface AddPersonMVPPresenter<V : AddPersonMVPDialog, I: AddPersonMVPInteractor>: MVPPresenter<V,I> {
     fun onSubmitButtonClicked(person: Person)
+    fun onDataPickerClicked()
 }

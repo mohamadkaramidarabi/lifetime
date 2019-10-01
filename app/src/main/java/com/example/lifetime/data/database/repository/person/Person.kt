@@ -7,9 +7,7 @@ import com.google.gson.annotations.Expose
 
 @Entity(tableName = "persons")
 data class Person(
-    @Expose
-    @PrimaryKey(autoGenerate = true)
-    var id: Long,
+
 
     @Expose
     @ColumnInfo(name = "name")
@@ -18,4 +16,8 @@ data class Person(
     @Expose
     @ColumnInfo(name = "age")
     var age: Int
-)
+){
+    @Expose
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
+}

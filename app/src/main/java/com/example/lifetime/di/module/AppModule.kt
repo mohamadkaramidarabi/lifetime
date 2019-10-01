@@ -7,8 +7,10 @@ import com.example.lifetime.data.database.AppDatabase
 import com.example.lifetime.data.database.repository.person.PersonDao
 import com.example.lifetime.data.database.repository.person.PersonRepo
 import com.example.lifetime.data.database.repository.person.PersonRepository
+import com.example.lifetime.util.SchedulerProvider
 import dagger.Module
 import dagger.Provides
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Singleton
 
 @Module
@@ -32,4 +34,11 @@ class AppModule {
     @Singleton
     internal fun providePersonDao(appDatabase: AppDatabase) : PersonDao
             = appDatabase.personDao()
+
+    @Provides
+    internal fun provideCompositDisposal(): CompositeDisposable = CompositeDisposable()
+
+    @Provides
+    internal fun provideSchedulerProvider(): SchedulerProvider = SchedulerProvider()
+
 }

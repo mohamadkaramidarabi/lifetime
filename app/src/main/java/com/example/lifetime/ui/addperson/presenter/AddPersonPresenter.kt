@@ -1,5 +1,7 @@
 package com.example.lifetime.ui.addperson.presenter
 
+import android.content.Context
+import android.widget.Toast
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.addperson.interactor.AddPersonMVPInteractor
 import com.example.lifetime.ui.addperson.view.AddPersonMVPDialog
@@ -11,6 +13,12 @@ class AddPersonPresenter<V : AddPersonMVPDialog, I : AddPersonMVPInteractor> @In
 ) : BasePresenter<V, I>(interactor), AddPersonMVPPresenter<V, I> {
 
     override fun onSubmitButtonClicked(person: Person) {
-        interactor?.addPersonToDB(person)
+        interactor?.let {
+            it.addPersonToDB(person)
+        }
+    }
+
+    override fun onDataPickerClicked() {
+        getView()?.openDataPickerView()
     }
 }

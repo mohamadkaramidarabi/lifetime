@@ -6,4 +6,5 @@ import com.example.lifetime.ui.main.view.MainMVPView
 
 interface MainMVPPresenter<V: MainMVPView,I: MainMVPInteractor> : MVPPresenter<V,I>{
     fun onButtonClicked()
+    fun getPersons(): Boolean?
 }

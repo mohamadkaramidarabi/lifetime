@@ -13,6 +13,11 @@ import com.example.lifetime.ui.addperson.presenter.AddPersonMVPPresenter
 import com.example.lifetime.ui.base.view.BaseDialogView
 import kotlinx.android.synthetic.main.dialog_add_person.*
 import javax.inject.Inject
+import android.widget.Toast
+import ir.hamsaa.persiandatepicker.util.PersianCalendar
+import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
+import ir.hamsaa.persiandatepicker.Listener
+
 
 class AddPersonDialog : BaseDialogView(), AddPersonMVPDialog {
 
@@ -25,12 +30,16 @@ class AddPersonDialog : BaseDialogView(), AddPersonMVPDialog {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presenter.onAttach(this)
         submitButton.setOnClickListener {
             presenter.onSubmitButtonClicked(
-                Person(1, nameEdt.text.toString(), 31)
+                Person(nameEdt.text.toString(), 31)
 
             )
             dismissDialog()
+        }
+        birthDatePicker.setOnClickListener {
+            presenter.onDataPickerClicked()
         }
     }
 
@@ -46,11 +55,39 @@ class AddPersonDialog : BaseDialogView(), AddPersonMVPDialog {
     }
 
     override fun openDataPickerView() {
+        Toast.makeText(this.context,"Clicked",Toast.LENGTH_LONG).show()
+        val picker = PersianDatePickerDialog(this.context)
+            .setPositiveButtonString("باشه")
+            .setNegativeButton("بیخیال")
+            .setTodayButton("امروز")
+            .setTodayButtonVisible(true)
+            .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
+            .setMinYear(1300)
+            .setActionTextColor(Color.GRAY)
+            .setListener(object : Listener {
+                override fun onDateSelected(persianCalendar: PersianCalendar) {
+                    Toast.makeText(
+                        context,
+                        persianCalendar.persianYear.toString() + "/" + persianCalendar.persianMonth + "/" + persianCalendar.persianDay,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
 
+                override fun onDismissed() {
+
+                }
+            })
+
+        picker.show()
     }
 
     override fun dismissDialog() {
         this.exitTransition
+    }
+
+    override fun onDestroy() {
+        presenter.onDetach()
+        super.onDestroy()
     }
 
 }
