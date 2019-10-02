@@ -9,10 +9,11 @@ class PersonRepository @Inject internal constructor(private val personDao: Perso
             personDao.loadAll().isEmpty()
         }
 
-    override fun insertPerson(person: Person): Observable<Boolean>{
-        personDao.insertPerson(person)
-        return Observable.just(true)
-    }
+    override fun insertPerson(person: Person): Observable<Boolean> =
+        Observable.fromCallable {
+            personDao.insertPerson(person)
+            true
+        }
 
 
     override fun loadPersons(): Observable<List<Person>> =

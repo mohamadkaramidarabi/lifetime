@@ -11,6 +11,11 @@ class SchedulerProvider {
                 .observeOn(getMainThreadScheduler())
     }
 
+    fun <T> mainToIoObservableScheduler(): ObservableTransformer<T, T> = ObservableTransformer { upstream ->
+        upstream.subscribeOn(getMainThreadScheduler())
+            .observeOn(getIOThreadScheduler())
+    }
+
     fun <T> ioToMainSingleScheduler(): SingleTransformer<T, T> = SingleTransformer { upstream ->
         upstream.subscribeOn(getIOThreadScheduler())
                 .observeOn(getMainThreadScheduler())

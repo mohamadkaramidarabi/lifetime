@@ -14,18 +14,6 @@ import javax.inject.Inject
 
 class AddPersonInteractor @Inject constructor(private val personRepoHelper: PersonRepo): MVPInteractor, AddPersonMVPInteractor {
 
-    override fun addPersonToDB(person: Person): Observable<Boolean> {
-        val observable: Observable<Boolean> = Observable.create { emitter ->
-            emitter.onNext(false)
-
-        }
-        observable.subscribeOn(Schedulers.io())
-            .doOnNext {
-                Log.d("TAG",Thread.currentThread().name)
-                personRepoHelper.insertPerson(person)
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
-        return observable
-    }
+    override fun addPersonToDB(person: Person): Observable<Boolean> =
+        personRepoHelper.insertPerson(person)
 }

@@ -1,5 +1,6 @@
 package com.example.lifetime.ui.addperson.view
 
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -14,15 +15,19 @@ import com.example.lifetime.ui.base.view.BaseDialogView
 import kotlinx.android.synthetic.main.dialog_add_person.*
 import javax.inject.Inject
 import android.widget.Toast
+import com.example.lifetime.ui.main.view.MyDialogDismiss
+import io.reactivex.Observable
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
 import ir.hamsaa.persiandatepicker.Listener
 
 
-class AddPersonDialog : BaseDialogView(), AddPersonMVPDialog {
+class AddPersonDialog(private val myDialogDismiss: MyDialogDismiss) : BaseDialogView(), AddPersonMVPDialog {
 
+    private var ageByDay: Int = 0
     @Inject
     lateinit var presenter: AddPersonMVPPresenter<AddPersonMVPDialog,AddPersonMVPInteractor>
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_add_person, container, false)
@@ -33,13 +38,13 @@ class AddPersonDialog : BaseDialogView(), AddPersonMVPDialog {
         presenter.onAttach(this)
         submitButton.setOnClickListener {
             presenter.onSubmitButtonClicked(
-                Person(nameEdt.text.toString(), 31)
-
+                Person(nameEdt.text.toString(), ageByDay)
             )
+            myDialogDismiss.getAgeByDay(ageByDay)
             dismissDialog()
         }
         birthDatePicker.setOnClickListener {
-            presenter.onDataPickerClicked()
+            presenter.onDatePickerClicked()
         }
     }
 
@@ -66,11 +71,7 @@ class AddPersonDialog : BaseDialogView(), AddPersonMVPDialog {
             .setActionTextColor(Color.GRAY)
             .setListener(object : Listener {
                 override fun onDateSelected(persianCalendar: PersianCalendar) {
-                    Toast.makeText(
-                        context,
-                        persianCalendar.persianYear.toString() + "/" + persianCalendar.persianMonth + "/" + persianCalendar.persianDay,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    presenter.onDateSelected(persianCalendar)
                 }
 
                 override fun onDismissed() {
@@ -81,8 +82,14 @@ class AddPersonDialog : BaseDialogView(), AddPersonMVPDialog {
         picker.show()
     }
 
+    override fun onDateSelected(birthDate: String, ageByDay: Int) {
+        birthDatePicker.text =
+            birthDate
+        this.ageByDay=ageByDay
+    }
+
     override fun dismissDialog() {
-        this.exitTransition
+        dismiss()
     }
 
     override fun onDestroy() {
