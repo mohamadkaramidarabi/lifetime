@@ -9,6 +9,8 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 import androidx.annotation.RequiresApi
 import com.example.lifetime.BaseApplication
+import com.example.lifetime.data.database.repository.person.Person
+import com.example.lifetime.ui.main.view.MainActivity
 import com.example.lifetime.util.SchedulerProvider
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
@@ -36,7 +38,7 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet) : SurfaceView(con
     private val path = Path()
     private var surfaceHolder: SurfaceHolder?= null
 
-
+    var ageByDay = 30 * 365
 
 
 
@@ -57,7 +59,8 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet) : SurfaceView(con
 
     override fun surfaceCreated(holder: SurfaceHolder?) {
         this.surfaceHolder = holder!!
-        drawSpiral(holder,  0)
+        drawSpiral(holder)
+
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -66,14 +69,14 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet) : SurfaceView(con
         this.h = h
     }
 
-    private fun drawSpiral(holder: SurfaceHolder?, ageByDay: Int) {
+    private fun drawSpiral(holder: SurfaceHolder?) {
         paint.color = Color.BLUE
         paint.style = Paint.Style.FILL
         path.moveTo(w / 2f, h / 2f)
         val p = Point()
         p.x = w / 2
         p.y = h / 2
-        val lifeExceptionYears = 80
+        val lifeExceptionYears = 5
         val dotRadius = sqrt(0.3 * pow(w.toDouble(), 2.0) / (lifeExceptionYears * 52 * 4)).toInt()
 
         val lastCirclePoint = Point(w / 2, h / 2)
@@ -85,16 +88,15 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet) : SurfaceView(con
             emitter.onNext(Unit)
         }
         observable.subscribeOn(AndroidSchedulers.mainThread())
-            .observeOn(Schedulers.computation())
-            .doOnSubscribe {
-
-            }
+            .observeOn(Schedulers.io())
             .doOnNext {
                 val canvas = holder?.lockCanvas(null)
                 canvas?.drawRect(0f, 0f, w.toFloat(), h.toFloat(), backgroundPaint)
                 holder?.unlockCanvasAndPost(canvas)
             }
             .doOnNext {
+                Thread.sleep(5000)
+                Log.d("TAG",Thread.currentThread().name)
                 val canvas = holder?.lockCanvas(null)
                 canvas?.drawRect(0f, 0f, w.toFloat(), h.toFloat(), backgroundPaint)
                 canvas?.drawRect(0f, 0f, w.toFloat(), h.toFloat(), backgroundPaint)
@@ -125,10 +127,7 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet) : SurfaceView(con
                             paint,
                             canvas
                         )
-                        if (count > lifeExceptionYears * 365 / 7) {
-                            break
-                        }
-
+                        if (count > lifeExceptionYears * 365 / 7) break
                     }
                 }
                 holder?.unlockCanvasAndPost(canvas)
@@ -164,6 +163,7 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet) : SurfaceView(con
         ((w / 4.0 * 0.95 / (phi))) * (ln(sqrt(phi.pow(2.0) + 1) + phi) + phi * sqrt(phi.pow(2.0) + 1))
 
     fun reDraw(ageByDay: Int) {
-        drawSpiral(this.surfaceHolder, ageByDay)
+        this.ageByDay = ageByDay
+        drawSpiral(this.surfaceHolder)
     }
 }

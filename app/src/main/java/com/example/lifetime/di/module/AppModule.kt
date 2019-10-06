@@ -48,15 +48,6 @@ class AppModule {
     @Provides
     internal fun provideSchedulerProvider(): SchedulerProvider = SchedulerProvider()
 
-    @Provides
-    internal fun provideAgeByDay(
-        personRepository: PersonRepository
-    ) = personRepository.loadPersons().subscribeOn(
-        Schedulers.io()
-    ).map {
-        it[it.size-1].age
-    }
-
 
 
 }
