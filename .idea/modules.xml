@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/AndroidStudioProjects-lifetime-LifeTime.iml" filepath="$PROJECT_DIR$/AndroidStudioProjects-lifetime-LifeTime.iml" />
       <module fileurl="file://$PROJECT_DIR$/LifeTime.iml" filepath="$PROJECT_DIR$/LifeTime.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/lifetime-LifeTime.iml" filepath="$PROJECT_DIR$/lifetime-LifeTime.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/lifetime-app.iml" filepath="$PROJECT_DIR$/app/lifetime-app.iml" />
     </modules>
   </component>
 </project>

@@ -37,10 +37,9 @@ class AddPersonDialog(private val myDialogDismiss: MyDialogDismiss) : BaseDialog
         super.onViewCreated(view, savedInstanceState)
         presenter.onAttach(this)
         submitButton.setOnClickListener {
-            presenter.onSubmitButtonClicked(
-                Person(nameEdt.text.toString(), ageByDay)
-            )
-            myDialogDismiss.getAgeByDay(ageByDay)
+            val person = Person(nameEdt.text.toString(), ageByDay)
+            presenter.onSubmitButtonClicked(person)
+            myDialogDismiss.getPerson(person)
             dismissDialog()
         }
         birthDatePicker.setOnClickListener {

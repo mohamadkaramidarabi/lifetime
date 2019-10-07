@@ -23,7 +23,7 @@ class MainPresenter<V : MainMVPView, I : MainMVPInteractor> @Inject internal con
             compositeDisposable.add(it.getPersons()
                 .compose(schedulerProvider.ioToMainObservableScheduler())
                 .subscribe { persons ->
-                    getView()?.loadPersons(persons)
+                    getView()?.loadPersons(persons.toMutableList())
                 }
             )
         }

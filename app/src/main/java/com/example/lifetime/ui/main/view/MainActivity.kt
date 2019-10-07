@@ -1,12 +1,14 @@
 package com.example.lifetime.ui.main.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lifetime.R
 import com.example.lifetime.data.database.AppDatabase
 import com.example.lifetime.data.database.repository.person.Person
@@ -16,6 +18,7 @@ import com.example.lifetime.ui.main.interactor.MainMVPInteractor
 import com.example.lifetime.ui.main.presenter.MainMVPPresenter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.fragment_life_spiral.*
 import java.lang.Exception
 import javax.inject.Inject
@@ -34,7 +37,8 @@ class MainActivity : BaseActivity(), MainMVPView {
     private lateinit var dialog: AddPersonDialog
 
 
-    private var persons: List<Person>? = null
+    private var persons: MutableList<Person>? = null
+    private lateinit var adapter: PersonAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,14 +51,16 @@ class MainActivity : BaseActivity(), MainMVPView {
         setSupportActionBar(toolbar)
 
         dialog = AddPersonDialog(object : MyDialogDismiss {
-            override fun getAgeByDay(ageByDay: Int) {
-                lifeSpiral.reDraw(ageByDay)
+            override fun getPerson(person: Person) {
+                lifeSpiral.reDraw(person.age)
+                persons?.add(person)
+                adapter.notifyDataSetChanged()
             }
         })
 
-//        button.setOnClickListener {
-//            presenter.onButtonClicked()
-//        }
+        addPerson.setOnClickListener {
+            presenter.onButtonClicked()
+        }
 
         val navController = findNavController(R.id.nav_host_fragment)
         appBarConfiguration = AppBarConfiguration(
@@ -64,6 +70,12 @@ class MainActivity : BaseActivity(), MainMVPView {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        personListRecyclerView.layoutManager = LinearLayoutManager(this)
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -77,8 +89,14 @@ class MainActivity : BaseActivity(), MainMVPView {
     }
 
 
-    override fun loadPersons(persons: List<Person>) {
+    override fun loadPersons(persons: MutableList<Person>) {
         this.persons = persons
+        adapter = PersonAdapter(persons)
+        personListRecyclerView.adapter = adapter.let {
+            it.notifyDataSetChanged()
+            it
+        }
+        Log.d("TAG",persons.toString())
         try {
 //            lifeSpiral.ageByDay = persons[persons.lastIndex].age
         } catch (e: Exception) {
@@ -105,5 +123,5 @@ class MainActivity : BaseActivity(), MainMVPView {
 }
 
 interface MyDialogDismiss {
-    fun getAgeByDay(ageByDay: Int)
+    fun getPerson(person: Person)
 }

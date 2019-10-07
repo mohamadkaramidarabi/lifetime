@@ -6,6 +6,6 @@ import com.example.lifetime.ui.base.view.MVPView
 interface MainMVPView : MVPView{
 
     fun openUserDialog()
-    fun loadPersons(persons: List<Person>)
+    fun loadPersons(persons: MutableList<Person>)
 
 }

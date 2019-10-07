@@ -2,24 +2,47 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@android:color/white"
     android:layout_margin="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="30dp"
+    app:cardCornerRadius="10dp"
+    android:padding="10dp"
+    app:cardElevation="20dp"
     app:cardUseCompatPadding="true">
 <LinearLayout
-    android:paddingTop="20dp"
-    android:paddingBottom="20dp"
+    android:padding="10dp"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <TextView
+        android:text="اضافه کردن فرد جدید"
+        android:textColor="@android:color/darker_gray"
+        android:layout_gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:textColor="@android:color/black"
+        android:text="نام:"
+        android:layout_gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     <EditText
+        android:hint="نام وارد کنید یا مادر، پدر و ..."
+        android:textColorHint="@android:color/darker_gray"
         android:gravity="center"
         android:padding="10dp"
         android:id="@+id/nameEdt"
+        android:textSize="20sp"
         android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <TextView
+        android:textColor="@android:color/black"
+        android:text="تولد:"
+        android:layout_gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:clickable="true"
@@ -28,21 +51,63 @@
         android:padding="10dp"
         android:id="@+id/birthDatePicker"
         android:layout_marginBottom="20dp"
-        android:text="۱۳۹۸/۰۱/۰۱"
+        android:textDirection="rtl"
+        android:layout_gravity="center"
+        android:text="سال/ماه/روز"
         android:textSize="20sp"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/darker_gray"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <TextView
+        android:textColor="@android:color/black"
+        android:text="امید به زندگی:"
+        android:layout_gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RadioButton
+            android:id="@+id/countryOption"
+            android:checked="true"
+            android:text="بر اساس کشور"
+            android:textColor="@android:color/black"
+            android:outlineSpotShadowColor="@android:color/black"
+            android:layout_gravity="right"
+            android:gravity="center"
+            android:textDirection="rtl"
+            android:layoutDirection="rtl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <RadioButton
+            android:id="@+id/manualOption"
+            android:checked="false"
+            android:text="دستی"
+            android:textColor="@android:color/black"
+            android:outlineSpotShadowColor="@android:color/black"
+            android:layout_gravity="right"
+            android:gravity="center"
+            android:textDirection="rtl"
+            android:layoutDirection="rtl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RadioGroup>
 
     <Button
         android:layout_gravity="center"
         android:id="@+id/submitButton"
-        android:textSize="24sp"
+        android:background="@drawable/button_shape"
+        android:textColor="@android:color/holo_green_dark"
+        android:text="اضافه"
+        android:textSize="16sp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:textAllCaps="false"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
 </LinearLayout>

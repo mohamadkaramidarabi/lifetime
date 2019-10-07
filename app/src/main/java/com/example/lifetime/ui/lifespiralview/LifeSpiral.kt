@@ -76,7 +76,7 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet) : SurfaceView(con
         val p = Point()
         p.x = w / 2
         p.y = h / 2
-        val lifeExceptionYears = 5
+        val lifeExceptionYears = 85
         val dotRadius = sqrt(0.3 * pow(w.toDouble(), 2.0) / (lifeExceptionYears * 52 * 4)).toInt()
 
         val lastCirclePoint = Point(w / 2, h / 2)
@@ -95,8 +95,6 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet) : SurfaceView(con
                 holder?.unlockCanvasAndPost(canvas)
             }
             .doOnNext {
-                Thread.sleep(5000)
-                Log.d("TAG",Thread.currentThread().name)
                 val canvas = holder?.lockCanvas(null)
                 canvas?.drawRect(0f, 0f, w.toFloat(), h.toFloat(), backgroundPaint)
                 canvas?.drawRect(0f, 0f, w.toFloat(), h.toFloat(), backgroundPaint)
