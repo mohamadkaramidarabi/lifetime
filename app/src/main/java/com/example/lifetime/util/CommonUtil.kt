@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.widget.ProgressBar
 import androidx.core.graphics.drawable.toDrawable
 import com.example.lifetime.R
+import ir.hamsaa.persiandatepicker.util.PersianCalendar
 
 object CommonUtil {
 
@@ -21,4 +22,9 @@ object CommonUtil {
             return it
         }
     }
+
+    fun calculateAge(persianCalendar: PersianCalendar): Int =
+        ((PersianCalendar().time.time - persianCalendar.time.time) / (24 * 60 * 60 * 1000)).toInt()
+
+
 }

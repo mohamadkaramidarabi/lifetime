@@ -1,9 +1,9 @@
 package com.example.lifetime.data.database.repository.person
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
+import ir.hamsaa.persiandatepicker.util.PersianCalendar
 
 @Entity(tableName = "persons")
 data class Person(
@@ -14,8 +14,14 @@ data class Person(
     var name: String,
 
     @Expose
-    @ColumnInfo(name = "age")
-    var age: Int
+    @ColumnInfo(name = "Life_expectancy_years")
+    @SerializedName("Life_expectancy_years")
+    var LifeExpectancyYears: Int,
+
+
+    @SerializedName("birth_date")
+    @ColumnInfo(name = "birth_date")
+    var birthDate: Long
 ){
     @Expose
     @PrimaryKey(autoGenerate = true)

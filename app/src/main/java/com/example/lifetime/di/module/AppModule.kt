@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import com.example.lifetime.data.database.AppDatabase
+import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.data.database.repository.person.PersonDao
 import com.example.lifetime.data.database.repository.person.PersonRepo
 import com.example.lifetime.data.database.repository.person.PersonRepository
@@ -43,10 +44,11 @@ class AppModule {
     internal fun providePersonDao(appDatabase: AppDatabase): PersonDao = appDatabase.personDao()
 
     @Provides
-    internal fun provideCompositDisposal(): CompositeDisposable = CompositeDisposable()
+    internal fun provideCompositeDisposal(): CompositeDisposable = CompositeDisposable()
 
     @Provides
     internal fun provideSchedulerProvider(): SchedulerProvider = SchedulerProvider()
+
 
 
 

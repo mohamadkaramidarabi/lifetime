@@ -6,5 +6,5 @@ import ir.hamsaa.persiandatepicker.util.PersianCalendar
 interface AddPersonMVPDialog : MVPView{
     fun openDataPickerView()
     fun dismissDialog()
-    fun onDateSelected(birthDate: String, ageByDay: Int)
+    fun onDateSelected(persianCalendar: PersianCalendar)
 }

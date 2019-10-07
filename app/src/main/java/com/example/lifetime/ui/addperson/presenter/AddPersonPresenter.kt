@@ -15,14 +15,13 @@ class AddPersonPresenter<V : AddPersonMVPDialog, I : AddPersonMVPInteractor> @In
     schedulerProvider: SchedulerProvider
 ) : BasePresenter<V, I>(interactor,compositeDisposable,schedulerProvider), AddPersonMVPPresenter<V, I> {
 
+
     override fun onSubmitButtonClicked(person: Person): Boolean? =
         interactor?.let {
             compositeDisposable.add(
                 it.addPersonToDB(person)
                     .compose(schedulerProvider.ioToMainObservableScheduler())
-                    .subscribe {
-                        it
-                    }
+                    .subscribe()
             )
         }
 
@@ -31,10 +30,10 @@ class AddPersonPresenter<V : AddPersonMVPDialog, I : AddPersonMVPInteractor> @In
     }
 
     override fun onDateSelected(persianCalendar: PersianCalendar) =
-        getView()?.onDateSelected(persianCalendar.persianLongDate, calculateAge(persianCalendar))!!
+        getView()?.onDateSelected(persianCalendar)!!
 
 
-    private fun calculateAge(persianCalendar: PersianCalendar): Int =
-        ((PersianCalendar().time.time - persianCalendar.time.time) / (24 * 60 * 60 * 1000)).toInt()
+
+
 
 }

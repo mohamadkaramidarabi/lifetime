@@ -1,7 +1,5 @@
 package com.example.lifetime.di.builder
 
-import com.example.lifetime.ui.addperson.view.AddPersonDialog
-import com.example.lifetime.ui.lifespiralview.LifeSpiral
 import com.example.lifetime.ui.main.MainActivityModule
 import com.example.lifetime.ui.main.view.MainActivity
 import dagger.Module
