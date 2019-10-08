@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:theme="@style/AppTheme.NoActionBar"
-            android:name=".ui.main.view.MainActivity">
+            android:name="com.example.lifetime.ui.main.main_activity.view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

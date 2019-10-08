@@ -1,4 +1,4 @@
-package com.example.lifetime.ui.main.interactor
+package com.example.lifetime.ui.main.main_activity.interactor
 
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.data.database.repository.person.PersonRepo

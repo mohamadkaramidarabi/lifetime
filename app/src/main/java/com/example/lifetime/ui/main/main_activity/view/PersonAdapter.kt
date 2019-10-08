@@ -1,4 +1,4 @@
-package com.example.lifetime.ui.main.view
+package com.example.lifetime.ui.main.main_activity.view
 
 import android.view.LayoutInflater
 import android.view.View

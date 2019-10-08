@@ -1,10 +1,10 @@
 package com.example.lifetime.ui.main
 
-import com.example.lifetime.ui.main.interactor.MainInteractor
-import com.example.lifetime.ui.main.interactor.MainMVPInteractor
-import com.example.lifetime.ui.main.presenter.MainMVPPresenter
-import com.example.lifetime.ui.main.presenter.MainPresenter
-import com.example.lifetime.ui.main.view.MainMVPView
+import com.example.lifetime.ui.main.main_activity.interactor.MainInteractor
+import com.example.lifetime.ui.main.main_activity.interactor.MainMVPInteractor
+import com.example.lifetime.ui.main.main_activity.presenter.MainMVPPresenter
+import com.example.lifetime.ui.main.main_activity.presenter.MainPresenter
+import com.example.lifetime.ui.main.main_activity.view.MainMVPView
 import dagger.Module
 import dagger.Provides
 

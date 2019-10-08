@@ -14,7 +14,7 @@ import com.example.lifetime.ui.base.view.BaseDialogView
 import kotlinx.android.synthetic.main.dialog_add_person.*
 import javax.inject.Inject
 import android.widget.Toast
-import com.example.lifetime.ui.main.view.MyDialogDismiss
+import com.example.lifetime.ui.main.main_activity.view.MyDialogDismiss
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
 import ir.hamsaa.persiandatepicker.Listener

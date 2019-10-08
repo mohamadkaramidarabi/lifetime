@@ -1,25 +1,20 @@
-package com.example.lifetime.ui.main.view
+package com.example.lifetime.ui.main.main_activity.view
 
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.view.View
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lifetime.R
-import com.example.lifetime.data.database.AppDatabase
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.base.view.BaseActivity
 import com.example.lifetime.ui.addperson.view.AddPersonDialog
-import com.example.lifetime.ui.lifespiralview.LifeSpiral
-import com.example.lifetime.ui.lifespiralview.LifeSpiralFragment
-import com.example.lifetime.ui.main.interactor.MainMVPInteractor
-import com.example.lifetime.ui.main.presenter.MainMVPPresenter
+import com.example.lifetime.ui.main.main_activity.interactor.MainMVPInteractor
+import com.example.lifetime.ui.main.main_activity.presenter.MainMVPPresenter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -27,7 +22,6 @@ import kotlinx.android.synthetic.main.fragment_life_spiral.*
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainMVPView {
-
     lateinit var appBarConfiguration: AppBarConfiguration
 
     @Inject
@@ -39,7 +33,6 @@ class MainActivity : BaseActivity(), MainMVPView {
     private lateinit var dialog: AddPersonDialog
 
     private var persons: MutableList<Person>? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +64,7 @@ class MainActivity : BaseActivity(), MainMVPView {
         navView.setupWithNavController(navController)
     }
 
+
     override fun onStart() {
         super.onStart()
         personListRecyclerView.adapter = adapter
@@ -88,17 +82,22 @@ class MainActivity : BaseActivity(), MainMVPView {
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun onFragmentAttached() {
+    }
+
+    override fun onFragmentDetached(tag: String) {
+    }
+
 
     override fun loadPersons(persons: MutableList<Person>) {
         Log.d("TAG",persons.toString())
         this.persons = persons
-        lifeSpiral.visibility=View.VISIBLE
-//        lifeSpiral.reDraw(persons[persons.lastIndex])
         personListRecyclerView.adapter = adapter.let {
             it.persons = persons
             it.notifyDataSetChanged()
             it
         }
+
     }
 
     override fun openUserDialog() {

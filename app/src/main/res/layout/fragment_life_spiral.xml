@@ -8,8 +8,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_main">
 
-    <com.example.lifetime.ui.lifespiralview.LifeSpiral
-        android:visibility="gone"
+    <com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiral
         android:id="@+id/lifeSpiral"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

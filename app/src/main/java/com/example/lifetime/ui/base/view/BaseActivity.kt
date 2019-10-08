@@ -4,7 +4,7 @@ import android.app.ProgressDialog
 import com.example.lifetime.util.CommonUtil
 import dagger.android.support.DaggerAppCompatActivity
 
-abstract class BaseActivity : DaggerAppCompatActivity(), MVPView {
+abstract class BaseActivity : DaggerAppCompatActivity(), MVPView, BaseFragment.CallBack {
 
     private var progressDialog: ProgressDialog? = null
 
@@ -17,4 +17,6 @@ abstract class BaseActivity : DaggerAppCompatActivity(), MVPView {
     override fun hideProgress() {
         progressDialog?.let { if (it.isShowing)  it.cancel() }
     }
+
+
 }

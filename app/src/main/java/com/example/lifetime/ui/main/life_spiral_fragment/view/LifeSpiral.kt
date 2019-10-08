@@ -1,4 +1,4 @@
-package com.example.lifetime.ui.lifespiralview
+package com.example.lifetime.ui.main.life_spiral_fragment.view
 
 import android.content.Context
 import android.graphics.*
@@ -11,10 +11,9 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
-import java.lang.Math.pow
 import kotlin.math.*
 
-class LifeSpiral (context: Context,attributeSet: AttributeSet) : SurfaceView(context,attributeSet),
+class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : SurfaceView(context,attributeSet),
     SurfaceHolder.Callback {
 
     private val paint: Paint
@@ -24,7 +23,7 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet) : SurfaceView(con
     private val path = Path()
     private var surfaceHolder: SurfaceHolder?= null
 
-    var person: Person? = null
+    val person: Person
 
 
 
@@ -33,6 +32,7 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet) : SurfaceView(con
         backgroundPaint = Paint()
         backgroundPaint.color = Color.WHITE
         paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        person = Person("fake name", 80, PersianCalendar().time.time)
     }
     
 
@@ -44,13 +44,13 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet) : SurfaceView(con
     }
 
     override fun surfaceCreated(holder: SurfaceHolder?) {
-        this.surfaceHolder = holder!!
+        this.surfaceHolder = holder
         drawSpiral(holder)
-
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
+
         this.w = w
         this.h = h
     }
@@ -62,7 +62,7 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet) : SurfaceView(con
         val p = Point()
         p.x = w / 2
         p.y = h / 2
-        val lifeExceptionYears = person?.LifeExpectancyYears ?: 80
+        val lifeExceptionYears = person.LifeExpectancyYears
         val dotRadius = sqrt(0.3 * w.toDouble().pow(2.0) / (lifeExceptionYears * 52 * 4)).toInt()
 
         val lastCirclePoint = Point(w / 2, h / 2)
@@ -100,9 +100,7 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet) : SurfaceView(con
                         count++
                         lastCirclePoint.x = p.x
                         lastCirclePoint.y = p.y
-                        if (count >
-                            CommonUtil.calculateAge(
-                                PersianCalendar(person?.birthDate ?: PersianCalendar().time.time)) / 7) {
+                        if (count > CommonUtil.calculateAge(PersianCalendar(person.birthDate)) / 7) {
                             paint.color = Color.RED
                             paint.style = Paint.Style.STROKE
                         }
@@ -149,7 +147,14 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet) : SurfaceView(con
         ((w / 4.0 * 0.95 / (phi))) * (ln(sqrt(phi.pow(2.0) + 1) + phi) + phi * sqrt(phi.pow(2.0) + 1))
 
     fun reDraw(person: Person) {
-        this.person = person
-        drawSpiral(this.surfaceHolder)
+        this.person.let {
+            it.LifeExpectancyYears=person.LifeExpectancyYears
+            it.birthDate=person.birthDate
+            it.name = person.name
+            it.id = person.id
+        }
+        if (surfaceHolder != null) {
+            drawSpiral(this.surfaceHolder)
+        }
     }
 }

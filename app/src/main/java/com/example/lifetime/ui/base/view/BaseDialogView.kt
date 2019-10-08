@@ -16,6 +16,7 @@ abstract class BaseDialogView: DaggerDialogFragment(), DialogMVPView{
         if (context is BaseActivity) {
             val activity = context as BaseActivity?
             this.parentActivity = activity
+            activity?.onFragmentAttached()
         }
     }
 
@@ -45,6 +46,7 @@ abstract class BaseDialogView: DaggerDialogFragment(), DialogMVPView{
 
     fun dismissDialog(tag: String) {
         dismiss()
+        getBaseActivity()?.onFragmentDetached(tag)
     }
 
     private fun getBaseActivity(): BaseActivity? {

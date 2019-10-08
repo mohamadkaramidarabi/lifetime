@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.lifetime.ui.lifespiralview.LifeSpiralFragment"
+        android:name="com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiralFragment"
         tools:layout="@layout/fragment_life_spiral"
         android:label="LifeSpiralFragment" />
 </navigation>

@@ -1,8 +1,8 @@
-package com.example.lifetime.ui.main.presenter
+package com.example.lifetime.ui.main.main_activity.presenter
 
 import com.example.lifetime.ui.base.presenter.BasePresenter
-import com.example.lifetime.ui.main.interactor.MainMVPInteractor
-import com.example.lifetime.ui.main.view.MainMVPView
+import com.example.lifetime.ui.main.main_activity.interactor.MainMVPInteractor
+import com.example.lifetime.ui.main.main_activity.view.MainMVPView
 import com.example.lifetime.util.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
