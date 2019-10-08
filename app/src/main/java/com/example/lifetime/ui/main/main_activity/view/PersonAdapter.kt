@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lifetime.R
 import com.example.lifetime.data.database.repository.person.Person
@@ -28,13 +29,18 @@ class PersonAdapter @Inject constructor() : RecyclerView.Adapter<PersonAdapter.V
         private val fullName: TextView = view.findViewById(R.id.fullName)
         private val delete: ImageView = view.findViewById(R.id.delete)
         private val edit: ImageView = view.findViewById(R.id.edit)
+        private var pair: Pair<View,Person?>? = null
 
         init {
             delete.setOnClickListener {}
             edit.setOnClickListener {}
+            view.setOnClickListener{
+                Toast.makeText(view.context,pair?.second.toString(),Toast.LENGTH_LONG).show()
+            }
         }
 
         fun bind(person: Person?) {
+            pair = Pair(view, person)
             fullName.text = person?.name ?: ""
         }
     }

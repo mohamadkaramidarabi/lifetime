@@ -3,11 +3,9 @@ package com.example.lifetime.data.database.repository.person
 import androidx.room.*
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import ir.hamsaa.persiandatepicker.util.PersianCalendar
 
 @Entity(tableName = "persons")
 data class Person(
-
 
     @Expose
     @ColumnInfo(name = "name")

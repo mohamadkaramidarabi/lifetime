@@ -8,6 +8,7 @@ import android.view.SurfaceView
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.util.CommonUtil
 import io.reactivex.Observable
+import io.reactivex.ObservableEmitter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
@@ -24,7 +25,10 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
     private var surfaceHolder: SurfaceHolder?= null
 
     val person: Person
-
+    lateinit var observableEmitter: ObservableEmitter<Boolean>
+    var finishDraw: Observable<Boolean> = Observable.create{
+        observableEmitter = it
+    }
 
 
     init {
@@ -56,6 +60,7 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
     }
 
     private fun drawSpiral(holder: SurfaceHolder?) {
+        observableEmitter.onNext(false)
         paint.color = Color.BLUE
         paint.style = Paint.Style.FILL
         path.moveTo(w / 2f, h / 2f)
@@ -111,7 +116,10 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
                             paint,
                             canvas
                         )
-                        if (count > lifeExceptionYears * 365 / 7) break
+                        if (count > lifeExceptionYears * 365 / 7) {
+                            observableEmitter.onNext(true)
+                            break
+                        }
                     }
                 }
                 holder?.unlockCanvasAndPost(canvas)

@@ -1,7 +1,6 @@
 package com.example.lifetime.ui.main.main_activity.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -13,6 +12,7 @@ import com.example.lifetime.R
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.base.view.BaseActivity
 import com.example.lifetime.ui.addperson.view.AddPersonDialog
+import com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiralFragment
 import com.example.lifetime.ui.main.main_activity.interactor.MainMVPInteractor
 import com.example.lifetime.ui.main.main_activity.presenter.MainMVPPresenter
 import kotlinx.android.synthetic.main.activity_main.*
@@ -90,14 +90,18 @@ class MainActivity : BaseActivity(), MainMVPView {
 
 
     override fun loadPersons(persons: MutableList<Person>) {
-        Log.d("TAG",persons.toString())
         this.persons = persons
         personListRecyclerView.adapter = adapter.let {
             it.persons = persons
             it.notifyDataSetChanged()
             it
         }
-
+        for (fragment in nav_host_fragment.childFragmentManager.fragments) {
+            if (fragment is LifeSpiralFragment) {
+                fragment.updateUI(persons[persons.lastIndex])
+                break
+            }
+        }
     }
 
     override fun openUserDialog() {
