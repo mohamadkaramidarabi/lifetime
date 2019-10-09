@@ -44,9 +44,9 @@ class MainActivity : BaseActivity(), MainMVPView {
 
         dialog = AddPersonDialog(object : MyDialogDismiss {
             override fun getPerson(person: Person) {
-                lifeSpiral.reDraw(person)
                 persons?.add(person)
                 adapter.notifyDataSetChanged()
+                lifeSpiral.reDraw(person)
             }
         })
 

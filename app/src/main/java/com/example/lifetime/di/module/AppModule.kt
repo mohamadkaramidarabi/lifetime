@@ -5,6 +5,9 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import com.example.lifetime.data.database.AppDatabase
+import com.example.lifetime.data.database.repository.life_expectancies.LifeExpectanciesDao
+import com.example.lifetime.data.database.repository.life_expectancies.LifeExpectancyRepo
+import com.example.lifetime.data.database.repository.life_expectancies.LifeExpectancyRepository
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.data.database.repository.person.PersonDao
 import com.example.lifetime.data.database.repository.person.PersonRepo
@@ -41,7 +44,17 @@ class AppModule {
 
     @Provides
     @Singleton
+    internal fun provideLifeExpectacyRepoHelper(lifeExpectancyRepository: LifeExpectancyRepository): LifeExpectancyRepo =
+        lifeExpectancyRepository
+
+    @Provides
+    @Singleton
     internal fun providePersonDao(appDatabase: AppDatabase): PersonDao = appDatabase.personDao()
+
+    @Provides
+    @Singleton
+    internal fun provideLifeExpectancyDao(appDatabase: AppDatabase): LifeExpectanciesDao = appDatabase.lifeExpectanciesDao()
+
 
     @Provides
     internal fun provideCompositeDisposal(): CompositeDisposable = CompositeDisposable()

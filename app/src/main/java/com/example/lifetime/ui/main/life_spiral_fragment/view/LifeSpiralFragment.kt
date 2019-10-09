@@ -9,11 +9,9 @@ import android.view.ViewGroup
 import com.example.lifetime.R
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.base.view.BaseFragment
-import com.example.lifetime.util.CommonUtil
 import com.example.lifetime.util.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
-import java.util.*
 import javax.inject.Inject
 
 class LifeSpiralFragment : BaseFragment() {
@@ -25,23 +23,21 @@ class LifeSpiralFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_life_spiral, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.fragment_life_spiral, container, false)
 
     override fun setUp() {
         showProgress()
         this.lifeSpiral = view?.findViewById(R.id.lifeSpiral)
-        lifeSpiral?.reDraw(Person("fake name", 80, PersianCalendar().time.time)) ?: Unit
-
         compositeDisposable.add(
             lifeSpiral!!.finishDraw.compose(
                 SchedulerProvider().ioToMainObservableScheduler()
             ).doOnNext {
+                Log.d("TAG",it.toString())
                 if(it) hideProgress() else showProgress()
             }
             .subscribe()
         )
+        lifeSpiral?.reDraw(Person("fake name", 80, PersianCalendar().time.time)) ?: Unit
 
     }
 

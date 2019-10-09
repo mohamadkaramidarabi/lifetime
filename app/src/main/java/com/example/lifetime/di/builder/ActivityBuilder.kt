@@ -2,6 +2,8 @@ package com.example.lifetime.di.builder
 
 import com.example.lifetime.ui.main.MainActivityModule
 import com.example.lifetime.ui.main.main_activity.view.MainActivity
+import com.example.lifetime.ui.splash.SplashActivityModule
+import com.example.lifetime.ui.splash.view.SplashActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -12,4 +14,7 @@ abstract class ActivityBuilder {
         DialogBuilder::class,
         FragmentBuilder::class])
     abstract fun bindMainActivity(): MainActivity
+
+    @ContributesAndroidInjector(modules = [SplashActivityModule::class])
+    abstract fun bindSplashActivity(): SplashActivity
 }
