@@ -14,12 +14,15 @@ data class Person(
     @Expose
     @ColumnInfo(name = "Life_expectancy_years")
     @SerializedName("Life_expectancy_years")
-    var LifeExpectancyYears: Int,
+    var LifeExpectancyYears: Float,
 
 
     @SerializedName("birth_date")
     @ColumnInfo(name = "birth_date")
-    var birthDate: Long
+    var birthDate: Long,
+
+    @ColumnInfo(name = "country")
+    var country: String? = null
 ){
     @Expose
     @PrimaryKey(autoGenerate = true)

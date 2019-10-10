@@ -1,10 +1,12 @@
 package com.example.lifetime.ui.main.life_spiral_fragment.view
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import com.example.lifetime.R
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.util.CommonUtil
 import io.reactivex.Observable
@@ -34,7 +36,7 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
         backgroundPaint = Paint()
         backgroundPaint.color = Color.WHITE
         paint = Paint(Paint.ANTI_ALIAS_FLAG)
-        person = Person("fake name", 80, PersianCalendar().time.time)
+        person = Person("fake name", 80f, PersianCalendar().time.time)
     }
     
 
@@ -59,7 +61,7 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
 
     private fun drawSpiral(holder: SurfaceHolder?) {
         finishDraw.onNext(false)
-        paint.color = Color.BLUE
+        paint.color = Color.WHITE
         paint.style = Paint.Style.FILL
         path.moveTo(w / 2f, h / 2f)
         val p = Point()
@@ -69,7 +71,7 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
         val dotRadius = sqrt(0.3 * w.toDouble().pow(2.0) / (lifeExceptionYears * 52 * 4)).toInt()
 
         val lastCirclePoint = Point(w / 2, h / 2)
-        val maxAngle = getMaxAngle(lifeExceptionYears, dotRadius)
+        val maxAngle = getMaxAngle(lifeExceptionYears.toInt(), dotRadius)
         var count = 0
 
         val range = 1..maxAngle * 10
@@ -86,7 +88,7 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
             .doOnNext {
                 val canvas = holder?.lockCanvas(null)
                 canvas?.drawRect(0f, 0f, w.toFloat(), h.toFloat(), backgroundPaint)
-                canvas?.drawRect(0f, 0f, w.toFloat(), h.toFloat(), backgroundPaint)
+                canvas?.drawColor(resources.getColor(R.color.colorPrimaryDark))
                 for (angle in range) {
                     val a = angle.toDouble() / 10.0
                     val r = (a / (maxAngle)) * (w / 2.0 * 0.95)
@@ -104,7 +106,8 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
                         lastCirclePoint.x = p.x
                         lastCirclePoint.y = p.y
                         if (count > CommonUtil.calculateAge(PersianCalendar(person.birthDate)) / 7) {
-                            paint.color = Color.RED
+                            paint.color = resources.getColor(R.color.colorAccent)
+                            paint.strokeWidth = dotRadius/2f
                             paint.style = Paint.Style.STROKE
                         }
                         drawCircle(
@@ -115,12 +118,14 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
                             canvas
                         )
                         if (count > lifeExceptionYears * 365 / 7) {
-                            finishDraw.onNext(true)
                             break
                         }
                     }
                 }
                 holder?.unlockCanvasAndPost(canvas)
+            }
+            .doOnNext {
+                finishDraw.onNext(true)
             }
             .subscribe()
 

@@ -10,4 +10,5 @@ interface AddPersonMVPPresenter<V : AddPersonMVPDialog, I: AddPersonMVPInteracto
     fun onSubmitButtonClicked(person: Person): Boolean?
     fun onDatePickerClicked()
     fun onDateSelected(persianCalendar: PersianCalendar)
+    fun requestLifeExpectanciesFromDB(): Boolean
 }

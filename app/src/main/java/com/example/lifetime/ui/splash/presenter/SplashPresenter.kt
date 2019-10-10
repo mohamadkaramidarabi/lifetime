@@ -22,6 +22,7 @@ class SplashPresenter<V: SplashMVPView, I: SplashMVPInteractor>
         compositeDisposable.add(
             it.seedLifeExpectancies()
                 .doOnNext{
+                    Thread.sleep(2000)
                 }
                 .compose(schedulerProvider.ioToMainObservableScheduler())
                 .subscribe {

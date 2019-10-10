@@ -15,6 +15,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <TextView
         android:layout_marginBottom="10dp"
         style="@style/TextView"
@@ -88,7 +89,8 @@
             android:id="@+id/lifeExOptions"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content">
             <RadioButton
                 android:layout_marginLeft="10dp"
@@ -119,47 +121,55 @@
         </RadioGroup>
 
         <LinearLayout
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lifeExOptions"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/lifeExOptions"
-            app:layout_constraintTop_toBottomOf="@id/enterYearView"
+            app:layout_constraintRight_toRightOf="parent"
             android:id="@+id/countrySelectView"
             android:layout_width="0dp"
             android:orientation="vertical"
             android:layout_height="wrap_content">
-            <TextView
-                android:layout_gravity="center"
-                android:gravity="center"
+            <Spinner
                 style="@style/TextView"
-                android:textSize="18sp"
                 android:textColor="@android:color/darker_gray"
-                android:text="کشور"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:id="@+id/spinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="40dp"/>
+
             <View
+                android:layout_gravity="bottom"
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray"
                 android:layout_width="match_parent"/>
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/enterYearView"
-            app:layout_constraintTop_toBottomOf="@id/countrySelectView"
+            app:layout_constraintTop_toBottomOf="@id/lifeExOptions"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/lifeExOptions"
-            app:layout_constraintRight_toLeftOf="@id/lifeExOptions"
+            app:layout_constraintRight_toRightOf="parent"
             android:layout_width="0dp"
             android:orientation="vertical"
             android:layout_height="wrap_content">
-            <TextView
-                android:layout_gravity="center"
-                android:gravity="center"
+
+            <EditText
+                android:id="@+id/years"
                 style="@style/TextView"
-                android:textSize="18sp"
-                android:textColor="@android:color/darker_gray"
-                android:text="سال ..."
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:hint="سال ..."
+                android:inputType="number"
+                android:maxLength="3"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="18sp" />
             <View
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray"

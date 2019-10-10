@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "life_expectancy")
 data class LifeExpectancy(
@@ -12,8 +13,9 @@ data class LifeExpectancy(
     var country: String,
 
     @Expose
-    @ColumnInfo(name = "life_ecpectancy")
-    var LifeExpectancy: Float
+    @ColumnInfo(name = "life_Expectancy")
+    @SerializedName("expectancy")
+    var lifeExpectancy: Float
 ){
     @Expose
     @PrimaryKey(autoGenerate = true)

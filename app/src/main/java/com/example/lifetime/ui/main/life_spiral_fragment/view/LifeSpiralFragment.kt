@@ -32,12 +32,11 @@ class LifeSpiralFragment : BaseFragment() {
             lifeSpiral!!.finishDraw.compose(
                 SchedulerProvider().ioToMainObservableScheduler()
             ).doOnNext {
-                Log.d("TAG",it.toString())
                 if(it) hideProgress() else showProgress()
             }
             .subscribe()
         )
-        lifeSpiral?.reDraw(Person("fake name", 80, PersianCalendar().time.time)) ?: Unit
+        lifeSpiral?.reDraw(Person("fake name", 80f, PersianCalendar().time.time)) ?: Unit
 
     }
 
