@@ -6,6 +6,7 @@ import android.view.Window
 import android.view.WindowManager
 import com.example.lifetime.R
 import com.example.lifetime.ui.base.view.BaseActivity
+import com.example.lifetime.ui.login.LoginActivity
 import com.example.lifetime.ui.main.main_activity.view.MainActivity
 import com.example.lifetime.ui.splash.interactor.SplashMVPInteractor
 import com.example.lifetime.ui.splash.presenter.SplashPresenter
@@ -26,7 +27,7 @@ class SplashActivity : BaseActivity(), SplashMVPView {
     }
 
     override fun openMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
     }

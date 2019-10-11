@@ -4,6 +4,7 @@ import io.reactivex.Observable
 import javax.inject.Inject
 
 class PersonRepository @Inject internal constructor(private val personDao: PersonDao): PersonRepo {
+
     override fun isPersonRepoEmpty(): Observable<Boolean> =
         Observable.fromCallable {
             personDao.loadAll().isEmpty()

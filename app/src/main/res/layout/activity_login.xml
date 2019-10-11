@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/gradient_background"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="right"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".ui.login.LoginActivity">
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="match_parent"
+        android:text="برای استفاده از برنامه لطفا اطلاعات خود را وارد کنید."
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="30dp"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/edit_text_background"
+        android:gravity="right"
+        android:textDirection="rtl"
+        android:layoutDirection="rtl"
+        app:errorEnabled="true"
+        android:layout_marginBottom="30dp"
+        android:textColorHint="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginTop="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@android:color/white"
+            android:text="نام"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:hint="نام خود را وارد کنید..."
+            style="@style/EditText"
+            android:id="@+id/etName"
+            android:gravity="right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/edit_text_background"
+        android:gravity="right"
+        android:textDirection="rtl"
+        android:layoutDirection="rtl"
+        app:errorEnabled="true"
+        android:layout_marginBottom="30dp"
+        android:textColorHint="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginTop="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@android:color/white"
+            android:text="تاریخ تولد"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_gravity="center"
+            android:textDirection="rtl"
+            android:text="روز/ماه/سال"
+            style="@style/EditText"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/edit_text_background"
+        android:gravity="right"
+        android:textDirection="rtl"
+        android:layoutDirection="rtl"
+        app:errorEnabled="true"
+        android:layout_marginBottom="30dp"
+        android:textColorHint="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginTop="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@android:color/white"
+            android:text="کشور"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:hint="نام کشور یا کد تلفن"
+            style="@style/EditText"
+            android:id="@+id/etCountry"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/edit_text_background"
+        android:gravity="right"
+        android:textDirection="rtl"
+        android:layoutDirection="rtl"
+        app:errorEnabled="true"
+        android:layout_marginBottom="30dp"
+        android:textColorHint="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginTop="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@android:color/white"
+            android:text="ایمیل"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:hint="ایمیل خود را وارد کنید..."
+            style="@style/EditText"
+            android:id="@+id/etٍEmail"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:text="ثبت نام"
+        android:id="@+id/btnSubmit"
+        style="@style/EditText"
+        android:layout_gravity="center"
+        android:paddingTop="10dp"
+        android:paddingLeft="80dp"
+        android:paddingRight="80dp"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+
+
+
+
+
+</LinearLayout>

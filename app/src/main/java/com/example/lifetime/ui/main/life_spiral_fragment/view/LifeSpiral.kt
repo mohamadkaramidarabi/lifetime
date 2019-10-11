@@ -60,7 +60,7 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
     }
 
     private fun drawSpiral(holder: SurfaceHolder?) {
-        finishDraw.onNext(false)
+        finishDraw.onNext(true)
         paint.color = Color.WHITE
         paint.style = Paint.Style.FILL
         path.moveTo(w / 2f, h / 2f)
@@ -68,7 +68,7 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
         p.x = w / 2
         p.y = h / 2
         val lifeExceptionYears = person.LifeExpectancyYears
-        val dotRadius = sqrt(0.3 * w.toDouble().pow(2.0) / (lifeExceptionYears * 52 * 4)).toInt()
+        val dotRadius = sqrt(0.4 * w.toDouble().pow(2.0) / (lifeExceptionYears * 52 * 4)).toInt()
 
         val lastCirclePoint = Point(w / 2, h / 2)
         val maxAngle = getMaxAngle(lifeExceptionYears.toInt(), dotRadius)
@@ -86,9 +86,9 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
                 holder?.unlockCanvasAndPost(canvas)
             }
             .doOnNext {
-                val canvas = holder?.lockCanvas(null)
-                canvas?.drawRect(0f, 0f, w.toFloat(), h.toFloat(), backgroundPaint)
-                canvas?.drawColor(resources.getColor(R.color.colorPrimaryDark))
+
+//                canvas?.drawRect(0f, 0f, w.toFloat(), h.toFloat(), backgroundPaint)
+//                canvas?.drawColor(resources.getColor(R.color.colorPrimaryDark))
                 for (angle in range) {
                     val a = angle.toDouble() / 10.0
                     val r = (a / (maxAngle)) * (w / 2.0 * 0.95)
@@ -102,13 +102,18 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
                                     (lastCirclePoint.y.toDouble() - p.y).pow(2.0)
                         ) >= (2 * dotRadius * 1.2)
                     ) {
+                        val canvas = holder?.lockCanvas(
+                            Rect(
+                                p.x - dotRadius, p.y - dotRadius,
+                                p.x + dotRadius, p.y + dotRadius
+                            )
+                        )
                         count++
                         lastCirclePoint.x = p.x
                         lastCirclePoint.y = p.y
                         if (count > CommonUtil.calculateAge(PersianCalendar(person.birthDate)) / 7) {
-                            paint.color = resources.getColor(R.color.colorAccent)
+                            paint.color = Color.GRAY
                             paint.strokeWidth = dotRadius/2f
-                            paint.style = Paint.Style.STROKE
                         }
                         drawCircle(
                             p.x.toFloat(),
@@ -117,15 +122,16 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
                             paint,
                             canvas
                         )
+                        holder?.unlockCanvasAndPost(canvas)
                         if (count > lifeExceptionYears * 365 / 7) {
                             break
                         }
                     }
                 }
-                holder?.unlockCanvasAndPost(canvas)
+
             }
             .doOnNext {
-                finishDraw.onNext(true)
+//                finishDraw.onNext(true)
             }
             .subscribe()
 
@@ -144,6 +150,27 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
             radius,
             paint
         )
+    }
+
+    private fun drawRect(
+        left: Float,
+        right: Float,
+        top: Float,
+        bottom: Float,
+        paint: Paint,
+        canvas: Canvas?,
+        angle: Float
+    ) {
+        canvas?.let {
+            it.rotate(angle, right + (left - right) / 2, top - (top - bottom) / 2)
+            it.drawRect(
+                left,
+                top,
+                right,
+                bottom,
+                paint
+            )
+        }
     }
 
     private fun getMaxAngle(LifeExpectancyYears: Int, dotRadius: Int): Int {
