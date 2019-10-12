@@ -26,22 +26,20 @@ class LifeSpiralFragment : BaseFragment() {
     ): View? = inflater.inflate(R.layout.fragment_life_spiral, container, false)
 
     override fun setUp() {
-        showProgress()
+        showLoading()
         this.lifeSpiral = view?.findViewById(R.id.lifeSpiral)
         compositeDisposable.add(
             lifeSpiral!!.finishDraw.compose(
                 SchedulerProvider().ioToMainObservableScheduler()
             ).doOnNext {
-                if(it) hideProgress() else showProgress()
+                if(it) hideLoading() else showLoading()
+                Log.d("TAG",it.toString())
+                if(it) hideLoading() else showLoading()
             }
             .subscribe()
         )
         lifeSpiral?.reDraw(Person("fake name", 80f, PersianCalendar().time.time)) ?: Unit
 
-    }
-
-    fun setLifeSpiralVisibility(visibility: Int) {
-        lifeSpiral?.visibility=visibility
     }
 
     fun updateUI(person: Person) {

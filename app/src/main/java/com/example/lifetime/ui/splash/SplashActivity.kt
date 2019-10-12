@@ -1,4 +1,4 @@
-package com.example.lifetime.ui.splash.view
+package com.example.lifetime.ui.splash
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,17 +7,12 @@ import android.view.WindowManager
 import com.example.lifetime.R
 import com.example.lifetime.ui.base.view.BaseActivity
 import com.example.lifetime.ui.login.LoginActivity
-import com.example.lifetime.ui.main.main_activity.view.MainActivity
-import com.example.lifetime.ui.splash.interactor.SplashMVPInteractor
-import com.example.lifetime.ui.splash.presenter.SplashPresenter
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class SplashActivity : BaseActivity(), SplashMVPView {
+class SplashActivity : BaseActivity(), SplashInteractor.SplashMVPView {
 
     @Inject
-    lateinit var presenter: SplashPresenter<SplashMVPView, SplashMVPInteractor>
+    lateinit var presenter: SplashPresenter<SplashInteractor.SplashMVPView>
 
     override fun onFragmentAttached() {
 
@@ -41,8 +36,7 @@ class SplashActivity : BaseActivity(), SplashMVPView {
             WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash)
         presenter.onAttach(this)
-
-
+        presenter.seedLifeExpectancies()
     }
 
 

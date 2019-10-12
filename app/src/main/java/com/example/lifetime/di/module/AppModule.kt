@@ -4,15 +4,20 @@ import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.example.lifetime.data.database.AppDatabase
+import com.example.lifetime.data.database.AppDbHelper
+import com.example.lifetime.data.database.DbHelper
 import com.example.lifetime.data.database.repository.life_expectancies.LifeExpectanciesDao
 import com.example.lifetime.data.database.repository.life_expectancies.LifeExpectancyRepo
 import com.example.lifetime.data.database.repository.life_expectancies.LifeExpectancyRepository
 import com.example.lifetime.data.database.repository.person.PersonDao
 import com.example.lifetime.data.database.repository.person.PersonRepo
 import com.example.lifetime.data.database.repository.person.PersonRepository
+import com.example.lifetime.di.PreferenceInfo
 import com.example.lifetime.util.SchedulerProvider
 import dagger.Module
 import dagger.Provides
+import info.vazeh.android.data.preferences.AppPreferenceHelper
+import info.vazeh.android.data.preferences.PreferenceHelper
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Singleton
 
@@ -53,7 +58,19 @@ class AppModule {
     @Provides
     internal fun provideSchedulerProvider(): SchedulerProvider = SchedulerProvider()
 
+    @Provides
+    @Singleton
+    internal fun provideDbHelper(appDbHelper: AppDbHelper): DbHelper = appDbHelper
 
+    @Singleton
+    @Provides
+    internal fun providePreferenceHelper(appPreferenceHelper: AppPreferenceHelper): PreferenceHelper =
+        appPreferenceHelper
+
+
+    @Provides
+    @PreferenceInfo
+    internal fun provideAppDbName() = "My_database"
 
 
 }

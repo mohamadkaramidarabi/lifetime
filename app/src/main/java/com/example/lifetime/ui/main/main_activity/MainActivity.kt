@@ -1,4 +1,4 @@
-package com.example.lifetime.ui.main.main_activity.view
+package com.example.lifetime.ui.main.main_activity
 
 import android.os.Bundle
 import android.view.Menu
@@ -11,21 +11,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lifetime.R
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.base.view.BaseActivity
-import com.example.lifetime.ui.addperson.view.AddPersonDialog
+import com.example.lifetime.ui.addperson.AddPersonDialog
 import com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiralFragment
-import com.example.lifetime.ui.main.main_activity.interactor.MainMVPInteractor
-import com.example.lifetime.ui.main.main_activity.presenter.MainMVPPresenter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.fragment_life_spiral.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity(), MainMVPView {
+class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
     lateinit var appBarConfiguration: AppBarConfiguration
 
     @Inject
-    lateinit var presenter: MainMVPPresenter<MainMVPView, MainMVPInteractor>
+    lateinit var presenter: MainInteractor.MainMVPPresenter<MainInteractor.MainMVPView>
 
     @Inject
     lateinit var adapter: PersonAdapter
@@ -42,7 +40,8 @@ class MainActivity : BaseActivity(), MainMVPView {
         presenter.getPersons()
 
 
-        dialog = AddPersonDialog(object : MyDialogDismiss {
+        dialog = AddPersonDialog(object :
+            MyDialogDismiss {
             override fun getPerson(person: Person) {
                 persons?.add(person)
                 adapter.notifyDataSetChanged()

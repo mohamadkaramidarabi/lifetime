@@ -1,10 +1,7 @@
 package com.example.lifetime.ui.main
 
-import com.example.lifetime.ui.main.main_activity.interactor.MainInteractor
-import com.example.lifetime.ui.main.main_activity.interactor.MainMVPInteractor
-import com.example.lifetime.ui.main.main_activity.presenter.MainMVPPresenter
-import com.example.lifetime.ui.main.main_activity.presenter.MainPresenter
-import com.example.lifetime.ui.main.main_activity.view.MainMVPView
+import com.example.lifetime.ui.main.main_activity.MainInteractor
+import com.example.lifetime.ui.main.main_activity.MainPresenter
 import dagger.Module
 import dagger.Provides
 
@@ -12,10 +9,7 @@ import dagger.Provides
 class MainActivityModule {
 
     @Provides
-    internal fun providePresenter(presenter: MainPresenter<MainMVPView, MainMVPInteractor>)
-            : MainMVPPresenter<MainMVPView, MainMVPInteractor> = presenter
-
-    @Provides
-    internal fun provideInteractor(interactor: MainInteractor): MainMVPInteractor = interactor
+    internal fun providePresenter(presenter: MainPresenter<MainInteractor.MainMVPView>)
+            : MainInteractor.MainMVPPresenter<MainInteractor.MainMVPView> = presenter
 
 }

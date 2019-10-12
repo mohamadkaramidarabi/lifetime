@@ -1,15 +1,15 @@
 package com.example.lifetime.ui.base.presenter
 
-import com.example.lifetime.ui.base.interactor.MVPInteractor
+import com.example.lifetime.data.AppDataManager
 import com.example.lifetime.ui.base.view.MVPView
 import com.example.lifetime.util.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BasePresenter<V : MVPView, I : MVPInteractor> internal constructor(
-    protected var interactor: I?,
-    protected var compositeDisposable: CompositeDisposable,
-    protected var schedulerProvider: SchedulerProvider
-) : MVPPresenter<V, I> {
+abstract class BasePresenter<V : MVPView> internal constructor(
+    protected val dataManager: AppDataManager,
+    protected val compositeDisposable: CompositeDisposable,
+    protected val schedulerProvider: SchedulerProvider
+) : MVPPresenter<V> {
 
     private var view: V? = null
     override fun getView(): V? = view
@@ -20,10 +20,5 @@ abstract class BasePresenter<V : MVPView, I : MVPInteractor> internal constructo
 
     override fun onDetach() {
         this.view=null
-        interactor = null
-
     }
-
-
-
 }
