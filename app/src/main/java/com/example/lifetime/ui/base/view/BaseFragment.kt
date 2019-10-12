@@ -30,7 +30,7 @@ abstract class BaseFragment : DaggerFragment(), MVPView {
         setUp()
     }
 
-    override fun hideProgress() {
+    override fun hideLoading() {
         if (progressDialog != null && progressDialog?.isShowing!!) {
             progressDialog?.cancel()
         }
@@ -38,8 +38,8 @@ abstract class BaseFragment : DaggerFragment(), MVPView {
 
     fun getBaseActivity() = parentActivity
 
-    override fun showProgress() {
-        hideProgress()
+    override fun showLoading() {
+        hideLoading()
         progressDialog = CommonUtil.showLoadingDialog(this.context)
     }
 

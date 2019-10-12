@@ -32,14 +32,14 @@ abstract class BaseDialogView: DaggerDialogFragment(), DialogMVPView{
     }
 
 
-    override fun hideProgress() {
+    override fun hideLoading() {
         if (progressDialog != null && progressDialog?.isShowing!!) {
             progressDialog?.cancel()
         }
     }
 
-    override fun showProgress() {
-        hideProgress()
+    override fun showLoading() {
+        hideLoading()
         progressDialog = CommonUtil.showLoadingDialog(this.context)
     }
 

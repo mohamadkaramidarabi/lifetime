@@ -8,13 +8,13 @@ abstract class BaseActivity : DaggerAppCompatActivity(), MVPView, BaseFragment.C
 
     private var progressDialog: ProgressDialog? = null
 
-    override fun showProgress() {
-        hideProgress()
+    override fun showLoading() {
+        hideLoading()
         progressDialog = CommonUtil.showLoadingDialog(this)
 
     }
 
-    override fun hideProgress() {
+    override fun hideLoading() {
         progressDialog?.let { if (it.isShowing)  it.cancel() }
     }
 

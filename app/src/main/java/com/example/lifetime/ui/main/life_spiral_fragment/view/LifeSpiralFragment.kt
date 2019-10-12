@@ -26,14 +26,14 @@ class LifeSpiralFragment : BaseFragment() {
     ): View? = inflater.inflate(R.layout.fragment_life_spiral, container, false)
 
     override fun setUp() {
-        showProgress()
+        showLoading()
         this.lifeSpiral = view?.findViewById(R.id.lifeSpiral)
         compositeDisposable.add(
             lifeSpiral!!.finishDraw.compose(
                 SchedulerProvider().ioToMainObservableScheduler()
             ).doOnNext {
                 Log.d("TAG",it.toString())
-                if(it) hideProgress() else showProgress()
+                if(it) hideLoading() else showLoading()
             }
             .subscribe()
         )
