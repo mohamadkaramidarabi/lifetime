@@ -49,6 +49,15 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
 //        }
 
         val navController = findNavController(R.id.navigationHostFragment)
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigationHome, R.id.navigationMessage, R.id.navigationAbout
+            )
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navigationView.setupWithNavController(navController)
     }
 
 
@@ -62,11 +71,6 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.navigationHostFragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main, menu)
-        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onFragmentAttached() {

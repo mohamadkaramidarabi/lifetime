@@ -4,11 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/gradient_background"
     android:id="@+id/container"
-    android:paddingTop="?attr/actionBarSize"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        app:itemIconTint="@drawable/bottom_nav_icon_color_selector"
+        app:itemTextColor="@drawable/bottom_nav_icon_color_selector"
         android:background="@android:color/transparent"
         app:menu="@menu/bottom_nav_menu"
         android:id="@+id/navigationView"
@@ -30,4 +31,5 @@
         app:defaultNavHost="true"
         android:layout_width="0dp"
         android:layout_height="0dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

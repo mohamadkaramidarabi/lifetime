@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        app:labelVisibilityMode="unlabeled"
         android:id="@+id/navigationHome"
         android:icon="@drawable/ic_person_gray_24dp"
-        android:title="Home"
+        android:title=""
+
+
         />
     <item
+        app:labelVisibilityMode="unlabeled"
         android:id="@+id/navigationMessage"
         android:icon="@drawable/ic_message_gray_24dp"
-        android:title="Message"
+        android:title=""
         />
     <item
+        app:labelVisibilityMode="unlabeled"
         android:id="@+id/navigationAbout"
         android:icon="@drawable/ic_info_gray_24dp"
-        android:title="about"
+        android:title=""
         />
 
 </menu>

@@ -3,12 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/nav_home">
+    app:startDestination="@id/navigationHome">
 
 
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@+id/navigationHome"
         android:name="com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiralFragment"
         tools:layout="@layout/fragment_life_spiral"
-        android:label="LifeSpiralFragment" />
+        android:label="LifeSpiralFragment" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigationMessage"
+        android:name="com.example.lifetime.ui.message.MessageFragment"
+        tools:layout="@layout/fragment_message"
+        android:label="Message"/>
+
+    <fragment
+        android:id="@+id/navigationAbout"
+        android:name="com.example.lifetime.ui.about.AboutFragment"
+        tools:layout="@layout/fragment_about"
+        android:label="AboutFragment"
+        />
 </navigation>

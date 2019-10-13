@@ -1,6 +1,7 @@
 package com.example.lifetime.ui.main.life_spiral_fragment.view
 
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,7 +27,8 @@ class LifeSpiralFragment : BaseFragment() {
     ): View? = inflater.inflate(R.layout.fragment_life_spiral, container, false)
 
     override fun setUp() {
-        showLoading()
+        view?.setBackgroundColor(Color.TRANSPARENT)
+//        showLoading()
         this.lifeSpiral = view?.findViewById(R.id.lifeSpiral)
         compositeDisposable.add(
             lifeSpiral!!.finishDraw.compose(
@@ -38,7 +40,7 @@ class LifeSpiralFragment : BaseFragment() {
             }
             .subscribe()
         )
-        lifeSpiral?.reDraw(Person("fake name", 80f, PersianCalendar().time.time)) ?: Unit
+//        lifeSpiral?.reDraw(Person("fake name", 80f, PersianCalendar().time.time)) ?: Unit
 
     }
 
