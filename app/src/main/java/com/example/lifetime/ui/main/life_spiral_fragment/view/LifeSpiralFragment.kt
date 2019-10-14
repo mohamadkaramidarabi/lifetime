@@ -48,5 +48,10 @@ class LifeSpiralFragment : BaseFragment() {
         lifeSpiral?.reDraw(person)
     }
 
+    override fun onResume() {
+        super.onResume()
+
+    }
+
 
 }
