@@ -33,7 +33,7 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
         paint = Paint(Paint.ANTI_ALIAS_FLAG)
         person = Person("fake name", 80f, PersianCalendar(1000000000000).time.time)
         setZOrderOnTop(true)
-        holder.setFormat(PixelFormat.TRANSLUCENT)
+        holder.setFormat(PixelFormat.TRANSPARENT)
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -41,15 +41,6 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
         drawSpiral()
     }
 
-//    override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
-//        drawSpiral()
-//    }
-//
-//    override fun surfaceDestroyed(holder: SurfaceHolder?) {
-//    }
-//
-//    override fun surfaceCreated(holder: SurfaceHolder?) {
-//    }
 
     override fun onDetachedFromWindow() {
         compositeDisposable.clear()
@@ -78,7 +69,7 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
         pointList.add(Point(p.x, p.y))
 
         val lifeExceptionYears = person.LifeExpectancyYears
-        val dotRadius = sqrt(0.3 * (if(w>h) w.toDouble().pow(2.0) else h.toDouble()) / (lifeExceptionYears * 52 * 4)).toInt()
+        val dotRadius = sqrt(0.3 *  w.toDouble().pow(2.0)  / (lifeExceptionYears * 52 * 4)).toInt()
 
         val lastCirclePoint = Point(w / 2, h / 2)
         val maxAngle = getMaxAngle(lifeExceptionYears.toInt(), dotRadius)
@@ -100,37 +91,42 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
             ) {
                 lastCirclePoint.x = p.x
                 lastCirclePoint.y = p.y
-                pointList.add(Point(p.x, p.y))
-                count++
-                if (count >= (lifeExceptionYears * 365).toDouble() / 7) {
-                    val observable= Observable.just(pointList)
-                        .subscribeOn(Schedulers.io())
-                        .doOnSubscribe {
-                            compositeDisposable.add(it)
-                        }
-                        .doOnNext {
-                            val canvas = holder.lockCanvas(null)
-                            for ((i, point) in it.withIndex()) {
-                                if (i > CommonUtil.calculateAge(PersianCalendar(person.birthDate)) / 7) {
-                                    paint.color = Color.GRAY
-                                    paint.strokeWidth = dotRadius / 2f
-                                }
-                                drawCircle(
-                                    point.x.toFloat(),
-                                    point.y.toFloat(),
-                                    dotRadius.toFloat(),
-                                    paint,
-                                    canvas
-                                )
 
-                            }
-                            holder.unlockCanvasAndPost(canvas)
-                        }
-                        .subscribe()
-                    isDrawed=true
-                    break
+                count++
+                if (count <= (lifeExceptionYears * 365).toDouble() / 7) {
+                    pointList.add(Point(p.x, p.y))
                 }
             }
+            if (angle == range.last) {
+
+                isDrawed = true
+                val observable= Observable.just(pointList)
+                    .subscribeOn(Schedulers.io())
+                    .doOnSubscribe {
+                        compositeDisposable.add(it)
+                    }
+                    .doOnNext {
+                        Log.d("LAST","${Thread.currentThread().name}")
+                        val canvas = holder.lockCanvas(null)
+                        for ((i, point) in it.withIndex()) {
+                            if (i > CommonUtil.calculateAge(PersianCalendar(person.birthDate)) / 7) {
+                                paint.color = Color.GRAY
+                                paint.strokeWidth = dotRadius / 2f
+                            }
+                            drawCircle(
+                                point.x.toFloat(),
+                                point.y.toFloat(),
+                                dotRadius.toFloat(),
+                                paint,
+                                canvas
+                            )
+
+                        }
+                        holder.unlockCanvasAndPost(canvas)
+                    }
+                    .subscribe()
+            }
+
         }
     }
 

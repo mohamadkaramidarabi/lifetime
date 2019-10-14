@@ -1,7 +1,10 @@
 package com.example.lifetime.ui.main.main_activity
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
+import android.widget.ImageView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -11,8 +14,11 @@ import com.example.lifetime.R
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.base.view.BaseActivity
 import com.example.lifetime.ui.addperson.AddPersonDialog
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_life_spiral.*
+import org.jetbrains.anko.longToast
+import org.jetbrains.anko.toast
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
@@ -27,6 +33,8 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
     private lateinit var dialog: AddPersonDialog
 
     private var persons: MutableList<Person>? = null
+
+    private var touchedByHand = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,8 +64,21 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
                 R.id.navigationHome, R.id.navigationMessage, R.id.navigationAbout
             )
         )
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            if (destination.id == R.id.navigationHome) {
+                if (touchedByHand) {
+                    toast("click")
+                }
+                touchedByHand = true
+            }
+        }
         setupActionBarWithNavController(navController, appBarConfiguration)
         navigationView.setupWithNavController(navController)
+        navigationView.findViewById<BottomNavigationItemView>(R.id.navigationHome).setOnClickListener {
+            toast("clicked")
+            navController.navigate(R.id.navigationHome)
+        }
+
     }
 
 
@@ -104,6 +125,15 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
     override fun onDestroy() {
         presenter.onDetach()
         super.onDestroy()
+    }
+
+    override fun onContextItemSelected(item: MenuItem?): Boolean {
+        toast("clicked")
+        if (item?.itemId == R.id.navigationHome) {
+            longToast("home")
+        }
+        return super.onContextItemSelected(item)
+
     }
 }
 interface MyDialogDismiss {
