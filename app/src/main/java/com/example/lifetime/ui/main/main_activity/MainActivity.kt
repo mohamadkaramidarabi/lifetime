@@ -1,10 +1,7 @@
 package com.example.lifetime.ui.main.main_activity
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
-import android.widget.ImageView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -15,8 +12,10 @@ import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.base.view.BaseActivity
 import com.example.lifetime.ui.addperson.AddPersonDialog
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
-import kotlinx.android.synthetic.main.activity_main.*
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.fragment_life_spiral.*
+import kotlinx.android.synthetic.main.person_bottom_sheet.*
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.toast
 import javax.inject.Inject
@@ -36,7 +35,10 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
 
     private var touchedByHand = false
 
+
+    //    private var bottomSheetBehavior = BottomSheetBehavior.from()
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         presenter.onAttach(this)
@@ -64,20 +66,21 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
                 R.id.navigationHome, R.id.navigationMessage, R.id.navigationAbout
             )
         )
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            if (destination.id == R.id.navigationHome) {
-                if (touchedByHand) {
-                    toast("click")
-                }
-                touchedByHand = true
-            }
-        }
         setupActionBarWithNavController(navController, appBarConfiguration)
         navigationView.setupWithNavController(navController)
-        navigationView.findViewById<BottomNavigationItemView>(R.id.navigationHome).setOnClickListener {
-            toast("clicked")
-            navController.navigate(R.id.navigationHome)
-        }
+
+        val sheetBehavior = BottomSheetBehavior.from(bottomSheet)
+        navigationView.findViewById<BottomNavigationItemView>(R.id.navigationHome)
+            .setOnClickListener {
+                toast("clicked")
+                if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+                    sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                } else {
+                    sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED)
+                }
+                navController.navigate(R.id.navigationHome)
+            }
+
 
     }
 
