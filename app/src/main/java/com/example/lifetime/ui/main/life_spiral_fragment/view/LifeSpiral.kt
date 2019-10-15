@@ -4,19 +4,18 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
-import android.view.SurfaceHolder
 import android.view.SurfaceView
-import android.view.View
-import com.example.lifetime.R
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.util.CommonUtil
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
 import kotlin.math.*
+import android.view.ViewGroup
+
+
 
 class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : SurfaceView(context,attributeSet){
 
@@ -35,6 +34,8 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
         setZOrderOnTop(true)
         holder.setFormat(PixelFormat.TRANSPARENT)
     }
+
+
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)

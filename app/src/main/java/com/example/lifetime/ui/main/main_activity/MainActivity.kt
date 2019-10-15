@@ -1,8 +1,12 @@
 package com.example.lifetime.ui.main.main_activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
+import android.view.View
+import androidx.appcompat.widget.Toolbar
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -11,6 +15,7 @@ import com.example.lifetime.R
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.base.view.BaseActivity
 import com.example.lifetime.ui.addperson.AddPersonDialog
+import com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiralFragment
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.content_main.*
@@ -36,7 +41,6 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
     private var touchedByHand = false
 
 
-    //    private var bottomSheetBehavior = BottomSheetBehavior.from()
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -72,13 +76,15 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
         val sheetBehavior = BottomSheetBehavior.from(bottomSheet)
         navigationView.findViewById<BottomNavigationItemView>(R.id.navigationHome)
             .setOnClickListener {
-                toast("clicked")
                 if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+                    navigationHostFragment.view?.visibility=View.GONE
                     sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+
                 } else {
+                    navigationHostFragment.view?.visibility = View.VISIBLE
                     sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED)
                 }
-                navController.navigate(R.id.navigationHome)
+//                navController.navigate(R.id.navigationHome)
             }
 
 
@@ -138,7 +144,9 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
         return super.onContextItemSelected(item)
 
     }
+
+    interface MyDialogDismiss {
+        fun getPerson(person: Person)
+    }
 }
-interface MyDialogDismiss {
-    fun getPerson(person: Person)
-}
+

@@ -16,13 +16,13 @@ import javax.inject.Inject
 import android.widget.Toast
 import androidx.core.view.isVisible
 import com.example.lifetime.data.database.repository.life_expectancies.LifeExpectancy
-import com.example.lifetime.ui.main.main_activity.MyDialogDismiss
+import com.example.lifetime.ui.main.main_activity.MainActivity
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
 import ir.hamsaa.persiandatepicker.Listener
 
 
-class AddPersonDialog(private val myDialogDismiss: MyDialogDismiss) : BaseDialogView(),
+class AddPersonDialog(private val myDialogDismiss: MainActivity.MyDialogDismiss) : BaseDialogView(),
     AddPersonInteractor.AddPersonMVPDialog {
 
     private lateinit var birthDate: PersianCalendar
