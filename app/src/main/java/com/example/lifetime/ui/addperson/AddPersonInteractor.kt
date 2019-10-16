@@ -9,11 +9,11 @@ import ir.hamsaa.persiandatepicker.util.PersianCalendar
 object AddPersonInteractor {
 
     interface AddPersonMVPPresenter<V : AddPersonMVPDialog>: MVPPresenter<V> {
-        fun onSubmitButtonClicked(person: Person)
+        fun onSubmitButtonClicked(person: Person): Boolean
         fun onDatePickerClicked()
         fun onDateSelected(persianCalendar: PersianCalendar)
-        fun addPersonToDB(person: Person)
-        fun loadAllCountries(): List<LifeExpectancy>
+        fun addPersonToDB(person: Person) :Boolean
+        fun loadAllCountries(): Boolean
     }
 
     interface AddPersonMVPDialog : MVPView {

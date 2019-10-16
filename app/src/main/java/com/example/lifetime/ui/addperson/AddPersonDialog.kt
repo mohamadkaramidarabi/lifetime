@@ -49,7 +49,6 @@ class AddPersonDialog(private val myDialogDismiss: MainActivity.MyDialogDismiss)
                     lifeExpectancies.filter {
                         it.country == spinner.selectedItem.toString()
                     }.map {
-                        Log.d("TAG",lifeExpectancies.toString())
                         person = Person(
                             nameEdt.text.toString(),
                             it.lifeExpectancy,

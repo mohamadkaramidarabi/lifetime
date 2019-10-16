@@ -5,11 +5,11 @@ import com.example.lifetime.data.database.repository.person.Person
 import io.reactivex.Observable
 
 interface DbHelper {
-    fun insertPerson(person: Person)
-    fun loadPersons(): List<Person>
+    fun insertPerson(person: Person): Observable<Unit>
+    fun loadPersons(): Observable<List<Person>>
 
-    fun isLifeExpectancyRepoEmpty(): Boolean
-    fun saveLifeExpectancyList(lifeExpectancies: List<LifeExpectancy>)
-    fun getLifeExpectancyList(): List<LifeExpectancy>
+    fun isLifeExpectancyRepoEmpty(): Observable<Boolean>
+    fun saveLifeExpectancyList(lifeExpectancies: List<LifeExpectancy>): Observable<Boolean>
+    fun getLifeExpectancyList(): Observable<List<LifeExpectancy>>
 
 }

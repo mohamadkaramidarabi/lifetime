@@ -7,11 +7,7 @@ import com.example.lifetime.data.database.AppDatabase
 import com.example.lifetime.data.database.AppDbHelper
 import com.example.lifetime.data.database.DbHelper
 import com.example.lifetime.data.database.repository.life_expectancies.LifeExpectanciesDao
-import com.example.lifetime.data.database.repository.life_expectancies.LifeExpectancyRepo
-import com.example.lifetime.data.database.repository.life_expectancies.LifeExpectancyRepository
 import com.example.lifetime.data.database.repository.person.PersonDao
-import com.example.lifetime.data.database.repository.person.PersonRepo
-import com.example.lifetime.data.database.repository.person.PersonRepository
 import com.example.lifetime.di.PreferenceInfo
 import com.example.lifetime.util.SchedulerProvider
 import dagger.Module
@@ -33,15 +29,7 @@ class AppModule {
     internal fun provideAppDatabase(context: Context): AppDatabase =
         Room.databaseBuilder(context, AppDatabase::class.java, "App Database").build()
 
-    @Provides
-    @Singleton
-    internal fun providePersonRepoHelper(personRepository: PersonRepository): PersonRepo =
-        personRepository
 
-    @Provides
-    @Singleton
-    internal fun provideLifeExpectacyRepoHelper(lifeExpectancyRepository: LifeExpectancyRepository): LifeExpectancyRepo =
-        lifeExpectancyRepository
 
     @Provides
     @Singleton

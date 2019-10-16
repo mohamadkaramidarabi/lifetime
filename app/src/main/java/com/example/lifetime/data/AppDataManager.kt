@@ -14,16 +14,16 @@ class AppDataManager @Inject constructor(private val dbHelper: DbHelper,
     override fun insertPerson(person: Person) =
         dbHelper.insertPerson(person)
 
-    override fun loadPersons(): List<Person> =
+    override fun loadPersons() =
         dbHelper.loadPersons()
 
-    override fun isLifeExpectancyRepoEmpty(): Boolean =
+    override fun isLifeExpectancyRepoEmpty() =
         dbHelper.isLifeExpectancyRepoEmpty()
 
     override fun saveLifeExpectancyList(lifeExpectancies: List<LifeExpectancy>)  =
         dbHelper.saveLifeExpectancyList(lifeExpectancies)
 
-    override fun getLifeExpectancyList(): List<LifeExpectancy>  =
+    override fun getLifeExpectancyList()  =
         dbHelper.getLifeExpectancyList()
 
     override fun getCurrentUserLoggedInMode(): Int =

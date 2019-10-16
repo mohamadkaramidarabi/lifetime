@@ -13,6 +13,6 @@ object MainInteractor {
 
     interface MainMVPPresenter<V : MainMVPView> : MVPPresenter<V> {
         fun onButtonClicked()
-        fun getPersons(): List<Person>
+        fun getPersons(): Boolean
     }
 }

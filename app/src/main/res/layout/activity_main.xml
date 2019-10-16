@@ -7,6 +7,6 @@
 
 
     <include layout="@layout/content_main" />
-    <include layout="@layout/person_bottom_sheet"/>
+    <include layout="@layout/bottom_sheet_person"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

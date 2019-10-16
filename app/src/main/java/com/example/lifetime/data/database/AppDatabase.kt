@@ -10,7 +10,10 @@ import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.data.database.repository.person.PersonDao
 import com.example.lifetime.util.DB_NAME
 
-@Database(entities = [Person::class, LifeExpectancy::class], version = 1, exportSchema = false)
+@Database(entities = [
+    Person::class,
+    LifeExpectancy::class
+], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun personDao(): PersonDao
@@ -18,7 +21,6 @@ abstract class AppDatabase : RoomDatabase() {
 
 
     companion object {
-
         private  var INSTANCE: AppDatabase? = null
 
         fun getInstance(context: Context): AppDatabase {
