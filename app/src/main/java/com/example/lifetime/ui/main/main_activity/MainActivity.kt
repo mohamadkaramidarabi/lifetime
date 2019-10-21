@@ -2,7 +2,6 @@ package com.example.lifetime.ui.main.main_activity
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -15,15 +14,11 @@ import com.example.lifetime.ui.base.view.BaseActivity
 import com.example.lifetime.ui.addperson.AddPersonDialog
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
-import ir.hamsaa.persiandatepicker.util.PersianCalendar
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.fragment_life_spiral.*
 import kotlinx.android.synthetic.main.bottom_sheet_person.*
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.toast
-import org.reactivestreams.Publisher
 import javax.inject.Inject
 val publishPerson : PublishSubject<Person> = PublishSubject.create()
 
@@ -39,9 +34,6 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
     private lateinit var dialog: AddPersonDialog
 
     private var persons: MutableList<Person>? = null
-
-    private var touchedByHand = false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -77,6 +69,7 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
         navigationView.setupWithNavController(navController)
 
         val sheetBehavior = BottomSheetBehavior.from(bottomSheet)
+
         navigationView.findViewById<BottomNavigationItemView>(R.id.navigationHome)
             .setOnClickListener {
                 if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {

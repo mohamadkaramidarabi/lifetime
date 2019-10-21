@@ -8,8 +8,8 @@ import com.example.lifetime.data.database.AppDbHelper
 import com.example.lifetime.data.database.DbHelper
 import com.example.lifetime.data.database.repository.life_expectancies.LifeExpectanciesDao
 import com.example.lifetime.data.database.repository.person.PersonDao
-import com.example.lifetime.di.PreferenceInfo
 import com.example.lifetime.util.SchedulerProvider
+import com.example.lifetime.di.PreferenceInfo
 import dagger.Module
 import dagger.Provides
 import info.vazeh.android.data.preferences.AppPreferenceHelper
