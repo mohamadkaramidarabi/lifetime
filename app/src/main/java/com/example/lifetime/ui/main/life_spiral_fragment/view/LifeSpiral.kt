@@ -59,7 +59,7 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : Surface
         if(isDrawed) return
         isDrawed = true
         doAsync {
-            Thread.sleep(1000)
+            Thread.sleep(100)
             paint.color = Color.WHITE
             paint.style = Paint.Style.FILL
             path.moveTo(w / 2f, h / 2f)

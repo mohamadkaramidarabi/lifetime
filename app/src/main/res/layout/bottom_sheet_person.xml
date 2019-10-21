@@ -1,45 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:elevation="20dp"
     android:layout_width="match_parent"
+    android:paddingTop="20dp"
     android:layout_height="200dp"
     android:id="@+id/bottomSheet"
     android:background="@drawable/bottom_sheet_background"
     app:behavior_hideable="false"
     app:behavior_peekHeight="0dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
     <LinearLayout
-        android:layout_gravity="right"
-        android:id="@+id/addPerson"
-        android:padding="10dp"
-        android:orientation="horizontal"
-        android:layoutDirection="rtl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:textColor="@color/colorAccent"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"
-            android:text=" + "
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        <TextView
-            android:textColor="@color/colorAccent"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
+
+        <LinearLayout
+            android:layout_gravity="right"
+            android:id="@+id/addPerson"
+            android:padding="10dp"
+            android:orientation="horizontal"
+            android:layoutDirection="rtl"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="اضافه کردن فرد جدید"/>
+            android:layout_height="wrap_content">
+            <TextView
+                android:textColor="@color/colorAccent"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"
+                android:text=" + "
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:textColor="@color/colorAccent"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="اضافه کردن فرد جدید"/>
+        </LinearLayout>
     </LinearLayout>
 
 
-</LinearLayout>
+
+</ScrollView>
