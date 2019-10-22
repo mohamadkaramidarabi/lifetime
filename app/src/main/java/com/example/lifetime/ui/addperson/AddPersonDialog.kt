@@ -22,7 +22,10 @@ import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
 import ir.hamsaa.persiandatepicker.Listener
 
 
-class AddPersonDialog(private val myDialogDismiss: MainActivity.MyDialogDismiss) : BaseDialogView(),
+class AddPersonDialog(
+    private val myDialogDismiss: MainActivity.MyDialogDismiss,
+    private val person: Person? = null
+) : BaseDialogView(),
     AddPersonInteractor.AddPersonMVPDialog {
 
     private lateinit var birthDate: PersianCalendar
@@ -42,6 +45,11 @@ class AddPersonDialog(private val myDialogDismiss: MainActivity.MyDialogDismiss)
         presenter.onAttach(this)
         presenter.loadAllCountries()
         submitButton.setOnClickListener {
+
+            if (nameEdt.text.trim().isEmpty()) {
+                Toast.makeText(this.context,"Please enter person name",Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
 
             if (isDateSated) {
                 var person: Person? = null
@@ -97,6 +105,20 @@ class AddPersonDialog(private val myDialogDismiss: MainActivity.MyDialogDismiss)
             it.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             it.attributes = params as android.view.WindowManager.LayoutParams
         }
+        if (person == null) {
+            nameEdt.setText("")
+            isDateSated = false
+        }else{
+            nameEdt.setText(person.name)
+            isDateSated = true
+            val persianCalendar = PersianCalendar(person.birthDate)
+            birthDatePicker.text = persianCalendar.persianShortDate
+            if (person.country == null) {
+                countrySelectView.visibility = View.GONE
+                enterYearView.visibility = View.VISIBLE
+                years.setText(person.LifeExpectancyYears.toString())
+            }
+        }
     }
 
     override fun openDataPickerView() {
@@ -125,7 +147,7 @@ class AddPersonDialog(private val myDialogDismiss: MainActivity.MyDialogDismiss)
 
     override fun onDateSelected(persianCalendar: PersianCalendar) {
         birthDatePicker.text =
-            persianCalendar.persianShortDateTime
+            persianCalendar.persianShortDate
         this.birthDate = persianCalendar
     }
 
@@ -145,6 +167,19 @@ class AddPersonDialog(private val myDialogDismiss: MainActivity.MyDialogDismiss)
             )
             spinner.adapter = adapter
         }
+        var country: String? = null
+        country = if (person?.country != null) {
+            person.country
+        } else {
+            "Iran"
+        }
+        lifeExpectancies.mapIndexed { index, lifeExpectancy ->
+            if(lifeExpectancy.country == country){}
+                spinner.setSelection(index)
+            index
+        }
+
+
     }
 
     override fun onDestroy() {

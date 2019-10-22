@@ -1,5 +1,6 @@
 package com.example.lifetime.ui.main.main_activity
 
+import android.util.Log
 import com.example.lifetime.data.AppDataManager
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.base.presenter.BasePresenter
@@ -19,6 +20,7 @@ class MainPresenter<V : MainInteractor.MainMVPView> @Inject internal constructor
         compositeDisposable.add(dataManager.loadPersons()
             .compose(schedulerProvider.ioToMainObservableScheduler())
             .subscribe {
+                Log.d("persons", it.toString())
                 getView()?.loadPersons(it.toMutableList())
             })
 

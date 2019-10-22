@@ -55,6 +55,7 @@ dependencies {
 
     //persian date picker
     implementation 'com.github.aliab:Persian-Date-Picker-Dialog:1.4'
+    implementation 'com.mohamadamin:persianmaterialdatetimepicker:1.2.1'
 
     // database
     implementation "android.arch.persistence.room:rxjava2:1.1.1"
