@@ -1,6 +1,7 @@
 package com.example.lifetime.ui.main.life_spiral_fragment.view
 
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Path
 import android.graphics.Point
@@ -38,7 +39,7 @@ class LifeSpiralFragment : BaseFragment() {
     ): View? = inflater.inflate(R.layout.fragment_life_spiral, container, false)
 
     override fun setUp() {
-        lifeSpiral.visibility = View.GONE
+        lifeSpiral.visibility = View.INVISIBLE
         view?.setBackgroundColor(Color.TRANSPARENT)
 //        showLoading()
 //        this.lifeSpiral = view?.findViewById(R.id.lifeSpiral)
@@ -58,12 +59,15 @@ class LifeSpiralFragment : BaseFragment() {
 
     }
 
+
     override fun onResume() {
         super.onResume()
         calculateSpiralPointList()
     }
 
+
     private fun calculateSpiralPointList(){
+        showLoading()
         doAsync {
             Thread.sleep(1000)
             val path = Path()
@@ -72,8 +76,6 @@ class LifeSpiralFragment : BaseFragment() {
             val h = lifeSpiral.height
             p.x = w / 2
             p.y = h / 2
-            Log.d("doAsync", w.toString())
-            Log.d("doAsync", h.toString())
             val pointList: MutableList<Point> = mutableListOf()
             pointList.add(Point(p.x, p.y))
 
@@ -86,7 +88,6 @@ class LifeSpiralFragment : BaseFragment() {
             val range = 1..maxAngle * 10
             var count = 0
             for (angle in range) {
-                Log.d("doAsync", angle.toString())
                 val a = angle.toDouble() / 10.0
                 val r = (a / (maxAngle)) * (w / 2.0 * 0.95)
                 val newX = w / 2f + r * cos(PI * a / 180)
@@ -110,6 +111,7 @@ class LifeSpiralFragment : BaseFragment() {
                 }
             }
             uiThread {
+                hideLoading()
                 lifeSpiral.setParameters(pointList,dotRadius)
                 lifeSpiral.visibility = View.VISIBLE
             }

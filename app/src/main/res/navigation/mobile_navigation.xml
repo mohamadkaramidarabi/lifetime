@@ -25,4 +25,6 @@
         tools:layout="@layout/fragment_about"
         android:label="AboutFragment"
         />
+    <fragment android:id="@+id/navigationAddPerson"
+        android:name="com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiralFragment"/>
 </navigation>

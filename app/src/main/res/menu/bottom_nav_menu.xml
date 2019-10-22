@@ -4,11 +4,16 @@
 
     <item
         app:labelVisibilityMode="unlabeled"
+        android:id="@+id/navigationAddPerson"
+        android:icon="@drawable/ic_person_add_black_24dp"
+        android:title=""
+        />
+
+    <item
+        app:labelVisibilityMode="unlabeled"
         android:id="@+id/navigationHome"
         android:icon="@drawable/ic_person_gray_24dp"
         android:title=""
-
-
         />
     <item
         app:labelVisibilityMode="unlabeled"

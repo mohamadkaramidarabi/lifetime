@@ -18,10 +18,9 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : View(co
     private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     val person: Person = Person("fake name", 80f, PersianCalendar(1000000000000).time.time)
 
-//    init {
-//        setZOrderOnTop(true)
-//        holder.setFormat(PixelFormat.TRANSPARENT)
-//    }
+    init {
+        paint.color = Color.WHITE
+    }
 
 
 

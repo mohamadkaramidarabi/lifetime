@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_person.*
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.toast
 import javax.inject.Inject
+
 val publishPerson : PublishSubject<Person> = PublishSubject.create()
 
 class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
@@ -53,6 +54,8 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
             }
         })
 
+
+
         addPerson.setOnClickListener {
             presenter.onButtonClicked()
         }
@@ -66,11 +69,11 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-        navigationView.setupWithNavController(navController)
+        bottomNavigationView.setupWithNavController(navController)
 
         val sheetBehavior = BottomSheetBehavior.from(bottomSheet)
 
-        navigationView.findViewById<BottomNavigationItemView>(R.id.navigationHome)
+        bottomNavigationView.findViewById<BottomNavigationItemView>(R.id.navigationAddPerson)
             .setOnClickListener {
                 if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
                     sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -78,8 +81,11 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
                 } else {
                     sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED)
                 }
-                navController.navigate(R.id.navigationHome)
             }
+        hideBottomSheet.setOnClickListener {
+            sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
+        }
 
 
     }
