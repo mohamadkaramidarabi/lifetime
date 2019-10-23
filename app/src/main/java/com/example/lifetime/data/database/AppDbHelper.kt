@@ -1,6 +1,7 @@
 package com.example.lifetime.data.database
 
 import android.content.Context
+import android.util.Log
 import com.example.lifetime.data.database.repository.life_expectancies.LifeExpectancy
 import com.example.lifetime.data.database.repository.person.Person
 import io.reactivex.Observable
@@ -19,6 +20,11 @@ constructor(context: Context): DbHelper {
 
     override fun insertPerson(person: Person): Observable<Unit> =
         Observable.fromCallable { database.personDao().insertPerson(person) }
+
+    override fun updatePerson(person: Person): Observable<Int> =
+        Observable.fromCallable {
+            database.personDao().updatePerson(person)
+        }
 
 
     override fun loadPersons()= Observable.fromCallable { database.personDao().loadAll() }

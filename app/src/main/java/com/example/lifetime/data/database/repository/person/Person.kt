@@ -22,10 +22,12 @@ data class Person(
     var birthDate: Long,
 
     @ColumnInfo(name = "country")
-    var country: String? = null,
+    var country: String? = null
 
+
+){
     @Expose
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var id: Int = 0
-)
+}

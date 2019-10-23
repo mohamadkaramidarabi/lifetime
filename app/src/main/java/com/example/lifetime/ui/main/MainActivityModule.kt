@@ -9,6 +9,7 @@ import dagger.Provides
 class MainActivityModule {
 
     @Provides
+    @MainScop
     internal fun providePresenter(presenter: MainPresenter<MainInteractor.MainMVPView>)
             : MainInteractor.MainMVPPresenter<MainInteractor.MainMVPView> = presenter
 

@@ -1,9 +1,6 @@
 package com.example.lifetime.data.database.repository.person
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import io.reactivex.Observable
 
 @Dao
@@ -14,4 +11,7 @@ interface PersonDao {
 
     @Query("SELECT * FROM persons")
     fun loadAll(): List<Person>
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun updatePerson(vararg persons: Person): Int
 }

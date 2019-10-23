@@ -7,7 +7,7 @@ import com.example.lifetime.ui.base.view.MVPView
 object MainInteractor {
 
     interface MainMVPView : MVPView {
-        fun openUserDialog()
+        fun openUserDialog(person: Person?=null)
         fun loadPersons(persons: MutableList<Person>)
     }
 

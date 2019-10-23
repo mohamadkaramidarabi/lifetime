@@ -2,6 +2,7 @@ package com.example.lifetime.ui.main.main_activity
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -32,8 +33,6 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
     @Inject
     lateinit var adapter: PersonAdapter
 
-    private lateinit var dialog: AddPersonDialog
-
     private var persons: MutableList<Person>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,16 +42,8 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
         presenter.onAttach(this)
         presenter.getPersons()
 
+            .
 
-        dialog = AddPersonDialog(object :
-            MyDialogDismiss {
-            override fun getPerson(person: Person) {
-                persons?.add(person)
-                adapter.notifyDataSetChanged()
-//                lifeSpiral.reDraw(person)
-                publishPerson.onNext(person)
-            }
-        })
 
 
 
@@ -119,7 +110,28 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
         }
     }
 
-    override fun openUserDialog() {
+    override fun openUserDialog(person: Person?) {
+        val dialog = AddPersonDialog(object :
+            MyDialogDismiss {
+                override fun getPerson(person: Person, isForUpdate: Boolean) {
+                    if (!isForUpdate) {
+                        persons?.add(person)
+                    }
+                    else {
+                        var index = 0
+                        for (p in persons!!) {
+                            if (p == person) {
+                                break
+                            }
+                            index++
+                        }
+                        persons!![index] = person
+                    }
+                adapter.notifyDataSetChanged()
+                publishPerson.onNext(person)
+            }
+        },person)
+
         dialog.show(supportFragmentManager, null)
     }
 
@@ -140,7 +152,8 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
     }
 
     interface MyDialogDismiss {
-        fun getPerson(person: Person)
+        fun getPerson(person: Person, isForUpdate: Boolean)
     }
+
 }
 

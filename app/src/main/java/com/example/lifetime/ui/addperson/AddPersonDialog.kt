@@ -3,7 +3,6 @@ package com.example.lifetime.ui.addperson
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +23,7 @@ import ir.hamsaa.persiandatepicker.Listener
 
 class AddPersonDialog(
     private val myDialogDismiss: MainActivity.MyDialogDismiss,
-    private val person: Person? = null
+    private var person: Person? = null
 ) : BaseDialogView(),
     AddPersonInteractor.AddPersonMVPDialog {
 
@@ -40,6 +39,8 @@ class AddPersonDialog(
         return inflater.inflate(R.layout.dialog_add_person, container, false)
     }
 
+    override fun isForUpdate(): Boolean = person != null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter.onAttach(this)
@@ -52,30 +53,47 @@ class AddPersonDialog(
             }
 
             if (isDateSated) {
-                var person: Person? = null
                 if (countrySelectView.isVisible) {
                     lifeExpectancies.filter {
                         it.country == spinner.selectedItem.toString()
                     }.map {
-                        person = Person(
-                            nameEdt.text.toString(),
-                            it.lifeExpectancy,
-                            birthDate.time.time,
-                            it.country
-                        )
+                        if (isForUpdate()) {
+                            person.let { person ->
+                                person?.name = nameEdt.text.toString()
+                                person?.LifeExpectancyYears = it.lifeExpectancy
+                                person?.birthDate = birthDate.time.time
+                                person?.country = it.country
+                            }
+                        } else {
+                            person = Person(
+                                nameEdt.text.toString(),
+                                it.lifeExpectancy,
+                                birthDate.time.time,
+                                it.country
+                            )
+                        }
 
                     }
                 } else {
-                    person = Person(
-                        nameEdt.text.toString(),
-                        years.text.toString().toFloat(),
-                        birthDate.time.time,
-                        null
-                    )
+                    if (isForUpdate()) {
+                        person.let { person ->
+                            person?.name = nameEdt.text.toString()
+                            person?.LifeExpectancyYears = years.text.toString().toFloat()
+                            person?.birthDate = birthDate.time.time
+                            person?.country = null
+                        }
+                    } else {
+                        person = Person(
+                            nameEdt.text.toString(),
+                            years.text.toString().toFloat(),
+                            birthDate.time.time,
+                            null
+                        )
+                    }
                 }
 
                 presenter.onSubmitButtonClicked(person!!)
-                myDialogDismiss.getPerson(person!!)
+                myDialogDismiss.getPerson(person!!,isForUpdate())
                 dismissDialog()
             } else {
                 Toast.makeText(this.context,"Please set birth Date",Toast.LENGTH_LONG).show()
@@ -109,20 +127,21 @@ class AddPersonDialog(
             nameEdt.setText("")
             isDateSated = false
         }else{
-            nameEdt.setText(person.name)
+            nameEdt.setText(person?.name)
             isDateSated = true
-            val persianCalendar = PersianCalendar(person.birthDate)
-            birthDatePicker.text = persianCalendar.persianShortDate
-            if (person.country == null) {
+            birthDate = PersianCalendar(person?.birthDate!!)
+            birthDatePicker.text = birthDate.persianShortDate
+            submitButton.text = "اصلاح"
+            if (person?.country == null) {
                 countrySelectView.visibility = View.GONE
                 enterYearView.visibility = View.VISIBLE
-                years.setText(person.LifeExpectancyYears.toString())
+                lifeExOptions.check(R.id.manualOption)
+                years.setText(person?.LifeExpectancyYears.toString())
             }
         }
     }
 
     override fun openDataPickerView() {
-        Toast.makeText(this.context,"Clicked",Toast.LENGTH_LONG).show()
         val picker = PersianDatePickerDialog(this.context)
             .setPositiveButtonString("باشه")
             .setNegativeButton("بیخیال")
@@ -169,17 +188,15 @@ class AddPersonDialog(
         }
         var country: String? = null
         country = if (person?.country != null) {
-            person.country
+            person?.country
         } else {
             "Iran"
         }
         lifeExpectancies.mapIndexed { index, lifeExpectancy ->
-            if(lifeExpectancy.country == country){}
+            if(lifeExpectancy.country == country)
                 spinner.setSelection(index)
             index
         }
-
-
     }
 
     override fun onDestroy() {

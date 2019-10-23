@@ -13,6 +13,7 @@ object AddPersonInteractor {
         fun onDatePickerClicked()
         fun onDateSelected(persianCalendar: PersianCalendar)
         fun addPersonToDB(person: Person) :Boolean
+        fun updatePersonInDB(person: Person): Boolean
         fun loadAllCountries(): Boolean
     }
 
@@ -21,5 +22,6 @@ object AddPersonInteractor {
         fun dismissDialog()
         fun onDateSelected(persianCalendar: PersianCalendar)
         fun getLifeExpectancies(lifeExpectancies: List<LifeExpectancy>)
+        fun isForUpdate(): Boolean
     }
 }

@@ -1,5 +1,6 @@
 package com.example.lifetime.ui.addperson
 
+import android.util.Log
 import com.example.lifetime.data.AppDataManager
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.base.presenter.BasePresenter
@@ -22,16 +23,23 @@ class AddPersonPresenter<V : AddPersonInteractor.AddPersonMVPDialog> @Inject int
             .subscribe()
         )
 
+    override fun updatePersonInDB(person: Person): Boolean =
+        compositeDisposable.add(dataManager.updatePerson(person)
+            .compose(schedulerProvider.ioToMainObservableScheduler())
+            .subscribe()
+        )
+
     override fun loadAllCountries(): Boolean =
-        compositeDisposable.add(dataManager.getLifeExpectancyList().compose(
-            schedulerProvider.ioToMainObservableScheduler()
-        ).subscribe {
-            getView()?.getLifeExpectancies(it)
-        })
+        compositeDisposable.add(dataManager.getLifeExpectancyList()
+            .compose(schedulerProvider.ioToMainObservableScheduler())
+            .subscribe {
+                getView()?.getLifeExpectancies(it)
+            })
 
 
     override fun onSubmitButtonClicked(person: Person) =
-        addPersonToDB(person)
+        if (getView()!!.isForUpdate()) updatePersonInDB(person) else addPersonToDB(person)
+
 
     override fun onDatePickerClicked() {
         getView()?.openDataPickerView()

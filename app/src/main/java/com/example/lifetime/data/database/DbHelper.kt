@@ -7,6 +7,7 @@ import io.reactivex.Observable
 interface DbHelper {
     fun insertPerson(person: Person): Observable<Unit>
     fun loadPersons(): Observable<List<Person>>
+    fun updatePerson(person: Person): Observable<Int>
 
     fun isLifeExpectancyRepoEmpty(): Observable<Boolean>
     fun saveLifeExpectancyList(lifeExpectancies: List<LifeExpectancy>): Observable<Boolean>

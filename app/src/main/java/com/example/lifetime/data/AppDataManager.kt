@@ -5,6 +5,7 @@ import com.example.lifetime.data.database.repository.life_expectancies.LifeExpec
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.util.LoggedInMode
 import info.vazeh.android.data.preferences.PreferenceHelper
+import io.reactivex.Observable
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -13,6 +14,9 @@ class AppDataManager @Inject constructor(private val dbHelper: DbHelper,
                                          private val preferenceHelper: PreferenceHelper): DataManager {
     override fun insertPerson(person: Person) =
         dbHelper.insertPerson(person)
+
+    override fun updatePerson(person: Person): Observable<Int> =
+        dbHelper.updatePerson(person)
 
     override fun loadPersons() =
         dbHelper.loadPersons()
