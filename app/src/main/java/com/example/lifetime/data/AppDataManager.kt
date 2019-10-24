@@ -21,6 +21,9 @@ class AppDataManager @Inject constructor(private val dbHelper: DbHelper,
     override fun loadPersons() =
         dbHelper.loadPersons()
 
+    override fun deletePerson(person: Person): Observable<Unit> =
+        dbHelper.deletePerson(person)
+
     override fun isLifeExpectancyRepoEmpty() =
         dbHelper.isLifeExpectancyRepoEmpty()
 

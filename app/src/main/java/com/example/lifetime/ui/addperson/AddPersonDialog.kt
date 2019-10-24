@@ -39,7 +39,9 @@ class AddPersonDialog(
         return inflater.inflate(R.layout.dialog_add_person, container, false)
     }
 
-    override fun isForUpdate(): Boolean = person != null
+    private val isForUpdate: Boolean = person != null
+
+    override fun isForUpdate(): Boolean = isForUpdate
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

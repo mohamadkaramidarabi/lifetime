@@ -34,11 +34,14 @@ class PersonAdapter @Inject constructor(val presenter: MainInteractor.MainMVPPre
         private var pair: Pair<View,Person?>? = null
 
         init {
-            delete.setOnClickListener {}
+            delete.setOnClickListener {
+                presenter.deletePerson(pair?.second!!)
+                presenter.getView()?.deletePersonFromList(pair?.second!!)
+            }
             view.setOnClickListener{
+
             }
             edit.setOnClickListener {
-                Log.d("TAG", pair?.second.toString())
                 presenter.getView()?.openUserDialog(pair?.second)
             }
         }

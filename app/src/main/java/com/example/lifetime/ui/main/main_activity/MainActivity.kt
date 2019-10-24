@@ -2,7 +2,6 @@ package com.example.lifetime.ui.main.main_activity
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -41,11 +40,6 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
         setContentView(R.layout.activity_main)
         presenter.onAttach(this)
         presenter.getPersons()
-
-            .
-
-
-
 
         addPerson.setOnClickListener {
             presenter.onButtonClicked()
@@ -98,6 +92,11 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
     }
 
     override fun onFragmentDetached(tag: String) {
+    }
+
+    override fun deletePersonFromList(person: Person) {
+        persons?.remove(person)
+        adapter.notifyDataSetChanged()
     }
 
 

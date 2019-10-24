@@ -30,6 +30,9 @@ constructor(context: Context): DbHelper {
     override fun loadPersons()= Observable.fromCallable { database.personDao().loadAll() }
 
 
+    override fun deletePerson(person: Person): Observable<Unit> =
+        Observable.fromCallable { database.personDao().deletePerson(person) }
+
     override fun isLifeExpectancyRepoEmpty(): Observable<Boolean> =
         Observable.just(database.lifeExpectanciesDao().loadAll().isEmpty())
 

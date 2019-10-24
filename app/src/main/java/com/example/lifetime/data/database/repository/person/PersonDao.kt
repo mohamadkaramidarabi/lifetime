@@ -14,4 +14,7 @@ interface PersonDao {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updatePerson(vararg persons: Person): Int
+
+    @Delete
+    fun deletePerson(vararg person: Person)
 }
