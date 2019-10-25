@@ -98,8 +98,8 @@
             android:text="کشور"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-        <EditText
-            android:hint="نام کشور یا کد تلفن"
+        <AutoCompleteTextView
+            android:hint="نام کشور"
             style="@style/EditText"
             android:id="@+id/etCountry"
             android:gravity="center"

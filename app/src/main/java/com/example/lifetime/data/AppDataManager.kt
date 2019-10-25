@@ -39,28 +39,4 @@ class AppDataManager @Inject constructor(private val dbHelper: DbHelper,
     override fun setCurrentUserLoggedInMode(mode: LoggedInMode) =
         preferenceHelper.setCurrentUserLoggedInMode(mode)
 
-    override fun getAuthorization(): String =
-        preferenceHelper.getAuthorization()
-
-    override fun setAuthorization(auth: String) =
-        preferenceHelper.setAuthorization(auth)
-
-    override fun setIsCopiedDatabase(isCopied: Boolean) =
-        preferenceHelper.setIsCopiedDatabase(isCopied)
-
-    override fun isCopiedDatabase(): Boolean  =
-        preferenceHelper.isCopiedDatabase()
-
-    override fun setTranslationMode(isTranslationMode: Boolean) =
-        preferenceHelper.setTranslationMode(isTranslationMode)
-
-    override fun isTranslationMode(): Boolean =
-        preferenceHelper.isTranslationMode()
-
-    override fun setIsSelectedLang(value: Boolean) =
-        preferenceHelper.setIsSelectedLang(value)
-
-    override fun isSelectedLang(): Boolean  =
-        preferenceHelper.isSelectedLang()
-
 }

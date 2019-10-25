@@ -5,6 +5,7 @@ import com.example.lifetime.data.AppDataManager
 import com.example.lifetime.data.database.repository.life_expectancies.LifeExpectancy
 import com.example.lifetime.ui.base.presenter.BasePresenter
 import com.example.lifetime.util.FileUtils
+import com.example.lifetime.util.LoggedInMode
 import com.example.lifetime.util.SchedulerProvider
 import com.google.gson.GsonBuilder
 import com.google.gson.internal.`$Gson$Types`
@@ -44,8 +45,19 @@ class SplashPresenter<V : SplashInteractor.SplashMVPView>
                         )
                         dataManager.saveLifeExpectancyList(lifeExpectancies)
                     }
-                        getView()?.openMainActivity()
+                        decideActivityToOpen()
 
                 }
         )
+
+    override fun decideActivityToOpen() {
+        if (isUserLoggedIn()) {
+            getView()?.openMainActivity()
+        } else {
+            getView()?.openLoginActivity()
+        }
+    }
+
+    private fun isUserLoggedIn() =
+        dataManager.getCurrentUserLoggedInMode() == LoggedInMode.LOGGED_IN_MODE_LOGGED_IN.type
 }

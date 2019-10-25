@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_horizontal_margin_small">8dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin_large">24dp</dimen>
+    <dimen name="activity_horizontal_margin_xlarge">32dp</dimen>
+    <dimen name="activity_vertical_margin_small">8dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin_large">24dp</dimen>
+    <dimen name="activity_vertical_margin_xlarge">32dp</dimen>
+
+    <dimen name="activity_padding">16dp</dimen>
+    <dimen name="activity_padding_large">24dp</dimen>
+    <dimen name="activity_padding_small">8dp</dimen>
+
+    <dimen name="snackbar_padding_horizontal">12dp</dimen>
+    <dimen name="snackbar_padding_vertical">14dp</dimen>
+    <dimen name="splash_logo_size">64dp</dimen>
+    <dimen name="button_radius">4dp</dimen>
+    <dimen name="button_min_height">44dp</dimen>
+    <dimen name="toolbar_elevation">6dp</dimen>
+    <dimen name="list_single_line_height">48dp</dimen>
+    <dimen name="verify_email_icon_size">100dp</dimen>
+    <dimen name="textSize_sidebar">9sp</dimen>
+    <dimen name="large_textSize_sidebar">32sp</dimen>
+    <dimen name="textSize_sidebar_padding">16dp</dimen>
+    <dimen name="radius_sidebar">24dp</dimen>
+    <dimen name="ball_radius_sidebar">40dp</dimen>
+    <integer name="snackbar_max_line">1</integer>
+    <dimen name="textSize_page_select_view">10sp</dimen>
+</resources>

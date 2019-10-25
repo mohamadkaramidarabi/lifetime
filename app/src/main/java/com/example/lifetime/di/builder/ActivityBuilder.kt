@@ -1,5 +1,7 @@
 package com.example.lifetime.di.builder
 
+import com.example.lifetime.ui.login.LoginActivity
+import com.example.lifetime.ui.login.LoginActivityModule
 import com.example.lifetime.ui.main.MainActivityModule
 import com.example.lifetime.ui.main.MainScop
 import com.example.lifetime.ui.main.main_activity.MainActivity
@@ -19,4 +21,8 @@ abstract class ActivityBuilder {
 
     @ContributesAndroidInjector(modules = [SplashActivityModule::class])
     abstract fun bindSplashActivity(): SplashActivity
+
+    @ContributesAndroidInjector(modules = [LoginActivityModule::class])
+    abstract fun bindLoginActivity(): LoginActivity
+
 }

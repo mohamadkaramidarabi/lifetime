@@ -9,9 +9,11 @@ object SplashInteractor {
 
     interface SplashMVPView : MVPView {
         fun openMainActivity()
+        fun openLoginActivity()
     }
 
     interface SplashMVPPresenter<V : SplashMVPView> : MVPPresenter<V> {
         fun seedLifeExpectancies(): Boolean
+        fun decideActivityToOpen()
     }
 }

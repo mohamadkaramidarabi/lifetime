@@ -28,6 +28,12 @@ class SplashActivity : BaseActivity(), SplashInteractor.SplashMVPView {
         finish()
     }
 
+    override fun openLoginActivity() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
