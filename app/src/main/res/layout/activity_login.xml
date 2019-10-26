@@ -71,6 +71,7 @@
             android:layout_height="wrap_content"/>
         <TextView
             android:layout_gravity="center"
+            android:id="@+id/birthDatePicker"
             android:textDirection="rtl"
             android:text="روز/ماه/سال"
             style="@style/EditText"
@@ -138,7 +139,7 @@
     <com.google.android.material.button.MaterialButton
         android:text="ثبت نام"
         android:id="@+id/btnSubmit"
-        style="@style/EditText"
+        style="@style/Button"
         android:layout_gravity="center"
         android:paddingTop="10dp"
         android:paddingLeft="80dp"

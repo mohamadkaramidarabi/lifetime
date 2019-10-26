@@ -25,9 +25,14 @@ data class Person(
     var country: String? = null
 
 
-){
+) {
     @Expose
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var id: Int = 0
+
+    @Expose
+    @ColumnInfo(name = "is_main_user")
+    @SerializedName("is_main_user")
+    var isMainUser = false
 }

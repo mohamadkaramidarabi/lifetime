@@ -15,9 +15,9 @@ import javax.inject.Inject
 import android.widget.Toast
 import androidx.core.view.isVisible
 import com.example.lifetime.data.database.repository.life_expectancies.LifeExpectancy
+import com.example.lifetime.helper.DatePickerDialog
 import com.example.lifetime.ui.main.main_activity.MainActivity
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
-import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
 import ir.hamsaa.persiandatepicker.Listener
 
 
@@ -144,26 +144,17 @@ class AddPersonDialog(
     }
 
     override fun openDataPickerView() {
-        val picker = PersianDatePickerDialog(this.context)
-            .setPositiveButtonString("باشه")
-            .setNegativeButton("بیخیال")
-            .setTodayButton("امروز")
-            .setTodayButtonVisible(true)
-            .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
-            .setMinYear(1300)
-            .setActionTextColor(Color.GRAY)
-            .setListener(object : Listener {
-                override fun onDateSelected(persianCalendar: PersianCalendar) {
-                    presenter.onDateSelected(persianCalendar)
-                    isDateSated = true
-                }
+        DatePickerDialog(this.context, object : Listener{
+            override fun onDateSelected(persianCalendar: PersianCalendar) {
+                presenter.onDateSelected(persianCalendar)
+                isDateSated = true
+            }
 
-                override fun onDismissed() {
+            override fun onDismissed() {
 
-                }
-            })
+            }
 
-        picker.show()
+        }).show()
     }
 
     override fun onDateSelected(persianCalendar: PersianCalendar) {
