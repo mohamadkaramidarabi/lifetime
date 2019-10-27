@@ -14,6 +14,10 @@ class LoginPresenter<V: LoginInteractor.LoginMVPView> @Inject constructor(
     schedulerProvider: SchedulerProvider) : LoginInteractor.LoginMVPPresenter<V>,
 BasePresenter<V>(dataManager, compositeDisposable,schedulerProvider)
 {
+    override fun onDatePickerClicked() {
+        getView()?.openDatePickerDialog()
+    }
+
     override fun addMainPersonToDb(person: Person) {
         compositeDisposable.add(
             dataManager.insertPerson(person)
@@ -26,14 +30,21 @@ BasePresenter<V>(dataManager, compositeDisposable,schedulerProvider)
         dataManager.setCurrentUserLoggedInMode(LoggedInMode.LOGGED_IN_MODE_LOGGED_IN)
     }
 
-    override fun loadAllCountries(): Boolean =
+    override fun loadLifeExpectancies(): Boolean =
         compositeDisposable.add(dataManager.getLifeExpectancyList()
             .compose(schedulerProvider.ioToMainObservableScheduler())
             .subscribe {
-                getView()?.getAllCountries(it.map { lifeExpectancy ->
-                    lifeExpectancy.country
-                })
+                getView()?.getLifeExpectancies(it)
             })
 
 
+    override fun onRegisterButtonClicked() {
+        if (getView()?.checkFormInfo()!!) {
+            getView()?.createPersonFromForm().let {person ->
+                addMainPersonToDb(person!!)
+                setLoggedInState()
+            }
+            getView()?.openMainActivity()
+        }
+    }
 }

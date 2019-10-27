@@ -134,12 +134,17 @@ class AddPersonDialog(
             birthDate = PersianCalendar(person?.birthDate!!)
             birthDatePicker.text = birthDate.persianShortDate
             submitButton.text = "اصلاح"
+            tvTitle.text = "ویرایش مشخصات"
             if (person?.country == null) {
                 countrySelectView.visibility = View.GONE
                 enterYearView.visibility = View.VISIBLE
                 lifeExOptions.check(R.id.manualOption)
                 years.setText(person?.LifeExpectancyYears.toString())
             }
+        }
+
+        btnClose.setOnClickListener{
+            dismissDialog()
         }
     }
 

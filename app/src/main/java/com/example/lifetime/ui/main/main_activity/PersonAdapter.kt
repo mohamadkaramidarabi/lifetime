@@ -1,16 +1,13 @@
 package com.example.lifetime.ui.main.main_activity
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lifetime.R
 import com.example.lifetime.data.database.repository.person.Person
-import com.example.lifetime.ui.addperson.AddPersonDialog
 import javax.inject.Inject
 
 class PersonAdapter @Inject constructor(val presenter: MainInteractor.MainMVPPresenter<MainInteractor.MainMVPView>) : RecyclerView.Adapter<PersonAdapter.ViewHolder>() {
@@ -39,7 +36,7 @@ class PersonAdapter @Inject constructor(val presenter: MainInteractor.MainMVPPre
                 presenter.getView()?.deletePersonFromList(pair?.second!!)
             }
             view.setOnClickListener{
-
+                presenter.onPersonClicked(pair?.second!!)
             }
             edit.setOnClickListener {
                 presenter.getView()?.openUserDialog(pair?.second)
@@ -47,8 +44,13 @@ class PersonAdapter @Inject constructor(val presenter: MainInteractor.MainMVPPre
         }
 
         fun bind(person: Person?) {
+            if (person?.isMainUser!!) {
+                delete.visibility = View.GONE
+            }
             pair = Pair(view, person)
             fullName.text = person?.name ?: ""
+
+
         }
     }
 }

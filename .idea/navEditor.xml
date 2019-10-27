@@ -13,9 +13,18 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="217" />
-                            <option name="y" value="-21" />
+                            <option name="x" value="-142" />
+                            <option name="y" value="-103" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_navigationAbout_to_navigationHome">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -25,8 +34,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-480" />
-                            <option name="y" value="-12" />
+                            <option name="x" value="-511" />
+                            <option name="y" value="-126" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -37,9 +46,18 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-149" />
-                            <option name="y" value="-23" />
+                            <option name="x" value="-164" />
+                            <option name="y" value="-465" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_navigationMessage_to_navigationHome">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

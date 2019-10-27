@@ -10,12 +10,14 @@ object MainInteractor {
         fun openUserDialog(person: Person?=null)
         fun loadPersons(persons: MutableList<Person>)
         fun deletePersonFromList(person: Person)
+        fun getPersonFromList(person: Person)
     }
 
     interface MainMVPPresenter<V : MainMVPView> : MVPPresenter<V> {
         fun onButtonClicked()
         fun getPersons(): Boolean
         fun deletePerson(person: Person): Boolean
+        fun onPersonClicked(person: Person)
 
     }
 }

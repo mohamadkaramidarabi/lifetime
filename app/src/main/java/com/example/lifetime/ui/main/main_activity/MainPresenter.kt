@@ -31,4 +31,8 @@ class MainPresenter<V : MainInteractor.MainMVPView> @Inject internal constructor
     override fun onButtonClicked() {
         getView()?.openUserDialog(null)
     }
+
+    override fun onPersonClicked(person: Person) {
+        getView()?.getPersonFromList(person)
+    }
 }

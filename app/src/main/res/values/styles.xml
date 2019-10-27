@@ -13,6 +13,7 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -43,6 +44,17 @@
         <item name="android:paddingRight">10dp</item>
     </style>
 
+    <style name="TextView2" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColorHint">@android:color/holo_green_light</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+    </style>
+
     <style name="Button" parent="Widget.AppCompat.Button">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">16sp</item>
@@ -52,6 +64,16 @@
         <item name="android:paddingBottom">10dp</item>
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
+    </style>
+
+    <style name="AppToolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="contentInsetEnd" >0dp</item>
+        <item name="contentInsetLeft" >0dp</item>
+        <item name="contentInsetRight" >0dp</item>
+        <item name="contentInsetStart" >0dp</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:fontFamily">@font/vazir_medium</item>
+        <item name="titleTextColor">@android:color/white</item>
     </style>
 
 

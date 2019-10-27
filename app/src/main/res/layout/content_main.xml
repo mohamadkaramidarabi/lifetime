@@ -7,6 +7,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.appcompat.widget.Toolbar
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:elevation="3dp"
+        android:id="@+id/mToolbar"
+        android:layout_width="0dp"
+        style="@style/AppToolbar"
+        android:layout_height="?attr/actionBarSize"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:src="@drawable/ic_accounts_white_24dp"
+                android:id="@+id/ivPersons"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:background="?selectableItemBackground"
+                android:paddingLeft="@dimen/activity_padding_small"
+                android:paddingRight="@dimen/activity_padding_small"/>
+
+            <TextView
+                android:layoutDirection="rtl"
+                android:textDirection="rtl"
+                android:id="@+id/toolbarTitle"
+                android:layout_width="0dp"
+                android:text="محمد کرمی"
+                style="@style/TextView"
+                android:textColor="@android:color/white"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin_small"
+                android:layout_weight="1"
+                android:background="?selectableItemBackground"
+                android:gravity="start|center_vertical"
+                android:paddingStart="@dimen/activity_padding"
+                android:paddingEnd="@dimen/activity_padding"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         app:itemIconTint="@drawable/bottom_nav_icon_color_selector"
         app:itemTextColor="@drawable/bottom_nav_icon_color_selector"
@@ -24,9 +70,9 @@
         android:id="@+id/navigationHostFragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintTop_toBottomOf="@id/mToolbar"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:navGraph ="@navigation/mobile_navigation"
         app:defaultNavHost="true"
         android:layout_width="0dp"

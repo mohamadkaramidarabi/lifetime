@@ -11,20 +11,29 @@
         android:name="com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiralFragment"
         tools:layout="@layout/fragment_life_spiral"
         android:label="LifeSpiralFragment" >
+        <argument
+            android:name="person"
+            app:argType="com.example.lifetime.data.database.repository.person.Person" />
     </fragment>
 
     <fragment
         android:id="@+id/navigationMessage"
         android:name="com.example.lifetime.ui.message.MessageFragment"
         tools:layout="@layout/fragment_message"
-        android:label="Message"/>
+        android:label="Message">
+        <action
+            android:id="@+id/action_navigationMessage_to_navigationHome"
+            app:destination="@id/navigationHome" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigationAbout"
         android:name="com.example.lifetime.ui.about.AboutFragment"
         tools:layout="@layout/fragment_about"
         android:label="AboutFragment"
-        />
-    <fragment android:id="@+id/navigationAddPerson"
-        android:name="com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiralFragment"/>
+        >
+        <action
+            android:id="@+id/action_navigationAbout_to_navigationHome"
+            app:destination="@id/navigationHome" />
+    </fragment>
 </navigation>
