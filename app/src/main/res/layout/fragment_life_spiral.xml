@@ -9,13 +9,21 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiral
-            android:id="@+id/lifeSpiral"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/spiralView"
             android:layout_height="0dp"
             android:layout_weight="3"
-            android:background="@android:color/transparent" />
+            android:layout_width="match_parent"
+            >
+            <com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiral
+                android:id="@+id/lifeSpiral"
+                android:layout_width="match_parent"
+                android:visibility="invisible"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent" />
+        </LinearLayout>
+
+
 
         <LinearLayout
             android:layout_margin="10dp"

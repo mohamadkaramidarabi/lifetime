@@ -13,15 +13,22 @@ class LifeSpiralPresenter<V : LifeSpiralInteractor.LifeSpiralMVPView> @Inject co
     LifeSpiralInteractor.LifeSpiralMVPPresenter<V> {
 
 
-    override fun getMainPersonFromDataBase(): Boolean = compositeDisposable.add(
-        dataManager.loadPersons().compose(schedulerProvider.ioToMainObservableScheduler()).doOnNext { personList ->
-            personList.filter { person ->
-                person.isMainUser
-            }.map {
-                getView()?.getMainPerson(it)
-            }
-        }.subscribe()
-    )
+    override fun getLastPerson(): Boolean {
+        return if(dataManager.getLastPerson() != null) {
+            getView()?.getPerson(dataManager.getLastPerson()!!)
+            true
+        } else{
+            compositeDisposable.add(
+                dataManager.loadPersons().compose(schedulerProvider.ioToMainObservableScheduler()).doOnNext { personList ->
+                    personList.filter { person ->
+                        person.isMainUser
+                    }.map {
+                        getView()?.getPerson(it)
+                    }
+                }.subscribe()
+            )
+        }
+    }
 
 
 }

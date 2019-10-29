@@ -1,14 +1,11 @@
 package com.example.lifetime.ui.main.main_activity
 
+import android.graphics.PixelFormat
 import android.os.Bundle
-import android.util.Log
-import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
-import androidx.navigation.NavArgument
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
-import androidx.navigation.findNavController
+import androidx.core.view.marginBottom
+import androidx.navigation.*
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -18,19 +15,17 @@ import com.example.lifetime.R
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.base.view.BaseActivity
 import com.example.lifetime.ui.addperson.AddPersonDialog
-import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.example.lifetime.ui.main.life_spiral_fragment.view.notifayHideLifeSpiralView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.bottom_sheet_person.*
-import kotlinx.android.synthetic.main.dialog_add_person.*
-import org.jetbrains.anko.longToast
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.contentView
 import javax.inject.Inject
 
 
 class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
+
+
     lateinit var appBarConfiguration: AppBarConfiguration
 
     @Inject
@@ -52,15 +47,12 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
         setContentView(R.layout.activity_main)
         setSupportActionBar(mToolbar)
         presenter.onAttach(this)
-        presenter.getPersons()
 
         addPerson.setOnClickListener {
             presenter.onButtonClicked()
         }
 
         navController = findNavController(R.id.navigationHostFragment)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigationHome, R.id.navigationMessage, R.id.navigationAbout
@@ -86,15 +78,6 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
             }
         }
 
-//        bottomNavigationView.setOnNavigationItemSelectedListener {menuItem ->
-//            if (menuItem.itemId == R.id.navigationHome) {
-//                toast("clicked")
-//            }
-//
-//            true
-//
-//        }
-
         sheetBehavior = BottomSheetBehavior.from(bottomSheet)
 
 
@@ -103,16 +86,43 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
 
         }
 
+        var withHand = false
         ivPersons.setOnClickListener {
             if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+                val param = bottomSheet.layoutParams
+                param.height = (0.95 * contentView?.height!!).toInt() - mToolbar.height - mToolbar.marginBottom - mToolbar.paddingBottom
+                bottomSheet.layoutParams = param
                 sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                notifayHideLifeSpiralView.onNext(false)
 
             } else {
-                sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED)
+                withHand = true
+                sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
         }
+        presenter.getPersons()
+        presenter.getLastPersonFromDb()
 
+        sheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback(){
+            override fun onSlide(p0: View, p1: Float) = Unit
 
+            override fun onStateChanged(p0: View, p1: Int) {
+                if (p1 == BottomSheetBehavior.STATE_COLLAPSED) {
+                    if (!withHand) notifayHideLifeSpiralView.onNext(true)
+
+                    withHand=false
+                }
+            }
+
+        })
+
+    }
+
+    override fun getLastPerson(person: Person) {
+        this.person = person
+        toolbarTitle.text = person?.name
+        navController.navigate(R.id.navigationHome)
+        navController.popBackStack()
 
     }
 
@@ -143,12 +153,6 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
 
     override fun loadPersons(persons: MutableList<Person>) {
         this.persons = persons
-        persons.map {
-            if(it.isMainUser){
-                this.person = it
-            }
-
-        }
         recyclerView.adapter = adapter.let {
             it.persons = persons
             it.notifyDataSetChanged()
@@ -182,25 +186,16 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
 
     override fun getPersonFromList(person: Person) {
         this.person = person
+        presenter.setLastPersonOnDb(person)
         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        val bundle = Bundle()
-        bundle.putSerializable("person",person)
-        navController.navigate(R.id.navigationHome,bundle)
+        navController.navigate(R.id.navigationHome)
+        navController.popBackStack()
     }
 
 
     override fun onDestroy() {
         presenter.onDetach()
         super.onDestroy()
-    }
-
-    override fun onContextItemSelected(item: MenuItem?): Boolean {
-        toast("clicked")
-        if (item?.itemId == R.id.navigationHome) {
-            longToast("home")
-        }
-        return super.onContextItemSelected(item)
-
     }
 
     interface MyDialogDismiss {

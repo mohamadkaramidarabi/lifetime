@@ -7,12 +7,12 @@ import com.example.lifetime.ui.base.view.MVPView
 object LifeSpiralInteractor {
 
     interface LifeSpiralMVPView: MVPView {
-        fun getMainPerson(person: Person)
+        fun getPerson(person: Person)
     }
 
 
     interface LifeSpiralMVPPresenter<V : LifeSpiralMVPView> : MVPPresenter<V> {
-        fun getMainPersonFromDataBase(): Boolean
+        fun getLastPerson(): Boolean
     }
 
 }

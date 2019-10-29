@@ -27,6 +27,20 @@ class MainPresenter<V : MainInteractor.MainMVPView> @Inject internal constructor
                 getView()?.loadPersons(it.toMutableList())
             })
 
+    override fun getLastPersonFromDb(){
+        if (dataManager.getLastPerson() == null) {
+            compositeDisposable.add(dataManager.loadPersons()
+                .compose(schedulerProvider.ioToMainObservableScheduler())
+                .subscribe {
+                    it.map { person ->
+                        if (person.isMainUser) getView()?.getLastPerson(person)
+                    }
+                })
+        } else {
+            getView()?.getLastPerson(dataManager.getLastPerson()!!)
+        }
+
+    }
 
     override fun onButtonClicked() {
         getView()?.openUserDialog(null)
@@ -34,5 +48,9 @@ class MainPresenter<V : MainInteractor.MainMVPView> @Inject internal constructor
 
     override fun onPersonClicked(person: Person) {
         getView()?.getPersonFromList(person)
+    }
+
+    override fun setLastPersonOnDb(person: Person) {
+        dataManager.setLastPerson(person)
     }
 }

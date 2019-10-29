@@ -39,4 +39,10 @@ class AppDataManager @Inject constructor(private val dbHelper: DbHelper,
     override fun setCurrentUserLoggedInMode(mode: LoggedInMode) =
         preferenceHelper.setCurrentUserLoggedInMode(mode)
 
+    override fun setLastPerson(person: Person) =
+        preferenceHelper.setLastPerson(person)
+
+    override fun getLastPerson(): Person? =
+        preferenceHelper.getLastPerson()
+
 }

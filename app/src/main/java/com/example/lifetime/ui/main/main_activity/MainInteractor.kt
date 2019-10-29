@@ -11,6 +11,7 @@ object MainInteractor {
         fun loadPersons(persons: MutableList<Person>)
         fun deletePersonFromList(person: Person)
         fun getPersonFromList(person: Person)
+        fun getLastPerson(person: Person)
     }
 
     interface MainMVPPresenter<V : MainMVPView> : MVPPresenter<V> {
@@ -18,6 +19,8 @@ object MainInteractor {
         fun getPersons(): Boolean
         fun deletePerson(person: Person): Boolean
         fun onPersonClicked(person: Person)
+        fun setLastPersonOnDb(person: Person)
+        fun getLastPersonFromDb()
 
     }
 }
