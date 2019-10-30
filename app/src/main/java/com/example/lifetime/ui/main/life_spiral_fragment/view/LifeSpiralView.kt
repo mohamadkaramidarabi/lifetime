@@ -3,17 +3,14 @@ package com.example.lifetime.ui.main.life_spiral_fragment.view
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
-import android.view.SurfaceView
 import android.view.View
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.util.CommonUtil
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
-import org.jetbrains.anko.doAsync
 import kotlin.math.*
 
 
-class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : View(context,attributeSet){
+class LifeSpiralView (context: Context, attributeSet: AttributeSet? = null) : View(context,attributeSet){
 
 
     private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -39,22 +36,16 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : View(co
     }
     private fun setToDefaultsValues() {
         paint.color = Color.WHITE
-//        setZOrderOnTop(true)
-//        holder.setFormat(PixelFormat.TRANSPARENT)
         isDrawed = false
 
     }
     fun reDraw() {
         setToDefaultsValues()
-//        doAsync {
-//            calculateSpiralPointList()
-//        }
     }
     private fun drawSpiral(canvas: Canvas?) {
         if(person ==null) return
         if(isDrawed) return
         isDrawed = true
-//        val canvas =holder.lockCanvas()
         canvas?.drawColor(Color.TRANSPARENT)
 
         for ((i, point) in pointList.withIndex()) {
@@ -70,18 +61,14 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : View(co
                 canvas
             )
         }
-//        holder.unlockCanvasAndPost(canvas)
     }
-    private var w: Int? = null
-    private var h: Int? = null
+    var w: Int? = null
+    var h: Int? = null
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         this.w = w
         this.h = h
-//        doAsync {
-//            calculateSpiralPointList()
-//        }
 
     }
 
@@ -126,8 +113,8 @@ class LifeSpiral (context: Context,attributeSet: AttributeSet? = null) : View(co
             }
         }
 
-        this@LifeSpiral.pointList = pointList
-        this@LifeSpiral.dotRadius = dotRadius
+        this@LifeSpiralView.pointList = pointList
+        this@LifeSpiralView.dotRadius = dotRadius
         drawSpiral(canvas)
     }
 

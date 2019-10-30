@@ -1,7 +1,8 @@
 package com.example.lifetime.ui.main.main_activity
 
-import android.graphics.PixelFormat
+import android.graphics.Point
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import androidx.core.view.marginBottom
@@ -15,6 +16,7 @@ import com.example.lifetime.R
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.base.view.BaseActivity
 import com.example.lifetime.ui.addperson.AddPersonDialog
+import com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiralFragment
 import com.example.lifetime.ui.main.life_spiral_fragment.view.notifayHideLifeSpiralView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.content_main.*
@@ -36,6 +38,7 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
 
     private var persons: MutableList<Person>? = null
     private var person: Person? = null
+    private var lifeException: Float? = null
     private lateinit var navController: NavController
 
 
@@ -139,16 +142,38 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+    private var fragment: LifeSpiralFragment? = null
+
     override fun onFragmentAttached() {
+        fragment = if (supportFragmentManager.fragments[0].childFragmentManager.fragments[0] is LifeSpiralFragment) {
+            supportFragmentManager.fragments[0].childFragmentManager.fragments[0] as LifeSpiralFragment
+        } else {
+            null
+        }
+    }
+
+    private var lifeSpiralSize: Int? = null
+    override fun onResume() {
+        super.onResume()
+        fragment?.lifeSpiralView?.viewTreeObserver?.addOnGlobalLayoutListener {
+            if(fragment==null) return@addOnGlobalLayoutListener
+            Log.d("TAG", "onDrawListener")
+
+            lifeSpiralSize = if(fragment!!.lifeSpiralView?.w!! <= fragment?.lifeSpiralView?.h!!) fragment?.lifeSpiralView?.w
+            else fragment?.lifeSpiralView?.h
+        }
+
     }
 
     override fun onFragmentDetached(tag: String) {
+
     }
 
     override fun deletePersonFromList(person: Person) {
         persons?.remove(person)
         adapter.notifyDataSetChanged()
     }
+
 
 
     override fun loadPersons(persons: MutableList<Person>) {
@@ -191,6 +216,11 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
         navController.navigate(R.id.navigationHome)
         navController.popBackStack()
     }
+
+    override fun setPointList(pointList: List<Point>) {
+
+    }
+
 
 
     override fun onDestroy() {

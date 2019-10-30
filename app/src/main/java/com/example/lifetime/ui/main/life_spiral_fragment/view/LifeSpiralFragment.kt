@@ -3,7 +3,6 @@ package com.example.lifetime.ui.main.life_spiral_fragment.view
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,8 +21,8 @@ class LifeSpiralFragment : BaseFragment(), LifeSpiralInteractor.LifeSpiralMVPVie
     lateinit var presenter: LifeSpiralInteractor.LifeSpiralMVPPresenter<LifeSpiralInteractor.LifeSpiralMVPView>
 
     var person: Person? = null
-    private var lifeSpiral: LifeSpiral? = null
-
+    var lifeSpiralView: LifeSpiralView? = null
+        private set
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,30 +35,26 @@ class LifeSpiralFragment : BaseFragment(), LifeSpiralInteractor.LifeSpiralMVPVie
     override fun setUp() {
         presenter.onAttach(this)
         view?.setBackgroundColor(Color.TRANSPARENT)
-        lifeSpiral = view?.findViewById(R.id.lifeSpiral)
+        lifeSpiralView = view?.findViewById(R.id.lifeSpiral)
 
         presenter.getLastPerson()
 
         notifayHideLifeSpiralView.doOnNext {
             if (it) {
-                lifeSpiral?.visibility = View.VISIBLE
-                lifeSpiral?.reDraw()
+                lifeSpiralView?.visibility = View.VISIBLE
+                lifeSpiralView?.reDraw()
             } else {
-                lifeSpiral?.visibility = View.INVISIBLE
+                lifeSpiralView?.visibility = View.INVISIBLE
             }
         }.subscribe()
     }
 
     override fun getPerson(person: Person) {
         this.person = person
-        lifeSpiral?.setPerson(person)
-        lifeSpiral?.visibility = View.VISIBLE
+        lifeSpiralView?.setPerson(person)
     }
 
-    override fun onPause() {
-        super.onPause()
-        Log.d("Tag","OnPause")
-    }
+
 
 
     override fun onDetach() {

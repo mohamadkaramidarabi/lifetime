@@ -15,7 +15,7 @@
             android:layout_weight="3"
             android:layout_width="match_parent"
             >
-            <com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiral
+            <com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiralView
                 android:id="@+id/lifeSpiral"
                 android:layout_width="match_parent"
                 android:visibility="invisible"
