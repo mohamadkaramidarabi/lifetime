@@ -13,14 +13,13 @@
             android:id="@+id/spiralView"
             android:layout_height="0dp"
             android:layout_weight="3"
-            android:layout_width="match_parent"
-            >
+            android:layout_width="match_parent">
             <com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiralView
                 android:id="@+id/lifeSpiral"
                 android:layout_width="match_parent"
-                android:visibility="invisible"
                 android:layout_height="match_parent"
-                android:background="@android:color/transparent" />
+                android:background="@android:color/transparent"
+                 />
         </LinearLayout>
 
 

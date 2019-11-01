@@ -2,8 +2,8 @@ package com.example.lifetime.ui.main.main_activity
 
 import android.graphics.Point
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.LinearLayout
 import androidx.core.view.marginBottom
 import androidx.navigation.*
@@ -17,8 +17,8 @@ import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.base.view.BaseActivity
 import com.example.lifetime.ui.addperson.AddPersonDialog
 import com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiralFragment
-import com.example.lifetime.ui.main.life_spiral_fragment.view.notifayHideLifeSpiralView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import ir.hamsaa.persiandatepicker.util.PersianCalendar
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.bottom_sheet_person.*
 import org.jetbrains.anko.contentView
@@ -38,11 +38,12 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
 
     private var persons: MutableList<Person>? = null
     private var person: Person? = null
-    private var lifeException: Float? = null
+    private var lifeExceptionYears: Float? = null
     private lateinit var navController: NavController
 
 
     private lateinit var sheetBehavior: BottomSheetBehavior<LinearLayout>
+    private var pointList: List<Point>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -50,11 +51,13 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
         setContentView(R.layout.activity_main)
         setSupportActionBar(mToolbar)
         presenter.onAttach(this)
+        bottomNavigationViewSetup()
+        bottomSheetSetup()
+        presenter.getPersons()
+    }
 
-        addPerson.setOnClickListener {
-            presenter.onButtonClicked()
-        }
-
+    private var lastFragmentId: Int = R.id.navigationHome
+    private fun bottomNavigationViewSetup() {
         navController = findNavController(R.id.navigationHostFragment)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -64,71 +67,80 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
         setupActionBarWithNavController(navController, appBarConfiguration)
         bottomNavigationView.setupWithNavController(navController)
 
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            if (destination.id == R.id.navigationAbout) {
-                toolbarTitle.text ="درباره ما"
-                ivPersons.visibility = View.GONE
-                return@addOnDestinationChangedListener
+        bottomNavigationView.setOnNavigationItemSelectedListener {
+            if(lastFragmentId == it.itemId) return@setOnNavigationItemSelectedListener true
+            lastFragmentId = it.itemId
+
+            when (it.itemId) {
+                R.id.navigationHome ->{
+                    toolbarTitle.text = person?.name
+                    ivPersons.visibility = View.VISIBLE
+                    navController.navigate(R.id.navigationHome)
+                    navController.popBackStack()
+                }
+
+                R.id.navigationMessage -> {
+                    lifeSpiralFragment?.lifeSpiralView?.clear()
+                    toolbarTitle.text = "پیام‌ها"
+                    ivPersons.visibility = View.GONE
+                    navController.navigate(R.id.navigationMessage)
+                    navController.popBackStack()
+                }
+
+                R.id.navigationAbout -> {
+                    lifeSpiralFragment?.lifeSpiralView?.clear()
+                    toolbarTitle.text = "درباره ما"
+                    ivPersons.visibility = View.GONE
+                    navController.navigate(R.id.navigationAbout)
+                    navController.popBackStack()
+                }
+
             }
-            if (destination.id == R.id.navigationMessage) {
-                toolbarTitle.text = "پیام‌ها"
-                ivPersons.visibility = View.GONE
-                return@addOnDestinationChangedListener
-            }
-            if (destination.id == R.id.navigationHome) {
-                toolbarTitle.text = person?.name
-                ivPersons.visibility = View.VISIBLE
-            }
+            true
         }
 
+    }
+    private var drawAfterCollapsed = false
+
+    private fun bottomSheetSetup() {
         sheetBehavior = BottomSheetBehavior.from(bottomSheet)
-
-
         hideBottomSheet.setOnClickListener {
+            drawAfterCollapsed = true
             sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
         }
 
-        var withHand = false
         ivPersons.setOnClickListener {
             if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+                lifeSpiralFragment?.lifeSpiralView?.clear()
                 val param = bottomSheet.layoutParams
-                param.height = (0.95 * contentView?.height!!).toInt() - mToolbar.height - mToolbar.marginBottom - mToolbar.paddingBottom
+                param.height =
+                    (0.95 * contentView?.height!!).toInt() - mToolbar.height - mToolbar.marginBottom - mToolbar.paddingBottom
                 bottomSheet.layoutParams = param
                 sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                notifayHideLifeSpiralView.onNext(false)
 
             } else {
-                withHand = true
+                drawAfterCollapsed = true
                 sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
         }
-        presenter.getPersons()
-        presenter.getLastPersonFromDb()
-
-        sheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback(){
+        sheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(p0: View, p1: Float) = Unit
 
             override fun onStateChanged(p0: View, p1: Int) {
                 if (p1 == BottomSheetBehavior.STATE_COLLAPSED) {
-                    if (!withHand) notifayHideLifeSpiralView.onNext(true)
+                    presenter.getLastPersonFromDb()
 
-                    withHand=false
+
                 }
             }
 
         })
 
+        addPerson.setOnClickListener {
+            presenter.onButtonClicked()
+        }
     }
-
-    override fun getLastPerson(person: Person) {
-        this.person = person
-        toolbarTitle.text = person?.name
-        navController.navigate(R.id.navigationHome)
-        navController.popBackStack()
-
-    }
-
 
     override fun onStart() {
         super.onStart()
@@ -137,43 +149,87 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
 
     }
 
+
+    override fun getLastPerson(person: Person) {
+        this.person = person
+        toolbarTitle.text = person.name
+        setRealTimeText(person)
+        lifeExceptionYears = person.LifeExpectancyYears
+        if (lifeSpiralFragment?.lifeSpiralView == null) {
+            return
+        }
+        presenter.calculateDrawPointList(
+            lifeSpiralFragment?.lifeSpiralView?.w!!,
+            lifeSpiralFragment?.lifeSpiralView?.h!!,
+            person
+        )
+    }
+
+    private fun setRealTimeText(person: Person) {
+        val birthDate = PersianCalendar(person.birthDate)
+        val birthYear = birthDate.persianYear
+        val birthMonth = birthDate.persianMonth
+        val birthDay = birthDate.persianDay
+        val currentDate = PersianCalendar()
+        var currentYear = currentDate.persianYear
+        var currentMonth = currentDate.persianMonth
+        var currentDay = currentDate.persianDay
+        if (currentDay >= birthDay) {
+            lifeSpiralFragment?.day?.text =
+                (currentDay- birthDay).toString()
+        } else if (currentMonth <= 6) {
+            lifeSpiralFragment?.day?.text =
+                (currentDay+ 31 - birthDay).toString()
+            --currentMonth
+        } else {
+            lifeSpiralFragment?.day?.text =
+                (currentDay+ 30 - birthDay).toString()
+            --currentMonth
+        }
+        if (currentMonth >= birthMonth) {
+            lifeSpiralFragment?.month?.text = "${currentMonth - birthMonth} :"
+        } else {
+            lifeSpiralFragment?.month?.text = "${currentMonth + 12  - birthMonth} :"
+            --currentYear
+        }
+        lifeSpiralFragment?.year?.text = "${currentYear - birthYear} :"
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.navigationHostFragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    private var fragment: LifeSpiralFragment? = null
+    private var lifeSpiralFragment: LifeSpiralFragment? = null
 
     override fun onFragmentAttached() {
-        fragment = if (supportFragmentManager.fragments[0].childFragmentManager.fragments[0] is LifeSpiralFragment) {
-            supportFragmentManager.fragments[0].childFragmentManager.fragments[0] as LifeSpiralFragment
-        } else {
-            null
-        }
     }
 
-    private var lifeSpiralSize: Int? = null
-    override fun onResume() {
-        super.onResume()
-        fragment?.lifeSpiralView?.viewTreeObserver?.addOnGlobalLayoutListener {
-            if(fragment==null) return@addOnGlobalLayoutListener
-            Log.d("TAG", "onDrawListener")
+    fun onLifeSpiralFragmentResumed(lifeSpiralFragment: LifeSpiralFragment) {
+        drawAfterCollapsed = false
+        this.lifeSpiralFragment = lifeSpiralFragment
+        lifeSpiralFragment.lifeSpiralView?.viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener{
+            override fun onGlobalLayout() {
+                this@MainActivity.lifeSpiralFragment!!.lifeSpiralView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
+                if (person == null) {
+                    presenter.getLastPersonFromDb()
+                } else {
+                    getLastPerson(person!!)
+                }
+            }
 
-            lifeSpiralSize = if(fragment!!.lifeSpiralView?.w!! <= fragment?.lifeSpiralView?.h!!) fragment?.lifeSpiralView?.w
-            else fragment?.lifeSpiralView?.h
-        }
+        })
 
     }
+
 
     override fun onFragmentDetached(tag: String) {
-
     }
 
     override fun deletePersonFromList(person: Person) {
         persons?.remove(person)
         adapter.notifyDataSetChanged()
     }
-
 
 
     override fun loadPersons(persons: MutableList<Person>) {
@@ -188,39 +244,48 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
     override fun openUserDialog(person: Person?) {
         val dialog = AddPersonDialog(object :
             MyDialogDismiss {
-                override fun getPerson(person: Person, isForUpdate: Boolean) {
-                    if (!isForUpdate) {
-                        persons?.add(person)
-                    }
-                    else {
-                        var index = 0
-                        for (p in persons!!) {
-                            if (p == person) {
-                                break
-                            }
-                            index++
+            override fun getPerson(person: Person, isForUpdate: Boolean) {
+                if (!isForUpdate) {
+                    persons?.add(person)
+                } else {
+                    var index = 0
+                    for (p in persons!!) {
+                        if (p == person) {
+                            break
                         }
-                        persons!![index] = person
+                        index++
                     }
+                    persons!![index] = person
+                }
                 adapter.notifyDataSetChanged()
             }
-        },person)
+        }, person)
 
         dialog.show(supportFragmentManager, null)
     }
 
     override fun getPersonFromList(person: Person) {
+        toolbarTitle.text = person.name
+        drawAfterCollapsed = true
+
         this.person = person
         presenter.setLastPersonOnDb(person)
+        if (lifeExceptionYears != person.LifeExpectancyYears) {
+            lifeExceptionYears = person.LifeExpectancyYears
+        }
+
         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        navController.navigate(R.id.navigationHome)
-        navController.popBackStack()
+
     }
 
     override fun setPointList(pointList: List<Point>) {
+        this.pointList = pointList
 
+        lifeSpiralFragment?.lifeSpiralView?.setParameters(
+            pointList,
+            person!!
+        )
     }
-
 
 
     override fun onDestroy() {

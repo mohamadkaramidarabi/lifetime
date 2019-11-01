@@ -2,6 +2,7 @@ package com.example.lifetime.ui.main.main_activity
 
 import android.graphics.Path
 import android.graphics.Point
+import android.util.Log
 import com.example.lifetime.data.AppDataManager
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.base.presenter.BasePresenter
@@ -20,10 +21,24 @@ class MainPresenter<V : MainInteractor.MainMVPView> @Inject internal constructor
     MainInteractor.MainMVPPresenter<V> {
 
 
-    override fun deletePerson(person: Person) = compositeDisposable.add(
-        dataManager.deletePerson(person)
-            .compose(schedulerProvider.ioToMainObservableScheduler())
-            .subscribe())
+    override fun deletePerson(person: Person):Boolean{
+        if (dataManager.getLastPerson()?.id == person.id) {
+            Log.d("TAG_TAG", person.toString())
+            compositeDisposable.add(
+                dataManager.loadPersons()
+                    .compose(schedulerProvider.ioToMainObservableScheduler())
+                    .subscribe {
+                        it.map {person ->
+                            if(person.isMainUser) dataManager.setLastPerson(person)
+                        }
+                    }
+            )
+        }
+        return compositeDisposable.add(
+            dataManager.deletePerson(person)
+                .compose(schedulerProvider.ioToMainObservableScheduler())
+                .subscribe())
+    }
 
     override fun getPersons(): Boolean =
         compositeDisposable.add(dataManager.loadPersons()
@@ -61,6 +76,9 @@ class MainPresenter<V : MainInteractor.MainMVPView> @Inject internal constructor
 
     override fun calculateDrawPointList(w: Int, h: Int, person: Person){
         doAsync {
+            uiThread {
+                getView()?.showLoading()
+            }
             val path = Path()
             val p = Point()
             p.x = w / 2
@@ -69,16 +87,19 @@ class MainPresenter<V : MainInteractor.MainMVPView> @Inject internal constructor
             pointList.add(Point(p.x, p.y))
 
             val lifeExceptionYears = person.LifeExpectancyYears
-            val dotRadius = sqrt(0.3 * if(w >= h) w.toDouble().pow(2.0)  else  h.toDouble().pow(2.0)/ (lifeExceptionYears * 52 * 4)).toInt()
+
+            val radius= if(w <= h) (w /2).toDouble() else (h / 2).toDouble()
+            val dotRadius =
+                sqrt(0.4 * radius.pow(2.0) / (person.LifeExpectancyYears * 52)).toInt()
 
             val lastCirclePoint = Point(w / 2, h / 2)
-            val maxAngle = getMaxAngle(if (w > h) h else w,lifeExceptionYears.toInt(), dotRadius)
+            val maxAngle = getMaxAngle((0.9 * radius).toInt(),lifeExceptionYears.toInt(), dotRadius)
 
-            val range = 1..maxAngle * 10
+            val range = 1..maxAngle * 5
             var count = 0
             for (angle in range) {
-                val a = angle.toDouble() / 10.0
-                val r = (a / (maxAngle)) * (w / 2.0 * 0.95)
+                val a = angle.toDouble() / 5.0
+                val r = (a / (maxAngle)) * (0.9 * radius)
                 val newX = w / 2f + r * cos(PI * a / 180)
                 val newY = h / 2f - r * sin(PI * a / 180)
                 path.quadTo(p.x.toFloat(), p.y.toFloat(), newX.toFloat(), newY.toFloat())
@@ -87,7 +108,7 @@ class MainPresenter<V : MainInteractor.MainMVPView> @Inject internal constructor
                 if (sqrt(
                         (lastCirclePoint.x.toDouble() - p.x).pow(2.0) +
                                 (lastCirclePoint.y.toDouble() - p.y).pow(2.0)
-                    ) >= (2 * dotRadius * 1.2)
+                    ) >= (2 * dotRadius * 1.1)
                 ) {
 
                     lastCirclePoint.x = p.x
@@ -101,20 +122,22 @@ class MainPresenter<V : MainInteractor.MainMVPView> @Inject internal constructor
             }
             uiThread {
                 getView()?.setPointList(pointList)
+                getView()?.hideLoading()
             }
         }
     }
 
+
     private fun getMaxAngle(circleRadius: Int,LifeExpectancyYears: Int, dotRadius: Int): Int {
         var phi = 0
-        while (getSpiralLength(phi * PI / 180, circleRadius).toInt() <= (LifeExpectancyYears * 52 * dotRadius * 2 * 1.28).toInt()) {
+        while (getSpiralLength(phi * PI / 180, 2 * circleRadius).toInt() <= (LifeExpectancyYears * 52 * dotRadius * 2 * 1.1).toInt()) {
             phi += 1
         }
         return phi
     }
 
     private fun getSpiralLength(phi: Double, circleRadius: Int): Double =
-        ((circleRadius / 4.0 * 0.95 / (phi))) * (ln(sqrt(phi.pow(2.0) + 1) + phi) + phi * sqrt(phi.pow(2.0) + 1))
+        ((circleRadius / 4.0 / (phi))) * (ln(sqrt(phi.pow(2.0) + 1) + phi) + phi * sqrt(phi.pow(2.0) + 1))
 
 
 }

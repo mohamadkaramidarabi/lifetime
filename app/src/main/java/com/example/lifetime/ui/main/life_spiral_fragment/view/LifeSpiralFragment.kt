@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.example.lifetime.R
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.base.view.BaseFragment
-import io.reactivex.subjects.PublishSubject
+import com.example.lifetime.ui.main.main_activity.MainActivity
 import javax.inject.Inject
 
-val notifayHideLifeSpiralView: PublishSubject<Boolean> = PublishSubject.create()
 
 class LifeSpiralFragment : BaseFragment(), LifeSpiralInteractor.LifeSpiralMVPView{
 
@@ -23,6 +23,14 @@ class LifeSpiralFragment : BaseFragment(), LifeSpiralInteractor.LifeSpiralMVPVie
     var person: Person? = null
     var lifeSpiralView: LifeSpiralView? = null
         private set
+
+    var year: TextView? = null
+        private set
+    var month: TextView? = null
+        private set
+    var day: TextView? = null
+        private set
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,26 +44,22 @@ class LifeSpiralFragment : BaseFragment(), LifeSpiralInteractor.LifeSpiralMVPVie
         presenter.onAttach(this)
         view?.setBackgroundColor(Color.TRANSPARENT)
         lifeSpiralView = view?.findViewById(R.id.lifeSpiral)
-
+        year = view?.findViewById(R.id.yearTextView)
+        month = view?.findViewById(R.id.monthTextView)
+        day = view?.findViewById(R.id.dayTextView)
         presenter.getLastPerson()
-
-        notifayHideLifeSpiralView.doOnNext {
-            if (it) {
-                lifeSpiralView?.visibility = View.VISIBLE
-                lifeSpiralView?.reDraw()
-            } else {
-                lifeSpiralView?.visibility = View.INVISIBLE
-            }
-        }.subscribe()
     }
 
     override fun getPerson(person: Person) {
         this.person = person
-        lifeSpiralView?.setPerson(person)
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.getLastPerson()
+        (activity as MainActivity).onLifeSpiralFragmentResumed(this)
 
-
+    }
 
     override fun onDetach() {
         presenter.onDetach()

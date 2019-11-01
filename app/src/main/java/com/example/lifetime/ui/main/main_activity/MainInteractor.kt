@@ -24,6 +24,5 @@ object MainInteractor {
         fun setLastPersonOnDb(person: Person)
         fun getLastPersonFromDb()
         fun calculateDrawPointList(w: Int, h: Int, person: Person)
-
     }
 }

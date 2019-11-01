@@ -10,11 +10,7 @@
         android:id="@+id/navigationHome"
         android:name="com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiralFragment"
         tools:layout="@layout/fragment_life_spiral"
-        android:label="LifeSpiralFragment" >
-        <argument
-            android:name="person"
-            app:argType="com.example.lifetime.data.database.repository.person.Person" />
-    </fragment>
+        android:label="LifeSpiralFragment" />
 
     <fragment
         android:id="@+id/navigationMessage"

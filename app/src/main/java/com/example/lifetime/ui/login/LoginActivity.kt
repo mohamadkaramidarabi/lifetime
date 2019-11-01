@@ -49,9 +49,9 @@ class LoginActivity : BaseActivity(), LoginInteractor.LoginMVPView{
 
     override fun openDatePickerDialog() {
         DatePickerDialog(this,
-            object : Listener{
+            object : Listener {
                 override fun onDateSelected(calendar: PersianCalendar?) {
-                    birthDate=calendar
+                    birthDate = calendar
                     birthDatePicker.text = calendar?.persianShortDate
                 }
 
@@ -59,7 +59,8 @@ class LoginActivity : BaseActivity(), LoginInteractor.LoginMVPView{
 
                 }
 
-            }).show()
+            }, if (birthDate == null) null else birthDate?.time?.time
+        ).show()
     }
 
 

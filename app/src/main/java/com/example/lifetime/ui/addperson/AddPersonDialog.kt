@@ -27,7 +27,7 @@ class AddPersonDialog(
 ) : BaseDialogView(),
     AddPersonInteractor.AddPersonMVPDialog {
 
-    private lateinit var birthDate: PersianCalendar
+    private var birthDate: PersianCalendar? = null
     private var isDateSated = false
     private lateinit var lifeExpectancies: List<LifeExpectancy>
 
@@ -63,14 +63,14 @@ class AddPersonDialog(
                             person.let { person ->
                                 person?.name = nameEdt.text.toString()
                                 person?.LifeExpectancyYears = it.lifeExpectancy
-                                person?.birthDate = birthDate.time.time
+                                person?.birthDate = birthDate?.time?.time!!
                                 person?.country = it.country
                             }
                         } else {
                             person = Person(
                                 nameEdt.text.toString(),
                                 it.lifeExpectancy,
-                                birthDate.time.time,
+                                birthDate?.time?.time!!,
                                 it.country
                             )
                         }
@@ -81,14 +81,14 @@ class AddPersonDialog(
                         person.let { person ->
                             person?.name = nameEdt.text.toString()
                             person?.LifeExpectancyYears = years.text.toString().toFloat()
-                            person?.birthDate = birthDate.time.time
+                            person?.birthDate = birthDate?.time?.time!!
                             person?.country = null
                         }
                     } else {
                         person = Person(
                             nameEdt.text.toString(),
                             years.text.toString().toFloat(),
-                            birthDate.time.time,
+                            birthDate?.time?.time!!,
                             null
                         )
                     }
@@ -132,7 +132,7 @@ class AddPersonDialog(
             nameEdt.setText(person?.name)
             isDateSated = true
             birthDate = PersianCalendar(person?.birthDate!!)
-            birthDatePicker.text = birthDate.persianShortDate
+            birthDatePicker.text = birthDate?.persianShortDate
             submitButton.text = "اصلاح"
             tvTitle.text = "ویرایش مشخصات"
             if (person?.country == null) {
@@ -149,7 +149,7 @@ class AddPersonDialog(
     }
 
     override fun openDataPickerView() {
-        DatePickerDialog(this.context, object : Listener{
+        DatePickerDialog(this.context, object : Listener {
             override fun onDateSelected(persianCalendar: PersianCalendar) {
                 presenter.onDateSelected(persianCalendar)
                 isDateSated = true
@@ -159,7 +159,7 @@ class AddPersonDialog(
 
             }
 
-        }).show()
+        }, birthDate?.time?.time).show()
     }
 
     override fun onDateSelected(persianCalendar: PersianCalendar) {
@@ -184,8 +184,7 @@ class AddPersonDialog(
             )
             spinner.adapter = adapter
         }
-        var country: String? = null
-        country = if (person?.country != null) {
+        val country: String? = if (person?.country != null) {
             person?.country
         } else {
             "Iran"

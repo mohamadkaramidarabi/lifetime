@@ -7,7 +7,6 @@ import com.example.lifetime.util.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
 import javax.inject.Inject
-
 class AddPersonPresenter<V : AddPersonInteractor.AddPersonMVPDialog> @Inject internal constructor(
     dataManager: AppDataManager,
     compositeDisposable: CompositeDisposable,
@@ -22,11 +21,16 @@ class AddPersonPresenter<V : AddPersonInteractor.AddPersonMVPDialog> @Inject int
             .subscribe()
         )
 
-    override fun updatePersonInDB(person: Person): Boolean =
-        compositeDisposable.add(dataManager.updatePerson(person)
+    override fun updatePersonInDB(person: Person): Boolean {
+        if (dataManager.getLastPerson()?.id == person.id) {
+            dataManager.setLastPerson(person)
+        }
+        return compositeDisposable.add(dataManager.updatePerson(person)
             .compose(schedulerProvider.ioToMainObservableScheduler())
             .subscribe()
         )
+    }
+
 
     override fun loadAllCountries(): Boolean =
         compositeDisposable.add(dataManager.getLifeExpectancyList()
@@ -48,3 +52,4 @@ class AddPersonPresenter<V : AddPersonInteractor.AddPersonMVPDialog> @Inject int
         getView()?.onDateSelected(persianCalendar)!!
 
 }
+
