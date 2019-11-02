@@ -22,10 +22,10 @@
 
     <ImageView
         android:id="@+id/ivLogo"
-        android:layout_width="@dimen/splash_logo_size"
-        android:layout_height="@dimen/splash_logo_size"
-        android:layout_above="@+id/ivLogoType"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
         android:layout_centerInParent="true"
+        android:background="@android:color/transparent"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -36,21 +36,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.19"
-        android:src="@drawable/splash_logo" />
+        android:src="@drawable/spiral" />
 
-    <ImageView
-        android:id="@+id/ivLogoType"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivLogo"
-        android:src="@drawable/logotype_fa" />
 
 
     <TextView
@@ -63,11 +51,12 @@
         android:gravity="center"
         android:lineHeight="24sp"
         android:text="توضیحات در این قسمت وارد میشه!!"
-
+        style="@style/TextView"
+        android:textColor="@android:color/white"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivLogoType" />
+        app:layout_constraintTop_toBottomOf="@+id/ivLogo" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -131,7 +120,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="32dp"
         android:background="?selectableItemBackground"
-        android:text="www.lifetime.ir"
+        style="@style/TextView"
+        android:textColor="@android:color/white"
+        android:text="www.7030.ir"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

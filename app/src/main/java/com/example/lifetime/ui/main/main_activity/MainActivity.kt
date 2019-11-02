@@ -1,9 +1,12 @@
 package com.example.lifetime.ui.main.main_activity
 
+import android.graphics.Color
 import android.graphics.Point
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
+import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.core.view.marginBottom
 import androidx.navigation.*
@@ -74,6 +77,7 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
             when (it.itemId) {
                 R.id.navigationHome -> {
                     toolbarTitle.text = person?.name
+                    mToolbar.visibility = View.VISIBLE
                     ivPersons.visibility = View.VISIBLE
                     navController.navigate(R.id.navigationHome)
                     true
@@ -81,9 +85,11 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
 
                 R.id.navigationMessage -> {
                     lifeSpiralFragment?.lifeSpiralView?.clear()
-                    toolbarTitle.text = "پیام‌ها"
+                    mToolbar.visibility = View.VISIBLE
                     ivPersons.visibility = View.GONE
+                    toolbarTitle.text = "پیام‌ها"
                     navController.navigate(R.id.navigationMessage)
+
                     true
                 }
 
@@ -91,6 +97,7 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
                     lifeSpiralFragment?.lifeSpiralView?.clear()
                     toolbarTitle.text = "درباره ما"
                     ivPersons.visibility = View.GONE
+                    mToolbar.visibility = View.GONE
                     navController.navigate(R.id.navigationAbout)
                     true
                 }
