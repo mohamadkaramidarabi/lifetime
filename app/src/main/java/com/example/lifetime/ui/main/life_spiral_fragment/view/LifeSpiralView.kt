@@ -19,6 +19,7 @@ class LifeSpiralView (context: Context, attributeSet: AttributeSet? = null) : Vi
 
     private var pointList: List<Point>? = null
     private var forClear = false
+    private var bitmap: Bitmap? = null
 
     var w: Int? = null
         private set
@@ -67,9 +68,13 @@ class LifeSpiralView (context: Context, attributeSet: AttributeSet? = null) : Vi
     private fun drawSpiral(canvas: Canvas?) {
         if (forClear) return
         if (person == null || pointList == null) return
+        if (bitmap != null) {
+            canvas?.drawBitmap(bitmap!!, 0f, 0f, Paint())
+            return
+        }
         val radius= if(w!!<=h!!) (w!!/2).toDouble() else (h!!).toDouble() / 2
         val dotRadius =
-            sqrt(0.4 * radius.pow(2.0) / (person?.LifeExpectancyYears!! * 52)).toInt()
+            sqrt(0.4 * radius.pow(2.0) / (person?.LifeExpectancyYears!! * 365/7)).toInt()
         for ((i, point) in pointList!!.withIndex()) {
             if (i > CommonUtil.calculateAge(PersianCalendar(person!!.birthDate)) / 7) {
                 paint.color = Color.GRAY
@@ -83,6 +88,12 @@ class LifeSpiralView (context: Context, attributeSet: AttributeSet? = null) : Vi
                 canvas
             )
         }
+    }
+
+    fun drawBitmap(bitmap: Bitmap) {
+        this.bitmap = bitmap
+        invalidate()
+
     }
 
     private fun drawCircle(

@@ -2,7 +2,10 @@ package com.example.lifetime.util
 
 import android.app.ProgressDialog
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.view.View
 import android.widget.ProgressBar
 import androidx.core.graphics.drawable.toDrawable
 import com.example.lifetime.R
@@ -25,6 +28,5 @@ object CommonUtil {
 
     fun calculateAge(persianCalendar: PersianCalendar): Int =
         ((PersianCalendar().time.time - persianCalendar.time.time) / (24 * 60 * 60 * 1000)).toInt()
-
 
 }

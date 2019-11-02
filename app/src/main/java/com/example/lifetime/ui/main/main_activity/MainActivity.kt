@@ -72,11 +72,11 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
             lastFragmentId = it.itemId
 
             when (it.itemId) {
-                R.id.navigationHome ->{
+                R.id.navigationHome -> {
                     toolbarTitle.text = person?.name
                     ivPersons.visibility = View.VISIBLE
                     navController.navigate(R.id.navigationHome)
-                    navController.popBackStack()
+                    true
                 }
 
                 R.id.navigationMessage -> {
@@ -84,7 +84,7 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
                     toolbarTitle.text = "پیام‌ها"
                     ivPersons.visibility = View.GONE
                     navController.navigate(R.id.navigationMessage)
-                    navController.popBackStack()
+                    true
                 }
 
                 R.id.navigationAbout -> {
@@ -92,15 +92,23 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
                     toolbarTitle.text = "درباره ما"
                     ivPersons.visibility = View.GONE
                     navController.navigate(R.id.navigationAbout)
-                    navController.popBackStack()
+                    true
                 }
+                else ->
+                    false
 
             }
-            true
         }
-
     }
     private var drawAfterCollapsed = false
+
+    override fun onBackPressed() {
+        if (navController.currentDestination?.id == R.id.navigationHome) {
+            finish()
+        } else {
+            navController.navigate(R.id.navigationHome)
+        }
+    }
 
     private fun bottomSheetSetup() {
         sheetBehavior = BottomSheetBehavior.from(bottomSheet)
@@ -173,18 +181,20 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
         val currentDate = PersianCalendar()
         var currentYear = currentDate.persianYear
         var currentMonth = currentDate.persianMonth
-        var currentDay = currentDate.persianDay
-        if (currentDay >= birthDay) {
-            lifeSpiralFragment?.day?.text =
+        val currentDay = currentDate.persianDay
+        when {
+            currentDay >= birthDay -> lifeSpiralFragment?.day?.text =
                 (currentDay- birthDay).toString()
-        } else if (currentMonth <= 6) {
-            lifeSpiralFragment?.day?.text =
-                (currentDay+ 31 - birthDay).toString()
-            --currentMonth
-        } else {
-            lifeSpiralFragment?.day?.text =
-                (currentDay+ 30 - birthDay).toString()
-            --currentMonth
+            currentMonth <= 6 -> {
+                lifeSpiralFragment?.day?.text =
+                    (currentDay+ 31 - birthDay).toString()
+                --currentMonth
+            }
+            else -> {
+                lifeSpiralFragment?.day?.text =
+                    (currentDay+ 30 - birthDay).toString()
+                --currentMonth
+            }
         }
         if (currentMonth >= birthMonth) {
             lifeSpiralFragment?.month?.text = "${currentMonth - birthMonth} :"

@@ -23,7 +23,6 @@ class MainPresenter<V : MainInteractor.MainMVPView> @Inject internal constructor
 
     override fun deletePerson(person: Person):Boolean{
         if (dataManager.getLastPerson()?.id == person.id) {
-            Log.d("TAG_TAG", person.toString())
             compositeDisposable.add(
                 dataManager.loadPersons()
                     .compose(schedulerProvider.ioToMainObservableScheduler())
@@ -90,7 +89,7 @@ class MainPresenter<V : MainInteractor.MainMVPView> @Inject internal constructor
 
             val radius= if(w <= h) (w /2).toDouble() else (h / 2).toDouble()
             val dotRadius =
-                sqrt(0.4 * radius.pow(2.0) / (person.LifeExpectancyYears * 52)).toInt()
+                sqrt(0.4 * radius.pow(2.0) / (person.LifeExpectancyYears * 365 / 7 + person.LifeExpectancyYears / (4 * 7))).toInt()
 
             val lastCirclePoint = Point(w / 2, h / 2)
             val maxAngle = getMaxAngle((0.9 * radius).toInt(),lifeExceptionYears.toInt(), dotRadius)
@@ -115,7 +114,7 @@ class MainPresenter<V : MainInteractor.MainMVPView> @Inject internal constructor
                     lastCirclePoint.y = p.y
 
                     count++
-                    if (count <= (lifeExceptionYears * 365).toDouble() / 7) {
+                    if (count <=  ((lifeExceptionYears * 365/7 + lifeExceptionYears/(4*7) ))) {
                         pointList.add(Point(p.x, p.y))
                     }
                 }
@@ -130,7 +129,7 @@ class MainPresenter<V : MainInteractor.MainMVPView> @Inject internal constructor
 
     private fun getMaxAngle(circleRadius: Int,LifeExpectancyYears: Int, dotRadius: Int): Int {
         var phi = 0
-        while (getSpiralLength(phi * PI / 180, 2 * circleRadius).toInt() <= (LifeExpectancyYears * 52 * dotRadius * 2 * 1.1).toInt()) {
+        while (getSpiralLength(phi * PI / 180, 2 * circleRadius).toInt() <= ((LifeExpectancyYears * 365/7 + LifeExpectancyYears/(4*7) ) * dotRadius * 2 * 1.2).toInt()) {
             phi += 1
         }
         return phi
