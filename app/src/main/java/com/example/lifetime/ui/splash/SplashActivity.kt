@@ -43,7 +43,7 @@ class SplashActivity : BaseActivity(), SplashInteractor.SplashMVPView {
             WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash)
         presenter.onAttach(this)
-        presenter.seedLifeExpectancies()
+//        presenter.seedLifeExpectancies()
     }
 
 
