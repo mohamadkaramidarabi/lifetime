@@ -11,7 +11,7 @@ import androidx.annotation.LayoutRes
 import com.example.lifetime.R
 import java.util.ArrayList
 
-class AutoCompleteCountryAdapter(private val mContext: Context, @LayoutRes private val viewResourceId: Int, items: ArrayList<String>) : ArrayAdapter<String>(mContext, viewResourceId, items) {
+class AutoCompleteCountryAdapter constructor(private val mContext: Context, @LayoutRes private val viewResourceId: Int, items: ArrayList<String>) : ArrayAdapter<String>(mContext, viewResourceId, items) {
     private var countryAll = ArrayList<String>()
     private var countries = ArrayList<String>()
     private var suggestions = ArrayList<String>()

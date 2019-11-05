@@ -7,7 +7,7 @@
     tools:context=".ui.splash.SplashActivity"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivLogo"
         android:layout_width="@dimen/splash_logo_size"
         android:layout_height="@dimen/splash_logo_size"
@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.25"
-        app:srcCompat="@drawable/spiral" />
+        app:srcCompat="@drawable/round_button_background"/>
 
 
 
@@ -67,11 +67,11 @@
             android:gravity="center"
             android:orientation="vertical">
 
-<!--            <com.example.lifetime.ui.component.RadioButton-->
-<!--                android:id="@+id/rbEnglish"-->
-<!--                android:layout_width="40dp"-->
-<!--                android:layout_height="40dp"-->
-<!--                android:checked="false" />-->
+            <com.example.lifetime.ui.component.RadioButton
+                android:id="@+id/rbEnglish"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:checked="false" />
 
             <TextView
                 android:id="@+id/tvEnglish"
@@ -93,10 +93,10 @@
             android:gravity="center"
             android:orientation="vertical">
 
-<!--            <com.example.lifetime.ui.component.RadioButton-->
-<!--                android:id="@+id/rbArabic"-->
-<!--                android:layout_width="40dp"-->
-<!--                android:layout_height="40dp" />-->
+            <com.example.lifetime.ui.component.RadioButton
+                android:id="@+id/rbArabic"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
 
             <TextView
                 android:id="@+id/tvArabic"
@@ -118,11 +118,11 @@
             android:gravity="center"
             android:orientation="vertical">
 
-<!--            <com.example.lifetime.ui.component.RadioButton-->
+            <com.example.lifetime.ui.component.RadioButton
 
-<!--                android:id="@+id/rbPersian"-->
-<!--                android:layout_width="40dp"-->
-<!--                android:layout_height="40dp" />-->
+                android:id="@+id/rbPersian"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
 
             <TextView
                 android:id="@+id/tvPersian"

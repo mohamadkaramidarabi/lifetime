@@ -1,12 +1,14 @@
 package com.example.lifetime.ui.component
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.Keep
 import com.example.lifetime.util.AndroidUtilities
 
-class RadioButton(context: Context, attributeSet: AttributeSet? = null, defStyleAttr: Int = 0) :
+class RadioButton @JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null, defStyleAttr: Int = 0) :
     View(context, attributeSet, defStyleAttr) {
 
     private val TAG = "RadioButton"
@@ -15,6 +17,15 @@ class RadioButton(context: Context, attributeSet: AttributeSet? = null, defStyle
 
     private var checkedColor: Int = 0
     private var color: Int = 0
+
+    var progress: Float = 0.toFloat()
+        @Keep
+        set(value) {
+            if (this.progress == value) return
+            field = value
+            invalidate()
+        }
+    private var checkAnimator: ObjectAnimator? = null
 
     private var attachedToWindow: Boolean = false
     var isChecked: Boolean = false
@@ -52,15 +63,37 @@ class RadioButton(context: Context, attributeSet: AttributeSet? = null, defStyle
 
 
     }
+    fun setSize(value: Int) {
+        if (size == value) {
+            return
+        }
+        size = value
+    }
 
     fun setColor(color: Int, checkedColor: Int) {
         this.color = color
         this.checkedColor = checkedColor
+        invalidate()
     }
 
     override fun setBackgroundColor(color: Int) {
         this.color = color
         invalidate()
+    }
+
+    fun setCheckedColor(checkedColor: Int) {
+        this.checkedColor = checkedColor
+        invalidate()
+    }
+
+    private fun cancelCheckAnimator() {
+        if(checkAnimator != null) checkAnimator!!.cancel()
+    }
+
+    private fun animateToCheckedState(newCheckedState: Boolean) {
+        checkAnimator = ObjectAnimator.ofFloat(this,"progress",if(newCheckedState) 1f else 0f)
+        checkAnimator!!.duration = 200
+        checkAnimator!!.start()
     }
 
     override fun onAttachedToWindow() {
@@ -80,15 +113,14 @@ class RadioButton(context: Context, attributeSet: AttributeSet? = null, defStyle
         isChecked = checked
 
         if (attachedToWindow && animated) {
-
+            animateToCheckedState(checked)
         } else {
-
-
-
+            cancelCheckAnimator()
+            progress = if(checked) 1.0f else 0.0f
         }
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         if (bitmap == null || bitmap!!.width != measuredWidth) {
@@ -96,6 +128,33 @@ class RadioButton(context: Context, attributeSet: AttributeSet? = null, defStyle
                 bitmap!!.recycle()
                 bitmap = null
             }
+            try {
+                bitmap = Bitmap.createBitmap(measuredWidth, measuredHeight, Bitmap.Config.ARGB_8888)
+                bitmapCanvas = Canvas(bitmap)
+            } catch (e: Throwable) {
+                e.printStackTrace()
+            }
+        }
+        val circleProgress: Float
+        if (this.progress <= 0.5f) {
+            paint!!.color = color
+            checkedPaint!!.color = color
+            circleProgress = this.progress / 0.5f
+        } else {
+            circleProgress = 2.0f - this.progress / 0.5f
+            paint!!.color = Color.BLACK
+            checkedPaint!!.color = color
+        }
+        if (bitmap != null) {
+            bitmap!!.eraseColor(0)
+            val radius = size / 2 - (1 + circleProgress) * AndroidUtilities.density
+            bitmapCanvas!!.drawCircle(
+                (measuredWidth / 2).toFloat(),
+                (measuredHeight / 2).toFloat(),
+                radius,
+                paint!!
+            )
+            canvas.drawBitmap(bitmap!!, 0f, 0f, null)
         }
 
     }
