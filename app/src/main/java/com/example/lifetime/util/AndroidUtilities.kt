@@ -1,6 +1,7 @@
 package com.example.lifetime.util
 
 import android.content.Context
+import kotlin.math.ceil
 
 object AndroidUtilities {
 
@@ -21,4 +22,9 @@ object AndroidUtilities {
         }
 
     }
+
+    @JvmStatic
+    fun dp(value: Float): Int =
+        if(value == 0f) 0
+        else ceil((density*value).toDouble()).toInt()
 }

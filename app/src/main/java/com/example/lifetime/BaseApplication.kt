@@ -20,4 +20,9 @@ class BaseApplication: DaggerApplication() {
         @JvmStatic
         fun get(): Context = application!!.applicationContext
     }
+
+    override fun onCreate() {
+        super.onCreate()
+
+    }
 }
