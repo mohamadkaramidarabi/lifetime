@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">چرخه عمر</string>
+    <string name="next">بعدی</string>
+    <string name="choose_your_language">زبان خود را انتخاب کنید</string>
+    <string name="birth_date">تاریخ تولد</string>
+    <string name="birth_date_hint">روز/ماه/سال</string>
+    <string name="country">کشور</string>
+    <string name="country_hint">نام کشور (به انگلیسی وارد کنید)</string>
+    <string name="email">ایمیل</string>
+    <string name="email_hint">ایمیل خود را وارد کنید (اختیاری)</string>
+    <string name="login_title_message">برای استفاده از برنامه لطفا اطلاعات خود را وارد کنید.</string>
+    <string name="name">نام</string>
+    <string name="name_hint">نام خود را وارد کنید...</string>
+    <string name="submit">ثبت نام</string>
+    <string name="add_person">اضافه کردن فرد جدید</string>
+    <string name="real_time">سن واقعی</string>
+    <string name="year">سال</string>
+    <string name="month">ماه</string>
+    <string name="day">روز</string>
+    <string name="messages">پیام‌ها</string>
+    <string name="add_person_dialog_title">اضافه کردن فرد جدید</string>
+    <string name="by_country">بر اساس کشور</string>
+    <string name="Costume">دستی</string>
+    <string name="year_hint">سال ...</string>
+    <string name="add">اضافه</string>
+    <string name="life_exception">امید به زندگی</string>
+    <string name="add_person_name_hint">نام وارد کنید یا مادر، پدر و ...</string>
+    <string name="about_us_text">توضیحات در این قسمت وارد میشه!!</string>
+    <string name="www_7030_ir">www.۷۰۳۰.ir</string>
+    <string name="ok">باشه</string>
+    <string name="cancel">بیخیال</string>
+    <string name="today">امروز</string>
+</resources>

@@ -18,7 +18,7 @@
         android:scaleX="2"
         android:src="@drawable/ic_expand_more_green_24dp"
         android:layout_gravity="center"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <ScrollView
         android:layout_width="match_parent"
@@ -35,11 +35,9 @@
                 android:layout_height="wrap_content"/>
 
             <LinearLayout
-                android:layout_gravity="right"
                 android:id="@+id/addPerson"
                 android:padding="10dp"
                 android:orientation="horizontal"
-                android:layoutDirection="rtl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
@@ -56,7 +54,7 @@
                     android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="اضافه کردن فرد جدید"/>
+                    android:text="@string/add_person"/>
             </LinearLayout>
         </LinearLayout>
 

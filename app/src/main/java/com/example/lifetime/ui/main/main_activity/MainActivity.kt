@@ -1,12 +1,9 @@
 package com.example.lifetime.ui.main.main_activity
 
-import android.graphics.Color
 import android.graphics.Point
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
-import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.core.view.marginBottom
 import androidx.navigation.*
@@ -20,6 +17,7 @@ import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.base.view.BaseActivity
 import com.example.lifetime.ui.addperson.AddPersonDialog
 import com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiralFragment
+import com.example.lifetime.util.LocaleController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
 import kotlinx.android.synthetic.main.content_main.*
@@ -87,7 +85,7 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
                     lifeSpiralFragment?.lifeSpiralView?.clear()
                     mToolbar.visibility = View.VISIBLE
                     ivPersons.visibility = View.GONE
-                    toolbarTitle.text = "پیام‌ها"
+                    toolbarTitle.text = LocaleController.getString(R.string.messages)
                     navController.navigate(R.id.navigationMessage)
 
                     true
@@ -95,7 +93,6 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
 
                 R.id.navigationAbout -> {
                     lifeSpiralFragment?.lifeSpiralView?.clear()
-                    toolbarTitle.text = "درباره ما"
                     ivPersons.visibility = View.GONE
                     mToolbar.visibility = View.GONE
                     navController.navigate(R.id.navigationAbout)
@@ -127,7 +124,7 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
 
         ivPersons.setOnClickListener {
             if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-                lifeSpiralFragment?.lifeSpiralView?.clear()
+//                lifeSpiralFragment?.lifeSpiralView?.clear()
                 val param = bottomSheet.layoutParams
                 param.height =
                     (0.95 * contentView?.height!!).toInt() - mToolbar.height - mToolbar.marginBottom - mToolbar.paddingBottom

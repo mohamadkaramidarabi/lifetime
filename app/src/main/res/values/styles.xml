@@ -4,7 +4,7 @@
     <style name="AppTheme"
         parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:fontFamily">@font/vazir_medium</item>
+        <item name="android:fontFamily">@font/vazir_medium_en</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -21,7 +21,6 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="TextView">
-        <item name="android:fontFamily">@font/vazir_medium</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">14sp</item>
     </style>
@@ -72,7 +71,6 @@
         <item name="contentInsetRight" >0dp</item>
         <item name="contentInsetStart" >0dp</item>
         <item name="android:background">?attr/colorPrimary</item>
-        <item name="android:fontFamily">@font/vazir_medium</item>
         <item name="titleTextColor">@android:color/white</item>
     </style>
 

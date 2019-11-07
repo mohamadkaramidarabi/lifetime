@@ -1,7 +1,10 @@
 package com.example.lifetime.util
 
+import android.app.Activity
 import android.content.Context
 import kotlin.math.ceil
+
+
 
 object AndroidUtilities {
 
@@ -27,4 +30,9 @@ object AndroidUtilities {
     fun dp(value: Float): Int =
         if(value == 0f) 0
         else ceil((density*value).toDouble()).toInt()
+
+    @JvmStatic
+    fun getImage(activity: Activity,imageName: String): Int {
+        return activity.resources.getIdentifier(imageName, "drawable", activity.packageName)
+    }
 }

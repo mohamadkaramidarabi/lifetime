@@ -31,12 +31,10 @@ class LocaleController private constructor(){
         const val TAG = "LocaleController"
         const val KEY_PREF_LANG = "language"
         const val ENGLISH_INDEX = 0
-        const val ARABIC_INDEX = 1
-        const val PERSIAN_INDEX = 2
+        const val PERSIAN_INDEX = 1
 
         const val FA = "fa"
         const val EN = "en"
-        const val AR = "ar"
 
         private var mInstance: LocaleController? =null
 
@@ -71,12 +69,9 @@ class LocaleController private constructor(){
 
         fun getEnglishNumber(number: Int)= NumberFormat.getInstance(Locale.US).format(number)
 
-        fun getArabicNumber(number: Int) = NumberFormat.getInstance(Locale(AR, "EG")).format(number)
-
         fun getPersianNumber(number: Int) = NumberFormat.getInstance(Locale(FA,"IR")).format(number)
 
         fun isPersian() = getInstance().currentLocaleInfo.shortName == FA
-        fun isArabic() = getInstance().currentLocaleInfo.shortName == AR
         fun isEnglish() = getInstance().currentLocaleInfo.shortName == EN
 
 
@@ -91,14 +86,6 @@ class LocaleController private constructor(){
         languages.add(localInfo)
 
         localInfo = LocaleInfo()
-        localInfo.name = "العربیه"
-        localInfo.nameEnglish = "Arabic"
-        localInfo.pluralLangCode = AR
-        localInfo.shortName = localInfo.pluralLangCode
-        localInfo.isRtl = true
-        languages.add(localInfo)
-
-        localInfo = LocaleInfo()
         localInfo.name = "فارسی"
         localInfo.nameEnglish = "Persian"
         localInfo.pluralLangCode = FA
@@ -109,9 +96,11 @@ class LocaleController private constructor(){
         currentLocaleInfo = getCurrentLang()
     }
 
-    fun getCurrentLang() : LocaleInfo{
-        return LocaleInfo()
+    fun getCurrentLang() = when (mPref.getString(KEY_PREF_LANG, FA) ?: FA) {
+        FA -> languages[PERSIAN_INDEX]
+        else -> languages[ENGLISH_INDEX]
     }
+
 
     class LocaleInfo {
         var name: String = ""
@@ -180,7 +169,6 @@ class LocaleController private constructor(){
             context.resources.updateConfiguration(conf, context.resources.displayMetrics)
 
             numberFormat = when {
-                localeInfo.shortName == AR -> NumberFormat.getInstance(Locale(AR, "AE"))
                 localeInfo.shortName == FA -> NumberFormat.getInstance(Locale(FA, "IR"))
                 else -> NumberFormat.getInstance(Locale(EN, "US"))
 
@@ -191,23 +179,4 @@ class LocaleController private constructor(){
             e.printStackTrace()
         }
     }
-
-
-
-
-    fun getCurrentLnag(): LocaleInfo = when (mPref.getString(KEY_PREF_LANG, FA) ?: FA) {
-        FA ->
-            languages[PERSIAN_INDEX]
-        EN ->
-            languages[ENGLISH_INDEX]
-        AR ->
-            languages[ARABIC_INDEX]
-        else ->
-            languages[PERSIAN_INDEX]
-    }
-
-
-
-
-
 }

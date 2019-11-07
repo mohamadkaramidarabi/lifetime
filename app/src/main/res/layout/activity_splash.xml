@@ -23,9 +23,6 @@
         app:layout_constraintVertical_bias="0.25"
         app:srcCompat="@drawable/round_button_background"/>
 
-
-
-
     <TextView
         android:id="@+id/tvChooseLang"
         android:layout_width="match_parent"
@@ -85,31 +82,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/llArabic"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="?selectableItemBackground"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <com.example.lifetime.ui.component.RadioButton
-                android:id="@+id/rbArabic"
-                android:layout_width="40dp"
-                android:layout_height="40dp" />
-
-            <TextView
-                android:id="@+id/tvArabic"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="@dimen/activity_vertical_margin_small"
-                android:layout_marginEnd="8dp"
-                android:gravity="center"
-                android:text="@string/arabic" />
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/llPersian"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -139,6 +111,8 @@
 
     <Button
         android:id="@+id/btnSubmit"
+        style="@style/Button"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

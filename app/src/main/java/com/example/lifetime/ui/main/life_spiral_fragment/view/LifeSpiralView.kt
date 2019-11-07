@@ -3,7 +3,6 @@ package com.example.lifetime.ui.main.life_spiral_fragment.view
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.util.CommonUtil
@@ -20,6 +19,7 @@ class LifeSpiralView (context: Context, attributeSet: AttributeSet? = null) : Vi
     private var pointList: List<Point>? = null
     private var forClear = false
     private var bitmap: Bitmap? = null
+    private var bitmapCanvas: Canvas? = null
 
     var w: Int? = null
         private set
@@ -68,8 +68,15 @@ class LifeSpiralView (context: Context, attributeSet: AttributeSet? = null) : Vi
     private fun drawSpiral(canvas: Canvas?) {
         if (forClear) return
         if (person == null || pointList == null) return
-        if (bitmap != null) {
-            canvas?.drawBitmap(bitmap!!, 0f, 0f, Paint())
+//        if (bitmap != null) {
+//            canvas?.drawBitmap(bitmap!!, 0f, 0f, Paint())
+//            return
+//        }
+        if (bitmap == null) {
+            bitmap = Bitmap.createBitmap(w!!, h!!, Bitmap.Config.ARGB_4444)
+            bitmapCanvas = Canvas(bitmap)
+        } else {
+            canvas?.drawBitmap(bitmap, 0.0f, 0.0f, null)
             return
         }
         val radius= if(w!!<=h!!) (w!!/2).toDouble() else (h!!).toDouble() / 2
@@ -85,9 +92,10 @@ class LifeSpiralView (context: Context, attributeSet: AttributeSet? = null) : Vi
                 point.y.toFloat(),
                 dotRadius.toFloat(),
                 paint,
-                canvas
+                bitmapCanvas
             )
         }
+        canvas?.drawBitmap(bitmap, 0.0f, 0.0f, null)
     }
 
     fun drawBitmap(bitmap: Bitmap) {

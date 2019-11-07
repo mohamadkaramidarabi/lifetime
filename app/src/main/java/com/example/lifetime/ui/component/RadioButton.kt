@@ -142,8 +142,15 @@ class RadioButton @JvmOverloads constructor(context: Context, attributeSet: Attr
             circleProgress = this.progress / 0.5f
         } else {
             circleProgress = 2.0f - this.progress / 0.5f
-            paint!!.color = Color.BLACK
-            checkedPaint!!.color = color
+            val r1 = Color.red(color)
+            val rD = ((Color.red(checkedColor) - r1) * (1.0f - circleProgress)).toInt()
+            val g1 = Color.green(color)
+            val gD = ((Color.green(checkedColor) - g1) * (1.0f - circleProgress)).toInt()
+            val b1 = Color.blue(color)
+            val bD = ((Color.blue(checkedColor) - b1) * (1.0f - circleProgress)).toInt()
+            val c = Color.rgb(r1 + rD, g1 + gD, b1 + bD)
+            paint!!.color = c
+            checkedPaint!!.color = c
         }
         if (bitmap != null) {
             bitmap!!.eraseColor(0)
@@ -154,6 +161,27 @@ class RadioButton @JvmOverloads constructor(context: Context, attributeSet: Attr
                 radius,
                 paint!!
             )
+            if (this.progress <= 0.5f) {
+                bitmapCanvas!!.drawCircle(
+                    (measuredWidth / 2).toFloat(),
+                    (measuredHeight / 2).toFloat(),
+                    radius - AndroidUtilities.dp(1f),
+                    checkedPaint!!
+                )
+                bitmapCanvas!!.drawCircle(
+                    (measuredWidth / 2).toFloat(),
+                    (measuredHeight / 2).toFloat(),
+                    (radius - AndroidUtilities.dp(1f)) * (1.0f - circleProgress),
+                    eraser!!
+                )
+            } else {
+                bitmapCanvas!!.drawCircle(
+                    (measuredWidth / 2).toFloat(),
+                    (measuredHeight / 2).toFloat(),
+                    size / 4 + (radius - AndroidUtilities.dp(1f).toFloat() - (size / 4).toFloat()) * circleProgress,
+                    checkedPaint!!
+                )
+            }
             canvas.drawBitmap(bitmap!!, 0f, 0f, null)
         }
 

@@ -11,41 +11,33 @@
     android:layout_marginBottom="3dp"
     app:cardElevation="2dp"
     >
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_margin="5dp"
-            android:orientation="vertical"
+            android:orientation="horizontal"
+            android:textDirection="locale"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp">
 
                 <TextView
                     android:id="@+id/fullName"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:text="محمد کرمی"
+                    android:text="Mohammad"
                     android:textColor="@android:color/black"
-                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"/>
-
-
 
                 <ImageView
                     android:id="@+id/delete"
                     android:paddingRight="20dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/fullName"
-                    app:layout_constraintBottom_toBottomOf="@id/fullName"
                     android:src="@drawable/ic_delete_red_24dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
                 <ImageView
                     android:id="@+id/edit"
-                    app:layout_constraintLeft_toRightOf="@id/delete"
-                    app:layout_constraintTop_toTopOf="@id/delete"
-                    app:layout_constraintBottom_toBottomOf="@id/delete"
                     android:src="@drawable/ic_edit_black_24dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 </androidx.cardview.widget.CardView>
