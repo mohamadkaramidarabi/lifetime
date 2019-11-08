@@ -14,6 +14,7 @@ object MainInteractor {
         fun getPersonFromList(person: Person)
         fun getLastPerson(person: Person)
         fun setPointList(pointList: List<Point>)
+        fun updateViewAfterDeleteCurrentPerson(mainPerson: Person)
     }
 
     interface MainMVPPresenter<V : MainMVPView> : MVPPresenter<V> {

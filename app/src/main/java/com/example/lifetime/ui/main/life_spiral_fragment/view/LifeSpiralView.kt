@@ -17,8 +17,7 @@ class LifeSpiralView (context: Context, attributeSet: AttributeSet? = null) : Vi
     private var person: Person? = null
 
     private var pointList: List<Point>? = null
-    private var forClear = false
-    private var bitmap: Bitmap? = null
+    var bitmap: Bitmap? = null
     private var bitmapCanvas: Canvas? = null
 
     var w: Int? = null
@@ -29,10 +28,13 @@ class LifeSpiralView (context: Context, attributeSet: AttributeSet? = null) : Vi
     init {
         setToDefaultsValues()
     }
+
     private fun setToDefaultsValues() {
         person = null
         pointList = null
         paint.color = Color.WHITE
+        bitmap = null
+        bitmapCanvas = null
     }
 
 
@@ -49,39 +51,36 @@ class LifeSpiralView (context: Context, attributeSet: AttributeSet? = null) : Vi
         this.person = person
         invalidate()
     }
+    fun setParameters(pointList: List<Point>, person: Person, bitmap: Bitmap) {
+        this.bitmap = bitmap
+        setParameters(pointList,person)
+    }
 
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         drawSpiral(canvas)
-        setToDefaultsValues()
-        forClear = false
     }
 
     fun clear() {
-        forClear = true
         setToDefaultsValues()
         invalidate()
     }
 
 
+
     private fun drawSpiral(canvas: Canvas?) {
-        if (forClear) return
         if (person == null || pointList == null) return
-//        if (bitmap != null) {
-//            canvas?.drawBitmap(bitmap!!, 0f, 0f, Paint())
-//            return
-//        }
         if (bitmap == null) {
             bitmap = Bitmap.createBitmap(w!!, h!!, Bitmap.Config.ARGB_4444)
-            bitmapCanvas = Canvas(bitmap)
+            bitmapCanvas = Canvas(bitmap!!)
         } else {
-            canvas?.drawBitmap(bitmap, 0.0f, 0.0f, null)
+            canvas?.drawBitmap(bitmap!!, 0.0f, 0.0f, null)
             return
         }
         val radius= if(w!!<=h!!) (w!!/2).toDouble() else (h!!).toDouble() / 2
         val dotRadius =
-            sqrt(0.4 * radius.pow(2.0) / (person?.LifeExpectancyYears!! * 365/7)).toInt()
+            sqrt(0.4 * radius.pow(2.0) / (person?.lifeExpectancyYears!! * 365/7)).toInt()
         for ((i, point) in pointList!!.withIndex()) {
             if (i > CommonUtil.calculateAge(PersianCalendar(person!!.birthDate)) / 7) {
                 paint.color = Color.GRAY
@@ -95,13 +94,8 @@ class LifeSpiralView (context: Context, attributeSet: AttributeSet? = null) : Vi
                 bitmapCanvas
             )
         }
-        canvas?.drawBitmap(bitmap, 0.0f, 0.0f, null)
-    }
-
-    fun drawBitmap(bitmap: Bitmap) {
-        this.bitmap = bitmap
-        invalidate()
-
+        listener?.setBitmap(bitmap!!)
+        canvas?.drawBitmap(bitmap!!, 0.0f, 0.0f, null)
     }
 
     private fun drawCircle(
@@ -117,5 +111,15 @@ class LifeSpiralView (context: Context, attributeSet: AttributeSet? = null) : Vi
             radius,
             paint
         )
+    }
+
+
+    private var listener: LifeSpiralCallBack? = null
+    fun addListener(listener: LifeSpiralCallBack) {
+        this.listener = listener
+    }
+
+    interface LifeSpiralCallBack {
+        fun setBitmap(bitmap: Bitmap)
     }
 }

@@ -42,5 +42,7 @@
     <string name="cancel">Cancel</string>
     <string name="ok">Ok</string>
     <string name="today">Today</string>
+    <string name="information_edit">Information Edit</string>
+    <string name="edit">Apply</string>
 
 </resources>

@@ -64,7 +64,6 @@ class SplashActivity : BaseActivity(), SplashInteractor.SplashMVPView {
         tvPersian.setTextColor(colorStateList)
 
         val currentLang = LocaleController.getInstance().getCurrentLang()
-        AppLogger.e("$TAG, current language is ${currentLang.shortName}")
         when (currentLang.shortName) {
             LocaleController.FA -> {
                 rbPersian.setChecked(checked = true, animated = false)

@@ -58,7 +58,6 @@ class LifeSpiralFragment : BaseFragment(), LifeSpiralInteractor.LifeSpiralMVPVie
         super.onResume()
         presenter.getLastPerson()
         (activity as MainActivity).onLifeSpiralFragmentResumed(this)
-
     }
 
     override fun onDetach() {

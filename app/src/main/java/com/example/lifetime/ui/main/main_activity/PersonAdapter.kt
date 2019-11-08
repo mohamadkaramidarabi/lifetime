@@ -33,13 +33,20 @@ class PersonAdapter @Inject constructor(val presenter: MainInteractor.MainMVPPre
         init {
             delete.setOnClickListener {
                 presenter.deletePerson(pair?.second!!)
-                presenter.getView()?.deletePersonFromList(pair?.second!!)
             }
             view.setOnClickListener{
-                presenter.onPersonClicked(pair?.second!!)
+                val p = pair?.second!!.copy()
+                p.id = pair?.second!!.id
+                p.email = pair?.second!!.email
+                p.isMainUser = pair?.second!!.isMainUser
+                presenter.onPersonClicked(p)
             }
             edit.setOnClickListener {
-                presenter.getView()?.openUserDialog(pair?.second)
+                val p = pair?.second!!.copy()
+                p.id = pair?.second!!.id
+                p.email = pair?.second!!.email
+                p.isMainUser = pair?.second!!.isMainUser
+                presenter.getView()?.openUserDialog(p)
             }
         }
 
@@ -48,7 +55,7 @@ class PersonAdapter @Inject constructor(val presenter: MainInteractor.MainMVPPre
                 delete.visibility = View.GONE
             }
             pair = Pair(view, person)
-            fullName.text = person?.name ?: ""
+            fullName.text = person.name
 
 
         }

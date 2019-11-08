@@ -2,7 +2,6 @@ package com.example.lifetime.ui.main.main_activity
 
 import android.graphics.Path
 import android.graphics.Point
-import android.util.Log
 import com.example.lifetime.data.AppDataManager
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.base.presenter.BasePresenter
@@ -28,7 +27,10 @@ class MainPresenter<V : MainInteractor.MainMVPView> @Inject internal constructor
                     .compose(schedulerProvider.ioToMainObservableScheduler())
                     .subscribe {
                         it.map {person ->
-                            if(person.isMainUser) dataManager.setLastPerson(person)
+                            if (person.isMainUser) {
+                                dataManager.setLastPerson(person)
+                                getView()?.updateViewAfterDeleteCurrentPerson(person)
+                            }
                         }
                     }
             )
@@ -36,7 +38,9 @@ class MainPresenter<V : MainInteractor.MainMVPView> @Inject internal constructor
         return compositeDisposable.add(
             dataManager.deletePerson(person)
                 .compose(schedulerProvider.ioToMainObservableScheduler())
-                .subscribe())
+                .subscribe{
+                    getView()?.deletePersonFromList(person)
+                })
     }
 
     override fun getPersons(): Boolean =
@@ -85,11 +89,11 @@ class MainPresenter<V : MainInteractor.MainMVPView> @Inject internal constructor
             val pointList: MutableList<Point> = mutableListOf()
             pointList.add(Point(p.x, p.y))
 
-            val lifeExceptionYears = person.LifeExpectancyYears
+            val lifeExceptionYears = person.lifeExpectancyYears
 
             val radius= if(w <= h) (w /2).toDouble() else (h / 2).toDouble()
             val dotRadius =
-                sqrt(0.4 * radius.pow(2.0) / (person.LifeExpectancyYears * 365 / 7 + person.LifeExpectancyYears / (4 * 7))).toInt()
+                sqrt(0.4 * radius.pow(2.0) / (person.lifeExpectancyYears * 365 / 7 + person.lifeExpectancyYears / (4 * 7))).toInt()
 
             val lastCirclePoint = Point(w / 2, h / 2)
             val maxAngle = getMaxAngle((0.9 * radius).toInt(),lifeExceptionYears.toInt(), dotRadius)

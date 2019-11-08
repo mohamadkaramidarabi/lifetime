@@ -17,6 +17,7 @@ import androidx.core.view.isVisible
 import com.example.lifetime.data.database.repository.life_expectancies.LifeExpectancy
 import com.example.lifetime.helper.DatePickerDialog
 import com.example.lifetime.ui.main.main_activity.MainActivity
+import com.example.lifetime.util.LocaleController
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
 import ir.hamsaa.persiandatepicker.Listener
 
@@ -62,7 +63,7 @@ class AddPersonDialog(
                         if (isForUpdate()) {
                             person.let { person ->
                                 person?.name = nameEdt.text.toString()
-                                person?.LifeExpectancyYears = it.lifeExpectancy
+                                person?.lifeExpectancyYears = it.lifeExpectancy
                                 person?.birthDate = birthDate?.time?.time!!
                                 person?.country = it.country
                             }
@@ -80,7 +81,7 @@ class AddPersonDialog(
                     if (isForUpdate()) {
                         person.let { person ->
                             person?.name = nameEdt.text.toString()
-                            person?.LifeExpectancyYears = years.text.toString().toFloat()
+                            person?.lifeExpectancyYears = years.text.toString().toFloat()
                             person?.birthDate = birthDate?.time?.time!!
                             person?.country = null
                         }
@@ -133,13 +134,13 @@ class AddPersonDialog(
             isDateSated = true
             birthDate = PersianCalendar(person?.birthDate!!)
             birthDatePicker.text = birthDate?.persianShortDate
-            submitButton.text = "اصلاح"
-            tvTitle.text = "ویرایش مشخصات"
+            submitButton.text = LocaleController.getString(R.string.edit)
+            tvTitle.text = LocaleController.getString(R.string.information_edit)
             if (person?.country == null) {
                 countrySelectView.visibility = View.GONE
                 enterYearView.visibility = View.VISIBLE
                 lifeExOptions.check(R.id.manualOption)
-                years.setText(person?.LifeExpectancyYears.toString())
+                years.setText(person?.lifeExpectancyYears.toString())
             }
         }
 

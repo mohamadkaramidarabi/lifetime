@@ -15,7 +15,7 @@ data class Person(
     @Expose
     @ColumnInfo(name = "Life_expectancy_years")
     @SerializedName("Life_expectancy_years")
-    var LifeExpectancyYears: Float,
+    var lifeExpectancyYears: Float,
 
 
     @SerializedName("birth_date")
@@ -27,6 +27,7 @@ data class Person(
 
 
 ) : Serializable{
+
     @Expose
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
