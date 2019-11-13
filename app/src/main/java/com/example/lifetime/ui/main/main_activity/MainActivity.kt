@@ -26,7 +26,9 @@ import ir.hamsaa.persiandatepicker.util.PersianCalendar
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.bottom_sheet_person.*
 import org.jetbrains.anko.contentView
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
+import org.jetbrains.anko.uiThread
 import javax.inject.Inject
 
 
@@ -229,22 +231,27 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
 
     fun onLifeSpiralFragmentResumed(lifeSpiralFragment: LifeSpiralFragment) {
         this.lifeSpiralFragment = lifeSpiralFragment
-
-
-        lifeSpiralFragment.lifeSpiralView?.viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener{
+        this.lifeSpiralFragment!!.lifeSpiralView?.viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener{
             override fun onGlobalLayout() {
                 this@MainActivity.lifeSpiralFragment!!.lifeSpiralView!!.viewTreeObserver?.removeOnGlobalLayoutListener(this)
                 this@MainActivity.lifeSpiralFragment!!.lifeSpiralView!!.addListener(this@MainActivity)
                 if (person != null) setRealTimeText(person!!)
-                if (bitmap != null) {
-                    this@MainActivity.lifeSpiralFragment!!.lifeSpiralView!!.setParameters(this@MainActivity.pointList!!,this@MainActivity.person!!,this@MainActivity.bitmap!!)
-                    return
+                doAsync {
+                    Thread.sleep(5)
+                    uiThread {
+                        if (bitmap != null) {
+                            this@MainActivity.lifeSpiralFragment!!.lifeSpiralView!!.setParameters(this@MainActivity.pointList!!,this@MainActivity.person!!,this@MainActivity.bitmap!!)
+                            return@uiThread
+                        }
+                        if (person == null) {
+                            presenter.getLastPersonFromDb()
+                        } else {
+                            getLastPerson(person!!)
+                        }
+                    }
+
                 }
-                if (person == null) {
-                    presenter.getLastPersonFromDb()
-                } else {
-                    getLastPerson(person!!)
-                }
+
             }
 
         })
