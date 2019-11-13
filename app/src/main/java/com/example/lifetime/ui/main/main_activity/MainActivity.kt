@@ -161,6 +161,8 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+
+
     }
 
     override fun getLastPerson(person: Person) {

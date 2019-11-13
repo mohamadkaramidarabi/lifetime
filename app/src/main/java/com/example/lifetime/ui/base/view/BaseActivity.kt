@@ -11,8 +11,8 @@ abstract class BaseActivity : DaggerAppCompatActivity(), MVPView, BaseFragment.C
     private var progressDialog: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         LocaleController.getInstance().applyLanguage(this,LocaleController.getInstance().getCurrentLang())
+        super.onCreate(savedInstanceState)
     }
 
     override fun showLoading() {

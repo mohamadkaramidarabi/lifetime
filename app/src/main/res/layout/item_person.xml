@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@android:color/white"
     android:layout_marginTop="3dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:layout_marginBottom="3dp"
-    app:cardElevation="2dp"
     >
         <LinearLayout
             android:layout_margin="5dp"
@@ -30,14 +28,19 @@
                 <ImageView
                     android:id="@+id/delete"
                     android:paddingRight="20dp"
-                    android:src="@drawable/ic_delete_red_24dp"
+                    android:src="@drawable/ic_delete_gray_24dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
                 <ImageView
                     android:id="@+id/edit"
-                    android:src="@drawable/ic_edit_black_24dp"
+                    android:src="@drawable/ic_edit_gray_24dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
         </LinearLayout>
-</androidx.cardview.widget.CardView>
+        <View
+            android:id="@+id/splitLine"
+            android:layout_width="match_parent"
+            android:background="@color/colorGray"
+            android:layout_height="1dp"/>
+</LinearLayout>
