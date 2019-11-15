@@ -51,7 +51,6 @@
                     android:layout_gravity="bottom"
                     android:gravity="center"
                     android:id="@+id/yearTextView"
-                    android:text="30 :"
                     android:textSize="36sp"
                     android:textColor="@android:color/white"
                     android:layout_weight="1"
@@ -61,7 +60,6 @@
                     android:layout_gravity="bottom"
                     android:gravity="center"
                     android:id="@+id/monthTextView"
-                    android:text="11 :"
                     android:textSize="36sp"
                     android:textColor="@android:color/white"
                     android:layout_weight="1"
@@ -71,7 +69,26 @@
                     android:layout_gravity="bottom"
                     android:gravity="center"
                     android:id="@+id/dayTextView"
-                    android:text="03 "
+                    android:textSize="36sp"
+                    android:textColor="@android:color/white"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_gravity="bottom"
+                    android:gravity="center"
+                    android:id="@+id/hourTextView"
+                    android:textSize="36sp"
+                    android:textColor="@android:color/white"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_gravity="bottom"
+                    android:gravity="center"
+                    android:id="@+id/minuteTextView"
                     android:textSize="36sp"
                     android:textColor="@android:color/white"
                     android:layout_weight="1"
@@ -116,6 +133,27 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/hour"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/darker_gray"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/minute"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/darker_gray"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+
 
             </LinearLayout>
 

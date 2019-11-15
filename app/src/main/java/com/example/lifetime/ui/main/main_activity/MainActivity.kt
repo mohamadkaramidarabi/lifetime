@@ -29,6 +29,7 @@ import org.jetbrains.anko.contentView
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
+import java.util.*
 import javax.inject.Inject
 
 
@@ -168,6 +169,7 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
     override fun getLastPerson(person: Person) {
         toolbarTitle.text = person.name
         setRealTimeText(person)
+        adapter.setCheckLastPerson(person)
         if (lifeSpiralFragment?.lifeSpiralView == null || this.person == person) {
             return
         }
@@ -202,15 +204,15 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
         val currentDay = currentDate.persianDay
         when {
             currentDay >= birthDay -> lifeSpiralFragment?.day?.text =
-                (currentDay- birthDay).toString()
+                (currentDay- birthDay).toString() + " :"
             currentMonth <= 6 -> {
                 lifeSpiralFragment?.day?.text =
-                    (currentDay+ 31 - birthDay).toString()
+                    (currentDay+ 31 - birthDay).toString()+ " :"
                 --currentMonth
             }
             else -> {
                 lifeSpiralFragment?.day?.text =
-                    (currentDay+ 30 - birthDay).toString()
+                    (currentDay+ 30 - birthDay).toString() + " :"
                 --currentMonth
             }
         }
@@ -221,6 +223,23 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
             --currentYear
         }
         lifeSpiralFragment?.year?.text = "${currentYear - birthYear} :"
+
+        doAsync {
+            while (true) {
+                uiThread {
+                    val date = Date()
+                    val hour = date.hours
+                    val minute = date.minutes
+                    lifeSpiralFragment?.hour?.text = hour.toString() + " :"
+                    lifeSpiralFragment?.minute?.text = minute.toString()
+                }
+                Thread.sleep(1000)
+            }
+
+        }
+
+
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -238,22 +257,15 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
                 this@MainActivity.lifeSpiralFragment!!.lifeSpiralView!!.viewTreeObserver?.removeOnGlobalLayoutListener(this)
                 this@MainActivity.lifeSpiralFragment!!.lifeSpiralView!!.addListener(this@MainActivity)
                 if (person != null) setRealTimeText(person!!)
-                doAsync {
-                    Thread.sleep(5)
-                    uiThread {
-                        if (bitmap != null) {
-                            this@MainActivity.lifeSpiralFragment!!.lifeSpiralView!!.setParameters(this@MainActivity.pointList!!,this@MainActivity.person!!,this@MainActivity.bitmap!!)
-                            return@uiThread
-                        }
-                        if (person == null) {
-                            presenter.getLastPersonFromDb()
-                        } else {
-                            getLastPerson(person!!)
-                        }
-                    }
-
+                if (bitmap != null) {
+                    this@MainActivity.lifeSpiralFragment!!.lifeSpiralView!!.setParameters(this@MainActivity.pointList!!,this@MainActivity.person!!,this@MainActivity.bitmap!!)
+                    return
                 }
-
+                if (person == null) {
+                    presenter.getLastPersonFromDb()
+                } else {
+                    getLastPerson(person!!)
+                }
             }
 
         })
@@ -334,6 +346,8 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
     interface MyDialogDismiss {
         fun getPerson(person: Person, isForUpdate: Boolean)
     }
+
+
 
 }
 

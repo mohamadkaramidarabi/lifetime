@@ -30,6 +30,10 @@ class LifeSpiralFragment : BaseFragment(), LifeSpiralInteractor.LifeSpiralMVPVie
         private set
     var day: TextView? = null
         private set
+    var minute: TextView? = null
+        private set
+    var hour: TextView? = null
+        private set
 
 
     override fun onCreateView(
@@ -47,6 +51,8 @@ class LifeSpiralFragment : BaseFragment(), LifeSpiralInteractor.LifeSpiralMVPVie
         year = view?.findViewById(R.id.yearTextView)
         month = view?.findViewById(R.id.monthTextView)
         day = view?.findViewById(R.id.dayTextView)
+        hour = view?.findViewById(R.id.hourTextView)
+        minute = view?.findViewById(R.id.minuteTextView)
         presenter.getLastPerson()
     }
 

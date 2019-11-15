@@ -44,5 +44,7 @@
     <string name="today">Today</string>
     <string name="information_edit">Information Edit</string>
     <string name="edit">Apply</string>
+    <string name="minute">Minute</string>
+    <string name="hour">Hour</string>
 
 </resources>
