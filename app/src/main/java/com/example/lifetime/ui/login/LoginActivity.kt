@@ -5,19 +5,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
+import com.alirezaafkar.sundatepicker.interfaces.DateSetListener
 import com.example.lifetime.R
 import com.example.lifetime.data.database.repository.life_expectancies.LifeExpectancy
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.helper.DatePickerDialog
 import com.example.lifetime.ui.base.view.BaseActivity
 import com.example.lifetime.ui.main.main_activity.MainActivity
-import ir.hamsaa.persiandatepicker.Listener
+import com.example.lifetime.util.LocaleController
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.birthDatePicker
 import org.jetbrains.anko.contentView
 import org.jetbrains.anko.toast
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class LoginActivity : BaseActivity(), LoginInteractor.LoginMVPView{
 
@@ -25,7 +28,8 @@ class LoginActivity : BaseActivity(), LoginInteractor.LoginMVPView{
     lateinit var presenter: LoginInteractor.LoginMVPPresenter<LoginInteractor.LoginMVPView>
 
     private var countriesAdapter : ArrayAdapter<String>? = null
-    private var birthDate: PersianCalendar? = null
+    private var persianBirthDate: PersianCalendar? = null
+    private var birthDate : Calendar? = null
     private var lifeExpectancies: List<LifeExpectancy>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,19 +52,32 @@ class LoginActivity : BaseActivity(), LoginInteractor.LoginMVPView{
     }
 
     override fun openDatePickerDialog() {
-        DatePickerDialog(this,
-            object : Listener {
-                override fun onDateSelected(calendar: PersianCalendar?) {
+        if (LocaleController.getInstance().currentLocaleInfo.shortName == LocaleController.EN) {
+            DatePickerDialog(
+                this,
+                null,
+                android.app.DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                    birthDate = Calendar.getInstance().let {
+                        it.set(Calendar.YEAR,year)
+                        it.set(Calendar.MONTH,month)
+                        it.set(Calendar.DAY_OF_MONTH,dayOfMonth)
+                        it
+                    }
+                    persianBirthDate = PersianCalendar(birthDate?.timeInMillis!!)
+                }
+                , persianBirthDate?.timeInMillis
+            ).show()
+        } else {
+            DatePickerDialog(
+                this,
+                DateSetListener { _, calendar, dayOfMonth, month, year ->
+                    persianBirthDate = PersianCalendar(calendar?.timeInMillis!!)
                     birthDate = calendar
-                    birthDatePicker.text = calendar?.persianShortDate
-                }
-
-                override fun onDismissed() {
-
-                }
-
-            }, if (birthDate == null) null else birthDate?.time?.time
-        ).show()
+                },
+                null
+                , persianBirthDate?.timeInMillis
+            ).show()
+        }
     }
 
 
@@ -85,7 +102,7 @@ class LoginActivity : BaseActivity(), LoginInteractor.LoginMVPView{
             etName.requestFocus()
             return false
         }
-        if (birthDate == null) {
+        if (persianBirthDate == null) {
             toast("Please enter your birth date")
             birthDatePicker.requestFocus()
             return false
@@ -127,7 +144,7 @@ class LoginActivity : BaseActivity(), LoginInteractor.LoginMVPView{
             Person(
                 etName.text.toString(),
                 lifeExpectancies!!.filter { it.country == etCountry.text.toString() }.map { it.lifeExpectancy }[0],
-                birthDate?.time?.time!!,
+                persianBirthDate?.time?.time!!,
                 etCountry.text.toString()
             )
         person.isMainUser = true

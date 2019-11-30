@@ -3,8 +3,6 @@ package com.example.lifetime.di.component
 import android.app.Application
 import com.example.lifetime.BaseApplication
 import com.example.lifetime.di.builder.ActivityBuilder
-import com.example.lifetime.di.builder.DialogBuilder
-import com.example.lifetime.di.builder.FragmentBuilder
 import com.example.lifetime.di.module.AppModule
 import dagger.BindsInstance
 import dagger.Component

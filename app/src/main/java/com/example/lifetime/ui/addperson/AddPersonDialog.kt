@@ -150,17 +150,17 @@ class AddPersonDialog(
     }
 
     override fun openDataPickerView() {
-        DatePickerDialog(this.context, object : Listener {
-            override fun onDateSelected(persianCalendar: PersianCalendar) {
-                presenter.onDateSelected(persianCalendar)
-                isDateSated = true
-            }
-
-            override fun onDismissed() {
-
-            }
-
-        }, birthDate?.time?.time).show()
+//        DatePickerDialog(this.context, object : Listener {
+//            override fun onDateSelected(persianCalendar: PersianCalendar) {
+//                presenter.onDateSelected(persianCalendar)
+//                isDateSated = true
+//            }
+//
+//            override fun onDismissed() {
+//
+//            }
+//
+//        }, birthDate?.time?.time).show()
     }
 
     override fun onDateSelected(persianCalendar: PersianCalendar) {

@@ -1,25 +1,48 @@
 package com.example.lifetime.helper
 
-import android.content.Context
-import android.graphics.Color
-import com.example.lifetime.R
-import com.example.lifetime.util.LocaleController
-import ir.hamsaa.persiandatepicker.Listener
-import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
+import android.app.DatePickerDialog
+import androidx.appcompat.app.AppCompatActivity
+import com.alirezaafkar.sundatepicker.DatePicker as PersianDatePicker
+import com.alirezaafkar.sundatepicker.interfaces.DateSetListener as PersianDateSetListener
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
+import java.util.*
 
-class DatePickerDialog(val context: Context?, listener: Listener,date: Long?) {
-    private val picker: PersianDatePickerDialog = PersianDatePickerDialog(context)
-        .setPositiveButtonString(LocaleController.getString(R.string.ok))
-        .setNegativeButton(LocaleController.getString(R.string.cancel))
-        .setTodayButton(LocaleController.getString(R.string.today))
-        .setTodayButtonVisible(true)
-        .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
-        .setInitDate(if(date==null) PersianCalendar() else PersianCalendar(date))
-        .setMinYear(1300)
-        .setActionTextColor(Color.GRAY)
-        .setListener(listener)
+class DatePickerDialog(
+    private val activity: AppCompatActivity,
+    persianDateSetListener: PersianDateSetListener? = null,
+    onDateSetListener: DatePickerDialog.OnDateSetListener? = null,
+    date: Long?) {
+
+    private val calender: Calendar
+    private val persianCalender: PersianCalendar
+
+    init {
+        persianCalender = if(date!=null ) PersianCalendar(date) else PersianCalendar()
+        calender = Calendar.getInstance().let {
+            it.time = persianCalender.time
+            it
+        }
+    }
+
+
+    private val datePicker = if (persianDateSetListener != null) {
+        PersianDatePicker.Builder()
+            .date(if (date == null) PersianCalendar() else PersianCalendar(date))
+            .build(persianDateSetListener)
+    } else {
+        DatePickerDialog(
+            activity,
+            onDateSetListener,
+            calender.get(Calendar.YEAR),
+            calender.get(Calendar.MONTH),
+            calender.get(Calendar.DAY_OF_MONTH)
+        )
+    }
+
+
+
     fun show() {
-        picker.show()
+        if(datePicker is PersianDatePicker) datePicker.show(activity.supportFragmentManager, "")
+        else if(datePicker is DatePickerDialog) datePicker.show()
     }
 }
