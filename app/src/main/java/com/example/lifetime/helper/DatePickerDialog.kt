@@ -28,6 +28,7 @@ class DatePickerDialog(
     private val datePicker = if (persianDateSetListener != null) {
         PersianDatePicker.Builder()
             .date(if (date == null) PersianCalendar() else PersianCalendar(date))
+            .maxDate(Calendar.getInstance())
             .build(persianDateSetListener)
     } else {
         DatePickerDialog(
@@ -36,7 +37,10 @@ class DatePickerDialog(
             calender.get(Calendar.YEAR),
             calender.get(Calendar.MONTH),
             calender.get(Calendar.DAY_OF_MONTH)
-        )
+        ).let {
+            it.datePicker.maxDate = Calendar.getInstance().timeInMillis
+            it
+        }
     }
 
 

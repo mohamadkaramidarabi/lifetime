@@ -5,6 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import com.alirezaafkar.sundatepicker.interfaces.DateSetListener
 import com.example.lifetime.R
 import com.example.lifetime.data.database.repository.life_expectancies.LifeExpectancy
@@ -16,6 +19,7 @@ import com.example.lifetime.util.LocaleController
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.birthDatePicker
+import kotlinx.android.synthetic.main.dialog_add_person.*
 import org.jetbrains.anko.contentView
 import org.jetbrains.anko.toast
 import java.util.*
@@ -32,6 +36,10 @@ class LoginActivity : BaseActivity(), LoginInteractor.LoginMVPView{
     private var birthDate : Calendar? = null
     private var lifeExpectancies: List<LifeExpectancy>? = null
 
+    private lateinit var nameEdt: EditText
+    private lateinit var birthDatePicker : TextView
+    private lateinit var btnSubmit: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -40,14 +48,19 @@ class LoginActivity : BaseActivity(), LoginInteractor.LoginMVPView{
     }
 
     private fun setUp() {
-        presenter.loadLifeExpectancies()
+        nameEdt = findViewById(R.id.etName)
+        birthDatePicker = findViewById(R.id.birthDatePicker)
+        btnSubmit = findViewById(R.id.btnSubmit)
+
+        nameEdt.requestFocus()
         birthDatePicker.setOnClickListener {
-            it.requestFocus()
-           presenter.onDatePickerClicked()
+            presenter.onDatePickerClicked()
         }
         btnSubmit.setOnClickListener{
             presenter.onRegisterButtonClicked()
         }
+
+        presenter.loadLifeExpectancies()
 
     }
 
@@ -63,6 +76,7 @@ class LoginActivity : BaseActivity(), LoginInteractor.LoginMVPView{
                         it.set(Calendar.DAY_OF_MONTH,dayOfMonth)
                         it
                     }
+                    birthDatePicker.text = "$year/$month/$dayOfMonth"
                     persianBirthDate = PersianCalendar(birthDate?.timeInMillis!!)
                 }
                 , persianBirthDate?.timeInMillis
@@ -73,6 +87,7 @@ class LoginActivity : BaseActivity(), LoginInteractor.LoginMVPView{
                 DateSetListener { _, calendar, dayOfMonth, month, year ->
                     persianBirthDate = PersianCalendar(calendar?.timeInMillis!!)
                     birthDate = calendar
+                    birthDatePicker.text = "$year/$month/$dayOfMonth"
                 },
                 null
                 , persianBirthDate?.timeInMillis
@@ -102,7 +117,7 @@ class LoginActivity : BaseActivity(), LoginInteractor.LoginMVPView{
             etName.requestFocus()
             return false
         }
-        if (persianBirthDate == null) {
+        if (persianBirthDate == null || birthDate == null) {
             toast("Please enter your birth date")
             birthDatePicker.requestFocus()
             return false

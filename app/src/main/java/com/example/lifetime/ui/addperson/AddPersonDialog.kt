@@ -13,13 +13,16 @@ import com.example.lifetime.ui.base.view.BaseDialogView
 import kotlinx.android.synthetic.main.dialog_add_person.*
 import javax.inject.Inject
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.alirezaafkar.sundatepicker.interfaces.DateSetListener
 import com.example.lifetime.data.database.repository.life_expectancies.LifeExpectancy
 import com.example.lifetime.helper.DatePickerDialog
 import com.example.lifetime.ui.main.main_activity.MainActivity
 import com.example.lifetime.util.LocaleController
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
-import ir.hamsaa.persiandatepicker.Listener
+import kotlinx.android.synthetic.main.dialog_add_person.birthDatePicker
+import java.util.*
 
 
 class AddPersonDialog(
@@ -28,7 +31,8 @@ class AddPersonDialog(
 ) : BaseDialogView(),
     AddPersonInteractor.AddPersonMVPDialog {
 
-    private var birthDate: PersianCalendar? = null
+    private var persianBirthDate: PersianCalendar? = null
+    private var birthDate: Calendar? = null
     private var isDateSated = false
     private lateinit var lifeExpectancies: List<LifeExpectancy>
 
@@ -64,14 +68,14 @@ class AddPersonDialog(
                             person.let { person ->
                                 person?.name = nameEdt.text.toString()
                                 person?.lifeExpectancyYears = it.lifeExpectancy
-                                person?.birthDate = birthDate?.time?.time!!
+                                person?.birthDate = persianBirthDate?.timeInMillis!!
                                 person?.country = it.country
                             }
                         } else {
                             person = Person(
                                 nameEdt.text.toString(),
                                 it.lifeExpectancy,
-                                birthDate?.time?.time!!,
+                                persianBirthDate?.timeInMillis!!,
                                 it.country
                             )
                         }
@@ -82,14 +86,14 @@ class AddPersonDialog(
                         person.let { person ->
                             person?.name = nameEdt.text.toString()
                             person?.lifeExpectancyYears = years.text.toString().toFloat()
-                            person?.birthDate = birthDate?.time?.time!!
+                            person?.birthDate = persianBirthDate?.timeInMillis!!
                             person?.country = null
                         }
                     } else {
                         person = Person(
                             nameEdt.text.toString(),
                             years.text.toString().toFloat(),
-                            birthDate?.time?.time!!,
+                            persianBirthDate?.timeInMillis!!,
                             null
                         )
                     }
@@ -132,8 +136,16 @@ class AddPersonDialog(
         }else{
             nameEdt.setText(person?.name)
             isDateSated = true
-            birthDate = PersianCalendar(person?.birthDate!!)
-            birthDatePicker.text = birthDate?.persianShortDate
+            persianBirthDate = PersianCalendar(person!!.birthDate)
+            birthDate = Calendar.getInstance().let {
+                it.timeInMillis = persianBirthDate!!.timeInMillis
+                it
+            }
+            birthDatePicker.text = if (LocaleController.isEnglish()) {
+                "${birthDate?.get(Calendar.YEAR)}/${birthDate?.get(Calendar.MONTH)}/${birthDate?.get(Calendar.DAY_OF_MONTH)}"
+            } else {
+                "${persianBirthDate?.persianYear}/${persianBirthDate?.persianMonth}/${persianBirthDate?.persianDay}"
+            }
             submitButton.text = LocaleController.getString(R.string.edit)
             tvTitle.text = LocaleController.getString(R.string.information_edit)
             if (person?.country == null) {
@@ -150,23 +162,42 @@ class AddPersonDialog(
     }
 
     override fun openDataPickerView() {
-//        DatePickerDialog(this.context, object : Listener {
-//            override fun onDateSelected(persianCalendar: PersianCalendar) {
-//                presenter.onDateSelected(persianCalendar)
-//                isDateSated = true
-//            }
-//
-//            override fun onDismissed() {
-//
-//            }
-//
-//        }, birthDate?.time?.time).show()
+        if (LocaleController.getInstance().currentLocaleInfo.shortName == LocaleController.EN) {
+            DatePickerDialog(
+                this.activity as AppCompatActivity,
+                null,
+                android.app.DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                    birthDate = Calendar.getInstance().let {
+                        isDateSated = true
+                        it.set(Calendar.YEAR,year)
+                        it.set(Calendar.MONTH,month)
+                        it.set(Calendar.DAY_OF_MONTH,dayOfMonth)
+                        it
+                    }
+                    birthDatePicker.text = "$year/$month/$dayOfMonth"
+                    persianBirthDate = PersianCalendar(birthDate?.timeInMillis!!)
+                }
+                , persianBirthDate?.timeInMillis
+            ).show()
+        } else {
+            DatePickerDialog(
+                this.activity as AppCompatActivity,
+                DateSetListener { _, calendar, dayOfMonth, month, year ->
+                    isDateSated = true
+                    persianBirthDate = PersianCalendar(calendar?.timeInMillis!!)
+                    birthDate = calendar
+                    birthDatePicker.text = "$year/$month/$dayOfMonth"
+                },
+                null
+                , persianBirthDate?.timeInMillis
+            ).show()
+        }
     }
 
     override fun onDateSelected(persianCalendar: PersianCalendar) {
         birthDatePicker.text =
             persianCalendar.persianShortDate
-        this.birthDate = persianCalendar
+        this.persianBirthDate = persianCalendar
     }
 
     override fun dismissDialog() {

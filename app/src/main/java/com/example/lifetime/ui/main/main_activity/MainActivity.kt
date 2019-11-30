@@ -81,10 +81,12 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
             lastFragmentId = it.itemId
 
             when (it.itemId) {
+
                 R.id.navigationHome -> {
                     toolbarTitle.text = person?.name
                     mToolbar.visibility = View.VISIBLE
                     ivPersons.visibility = View.VISIBLE
+                    navController.popBackStack(R.id.navigationHome, true)
                     navController.navigate(R.id.navigationHome)
                     true
                 }
@@ -93,6 +95,7 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
                     mToolbar.visibility = View.VISIBLE
                     ivPersons.visibility = View.GONE
                     toolbarTitle.text = LocaleController.getString(R.string.messages)
+                    navController.popBackStack(R.id.navigationHome, false)
                     navController.navigate(R.id.navigationMessage)
                     true
                 }
@@ -100,6 +103,7 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
                 R.id.navigationAbout -> {
                     ivPersons.visibility = View.GONE
                     mToolbar.visibility = View.GONE
+                    navController.popBackStack(R.id.navigationHome, false)
                     navController.navigate(R.id.navigationAbout)
                     true
                 }
@@ -110,13 +114,6 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
         }
     }
 
-    override fun onBackPressed() {
-        if (navController.currentDestination?.id == R.id.navigationHome) {
-            finish()
-        } else {
-            navController.navigate(R.id.navigationHome)
-        }
-    }
 
     private fun bottomSheetSetup() {
         sheetBehavior = BottomSheetBehavior.from(bottomSheet)
