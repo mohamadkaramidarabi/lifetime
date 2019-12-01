@@ -44,6 +44,14 @@ class LifeSpiralView (context: Context, attributeSet: AttributeSet? = null) : Vi
         this.h = h
 
     }
+//
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        this.w = widthMeasureSpec
+        this.h = heightMeasureSpec
+    }
+
+
 
     fun setParameters(pointList: List<Point>, person: Person) {
         setToDefaultsValues()

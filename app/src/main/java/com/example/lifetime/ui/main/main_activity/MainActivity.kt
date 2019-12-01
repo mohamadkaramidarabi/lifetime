@@ -19,7 +19,6 @@ import com.example.lifetime.ui.base.view.BaseActivity
 import com.example.lifetime.ui.addperson.AddPersonDialog
 import com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiralFragment
 import com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiralView
-import com.example.lifetime.util.AppLogger
 import com.example.lifetime.util.LocaleController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
@@ -27,7 +26,6 @@ import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.bottom_sheet_person.*
 import org.jetbrains.anko.contentView
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 import java.util.*
 import javax.inject.Inject
@@ -51,7 +49,7 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
 
 
     private lateinit var sheetBehavior: BottomSheetBehavior<LinearLayout>
-    private var lifeSpiralFragment: LifeSpiralFragment? = null
+//    private var lifeSpiralFragment: LifeSpiralFragment? = null
 
     private var pointList: List<Point>? = null
 
@@ -165,78 +163,29 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
 
     override fun getLastPerson(person: Person) {
         toolbarTitle.text = person.name
-        setRealTimeText(person)
+//        setRealTimeText(person)
         adapter.setCheckLastPerson(person)
-        if (lifeSpiralFragment?.lifeSpiralView == null || this.person == person) {
-            return
-        }
-        if (this.person != null && this.person?.lifeExpectancyYears == person.lifeExpectancyYears && pointList!=null) {
-            this.person = person
-            lifeSpiralFragment!!.lifeSpiralView!!.clear()
-            lifeSpiralFragment!!.lifeSpiralView!!.setParameters(pointList!!, person)
-            return
-        }
-
-        this.person = person
-        lifeSpiralFragment!!.lifeSpiralView?.clear()
-        presenter.calculateDrawPointList(
-            lifeSpiralFragment!!.lifeSpiralView!!.w!!,
-            lifeSpiralFragment!!.lifeSpiralView!!.h!!,
-            person
-        )
+//        if (lifeSpiralFragment?.lifeSpiralView == null || this.person == person) {
+//            return
+//        }
+//        if (this.person != null && this.person?.lifeExpectancyYears == person.lifeExpectancyYears && pointList!=null) {
+//            this.person = person
+//            lifeSpiralFragment!!.lifeSpiralView!!.clear()
+//            lifeSpiralFragment!!.lifeSpiralView!!.setParameters(pointList!!, person)
+//            return
+//        }
+//
+//        this.person = person
+//        lifeSpiralFragment!!.lifeSpiralView?.clear()
+//        presenter.calculateDrawPointList(
+//            lifeSpiralFragment!!.lifeSpiralView!!.w!!,
+//            lifeSpiralFragment!!.lifeSpiralView!!.h!!,
+//            person
+//        )
     }
 
     override fun setBitmap(bitmap: Bitmap) {
         this.bitmap = bitmap
-    }
-
-    private fun setRealTimeText(person: Person) {
-        val birthDate = PersianCalendar(person.birthDate)
-        val birthYear = birthDate.persianYear
-        val birthMonth = birthDate.persianMonth
-        val birthDay = birthDate.persianDay
-        val currentDate = PersianCalendar()
-        var currentYear = currentDate.persianYear
-        var currentMonth = currentDate.persianMonth
-        val currentDay = currentDate.persianDay
-        when {
-            currentDay >= birthDay -> lifeSpiralFragment?.day?.text =
-                (currentDay- birthDay).toString() + " :"
-            currentMonth <= 6 -> {
-                lifeSpiralFragment?.day?.text =
-                    (currentDay+ 31 - birthDay).toString()+ " :"
-                --currentMonth
-            }
-            else -> {
-                lifeSpiralFragment?.day?.text =
-                    (currentDay+ 30 - birthDay).toString() + " :"
-                --currentMonth
-            }
-        }
-        if (currentMonth >= birthMonth) {
-            lifeSpiralFragment?.month?.text = "${currentMonth - birthMonth} :"
-        } else {
-            lifeSpiralFragment?.month?.text = "${currentMonth + 12  - birthMonth} :"
-            --currentYear
-        }
-        lifeSpiralFragment?.year?.text = "${currentYear - birthYear} :"
-
-        doAsync {
-            while (true) {
-                uiThread {
-                    val date = Date()
-                    val hour = date.hours
-                    val minute = date.minutes
-                    lifeSpiralFragment?.hour?.text = hour.toString() + " :"
-                    lifeSpiralFragment?.minute?.text = minute.toString()
-                }
-                Thread.sleep(1000)
-            }
-
-        }
-
-
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -245,28 +194,6 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
     }
 
     override fun onFragmentAttached() {
-    }
-
-    fun onLifeSpiralFragmentResumed(lifeSpiralFragment: LifeSpiralFragment) {
-        this.lifeSpiralFragment = lifeSpiralFragment
-        this.lifeSpiralFragment!!.lifeSpiralView?.viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener{
-            override fun onGlobalLayout() {
-                this@MainActivity.lifeSpiralFragment!!.lifeSpiralView!!.viewTreeObserver?.removeOnGlobalLayoutListener(this)
-                this@MainActivity.lifeSpiralFragment!!.lifeSpiralView!!.addListener(this@MainActivity)
-                if (person != null) setRealTimeText(person!!)
-                if (bitmap != null) {
-                    this@MainActivity.lifeSpiralFragment!!.lifeSpiralView!!.setParameters(this@MainActivity.pointList!!,this@MainActivity.person!!,this@MainActivity.bitmap!!)
-                    return
-                }
-                if (person == null) {
-                    presenter.getLastPersonFromDb()
-                } else {
-                    getLastPerson(person!!)
-                }
-            }
-
-        })
-
     }
 
 
@@ -280,9 +207,9 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
     }
 
     override fun updateViewAfterDeleteCurrentPerson(mainPerson: Person) {
-        lifeSpiralFragment?.lifeSpiralView?.clear()
+//        lifeSpiralFragment?.lifeSpiralView?.clear()
         toolbarTitle.text = mainPerson.name
-        setRealTimeText(mainPerson)
+//        setRealTimeText(mainPerson)
     }
 
 
@@ -328,10 +255,10 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
     override fun setPointList(pointList: List<Point>) {
         this.pointList = pointList
 
-        lifeSpiralFragment?.lifeSpiralView?.setParameters(
-            pointList,
-            this.person!!
-        )
+//        lifeSpiralFragment?.lifeSpiralView?.setParameters(
+//            pointList,
+//            this.person!!
+//        )
     }
 
 
