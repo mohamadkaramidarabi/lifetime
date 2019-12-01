@@ -13,6 +13,7 @@ import android.widget.TextView
 import com.example.lifetime.R
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.base.view.BaseFragment
+import com.example.lifetime.ui.main.main_activity.MainActivity
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -21,14 +22,14 @@ import java.util.concurrent.Future
 import javax.inject.Inject
 
 
-class LifeSpiralFragment : BaseFragment(), LifeSpiralInteractor.LifeSpiralMVPView{
-
-
+class LifeSpiralFragment : BaseFragment(), LifeSpiralInteractor.LifeSpiralMVPView, LifeSpiralView.LifeSpiralCallBack{
 
     @Inject
     lateinit var presenter: LifeSpiralInteractor.LifeSpiralMVPPresenter<LifeSpiralInteractor.LifeSpiralMVPView>
 
     var person: Person? = null
+        private set
+
     lateinit var lifeSpiralView: LifeSpiralView
         private set
 
@@ -43,8 +44,10 @@ class LifeSpiralFragment : BaseFragment(), LifeSpiralInteractor.LifeSpiralMVPVie
     lateinit var hour: TextView
         private set
 
-    private var bitmap: Bitmap? = null
-    private var pointList: List<Point>? = null
+    var bitmap: Bitmap? = null
+        private set
+    var pointList: List<Point>? = null
+        private set
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,41 +61,61 @@ class LifeSpiralFragment : BaseFragment(), LifeSpiralInteractor.LifeSpiralMVPVie
         presenter.onAttach(this)
         view!!.setBackgroundColor(Color.TRANSPARENT)
         lifeSpiralView = view!!.findViewById(R.id.lifeSpiral)
+        lifeSpiralView.addListener(this)
+
+
         year = view!!.findViewById(R.id.yearTextView)
         month = view!!.findViewById(R.id.monthTextView)
         day = view!!.findViewById(R.id.dayTextView)
         hour = view!!.findViewById(R.id.hourTextView)
         minute = view!!.findViewById(R.id.minuteTextView)
-        presenter.getLastPerson()
     }
 
-    override fun getPerson(person: Person) {
+    override fun onResume() {
+        super.onResume()
+        getMainActivity()?.onLifeSpiralFragmentResumed()
+    }
+
+    fun setPerson(person: Person) {
         this.person = person
-        this.lifeSpiralView.viewTreeObserver?.addOnGlobalLayoutListener(object :
+        setRealTimeText(person)
+        lifeSpiralView.viewTreeObserver?.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 this@LifeSpiralFragment.lifeSpiralView.viewTreeObserver?.removeOnGlobalLayoutListener(this)
-                presenter.calculateDrawPointList(lifeSpiralView.measuredWidth!!, lifeSpiralView.measuredHeight!!, person)
+                getMainActivity()?.let {
+                    bitmap = it.bitmap
+                    pointList = it.pointList
+                }
+                if (bitmap != null) {
+                    lifeSpiralView.setParameters(bitmap!!)
+                    return
+                }
+                if (pointList == null) {
+                    presenter.calculateDrawPointList(
+                        lifeSpiralView.measuredWidth,
+                        lifeSpiralView.measuredHeight,
+                        person
+                    )
+                }else setPointList(pointList!!)
+
             }
 
         })
-        if (this@LifeSpiralFragment.person != null) setRealTimeText(this@LifeSpiralFragment.person!!)
-        if (bitmap != null) {
-            this@LifeSpiralFragment.lifeSpiralView.setParameters(this@LifeSpiralFragment.pointList!!,this@LifeSpiralFragment.person!!,this@LifeSpiralFragment.bitmap!!)
-            return
-        }
-//        if (this@LifeSpiralFragment.person == null) {
-//            presenter.getLastPerson()
-//        } else {
-//            getPerson(this@LifeSpiralFragment.person!!)
-//        }
-
     }
 
 
     override fun setPointList(pointList: List<Point>) {
         this.pointList = pointList
         lifeSpiralView.setParameters(this.pointList!!, person!!)
+    }
+
+    override fun getMainActivity(): MainActivity?  = activity as MainActivity
+
+    override fun setBitmap(bitmap: Bitmap) {
+        hideLoading()
+        this.bitmap = bitmap
+        getMainActivity()?.setBitmap(bitmap)
     }
 
 

@@ -59,9 +59,12 @@ class LifeSpiralView (context: Context, attributeSet: AttributeSet? = null) : Vi
         this.person = person
         invalidate()
     }
-    fun setParameters(pointList: List<Point>, person: Person, bitmap: Bitmap) {
+    fun setParameters(
+        bitmap: Bitmap
+    ) {
+        setToDefaultsValues()
         this.bitmap = bitmap
-        setParameters(pointList,person)
+        invalidate()
     }
 
 
@@ -70,19 +73,17 @@ class LifeSpiralView (context: Context, attributeSet: AttributeSet? = null) : Vi
         drawSpiral(canvas)
     }
 
-    fun clear() {
-        setToDefaultsValues()
-        invalidate()
-    }
-
 
 
     private fun drawSpiral(canvas: Canvas?) {
-        if (person == null || pointList == null) return
         if (bitmap == null) {
             bitmap = Bitmap.createBitmap(w!!, h!!, Bitmap.Config.ARGB_4444)
             bitmapCanvas = Canvas(bitmap!!)
         } else {
+            canvas?.drawBitmap(bitmap!!, 0.0f, 0.0f, null)
+            return
+        }
+        if (person == null || pointList == null) {
             canvas?.drawBitmap(bitmap!!, 0.0f, 0.0f, null)
             return
         }

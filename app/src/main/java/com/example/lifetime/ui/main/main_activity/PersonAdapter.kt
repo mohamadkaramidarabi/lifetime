@@ -70,8 +70,6 @@ class PersonAdapter @Inject constructor(val presenter: MainInteractor.MainMVPPre
             }
             pair = Pair(view, person)
             fullName.text = person.name
-
-
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.lifetime.ui.main.main_activity
 
+import android.graphics.Bitmap
 import android.graphics.Point
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.base.presenter.MVPPresenter
@@ -13,8 +14,9 @@ object MainInteractor {
         fun deletePersonFromList(person: Person)
         fun getPersonFromList(person: Person)
         fun getLastPerson(person: Person)
-        fun setPointList(pointList: List<Point>)
         fun updateViewAfterDeleteCurrentPerson(mainPerson: Person)
+        fun setPointList(pointList: List<Point>)
+        fun setBitmap(bitmap: Bitmap)
     }
 
     interface MainMVPPresenter<V : MainMVPView> : MVPPresenter<V> {
@@ -24,6 +26,5 @@ object MainInteractor {
         fun onPersonClicked(person: Person)
         fun setLastPersonOnDb(person: Person)
         fun getLastPersonFromDb()
-        fun calculateDrawPointList(w: Int, h: Int, person: Person)
     }
 }

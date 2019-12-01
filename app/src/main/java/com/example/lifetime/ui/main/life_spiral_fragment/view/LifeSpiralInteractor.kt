@@ -4,17 +4,17 @@ import android.graphics.Point
 import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.base.presenter.MVPPresenter
 import com.example.lifetime.ui.base.view.MVPView
+import com.example.lifetime.ui.main.main_activity.MainActivity
 
 object LifeSpiralInteractor {
 
     interface LifeSpiralMVPView: MVPView {
-        fun getPerson(person: Person)
         fun setPointList(pointList: List<Point>)
+        fun getMainActivity(): MainActivity?
     }
 
 
     interface LifeSpiralMVPPresenter<V : LifeSpiralMVPView> : MVPPresenter<V> {
-        fun getLastPerson(): Boolean
         fun calculateDrawPointList(w: Int, h: Int, person: Person)
     }
 

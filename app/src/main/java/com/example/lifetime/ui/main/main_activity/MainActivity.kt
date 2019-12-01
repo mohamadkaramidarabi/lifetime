@@ -3,8 +3,8 @@ package com.example.lifetime.ui.main.main_activity
 import android.graphics.Bitmap
 import android.graphics.Point
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.view.ViewTreeObserver
 import android.widget.LinearLayout
 import androidx.core.view.marginBottom
 import androidx.navigation.*
@@ -21,17 +21,13 @@ import com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiralFragment
 import com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiralView
 import com.example.lifetime.util.LocaleController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import ir.hamsaa.persiandatepicker.util.PersianCalendar
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.bottom_sheet_person.*
 import org.jetbrains.anko.contentView
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
-import java.util.*
 import javax.inject.Inject
 
 
-class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.LifeSpiralCallBack {
+class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
 
 
     lateinit var appBarConfiguration: AppBarConfiguration
@@ -42,16 +38,16 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
     @Inject
     lateinit var adapter: PersonAdapter
 
-    private var persons: MutableList<Person>? = null
-    private var person: Person? = null
     private lateinit var navController: NavController
-    private var bitmap: Bitmap? = null
 
+    private var persons: MutableList<Person>? = null
+    var person: Person? = null
+    var bitmap: Bitmap? = null
+        private set
+    var pointList: List<Point>? = null
+        private set
 
     private lateinit var sheetBehavior: BottomSheetBehavior<LinearLayout>
-//    private var lifeSpiralFragment: LifeSpiralFragment? = null
-
-    private var pointList: List<Point>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,7 +75,6 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
             lastFragmentId = it.itemId
 
             when (it.itemId) {
-
                 R.id.navigationHome -> {
                     toolbarTitle.text = person?.name
                     mToolbar.visibility = View.VISIBLE
@@ -145,7 +140,6 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
                 sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
         }
-
         addPerson.setOnClickListener {
             presenter.onButtonClicked()
         }
@@ -156,36 +150,39 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
         super.onStart()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-
-
     }
 
     override fun getLastPerson(person: Person) {
         toolbarTitle.text = person.name
-//        setRealTimeText(person)
+        if(this.person==null) this.person =person
+        else{
+            if (!(this.person!!.lifeExpectancyYears == person.lifeExpectancyYears && this.person!!.birthDate == person.birthDate)) {
+                bitmap = null
+            }
+            if (this.person!!.lifeExpectancyYears != person.lifeExpectancyYears) {
+                pointList = null
+            }
+            this.person = person
+        }
         adapter.setCheckLastPerson(person)
-//        if (lifeSpiralFragment?.lifeSpiralView == null || this.person == person) {
-//            return
-//        }
-//        if (this.person != null && this.person?.lifeExpectancyYears == person.lifeExpectancyYears && pointList!=null) {
-//            this.person = person
-//            lifeSpiralFragment!!.lifeSpiralView!!.clear()
-//            lifeSpiralFragment!!.lifeSpiralView!!.setParameters(pointList!!, person)
-//            return
-//        }
-//
-//        this.person = person
-//        lifeSpiralFragment!!.lifeSpiralView?.clear()
-//        presenter.calculateDrawPointList(
-//            lifeSpiralFragment!!.lifeSpiralView!!.w!!,
-//            lifeSpiralFragment!!.lifeSpiralView!!.h!!,
-//            person
-//        )
+        (supportFragmentManager.fragments[0].childFragmentManager.fragments[0] as LifeSpiralFragment)
+            .setPerson(person)
+    }
+
+    fun onLifeSpiralFragmentResumed() {
+        mToolbar.visibility = View.VISIBLE
+        ivPersons.visibility = View.VISIBLE
+        lastFragmentId = R.id.navigationHome
+        presenter.getLastPersonFromDb()
+
     }
 
     override fun setBitmap(bitmap: Bitmap) {
         this.bitmap = bitmap
+    }
+
+    override fun setPointList(pointList: List<Point>) {
+        this.pointList = pointList
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -195,6 +192,7 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
 
     override fun onFragmentAttached() {
     }
+
 
 
     override fun onFragmentDetached(tag: String) {
@@ -207,9 +205,7 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
     }
 
     override fun updateViewAfterDeleteCurrentPerson(mainPerson: Person) {
-//        lifeSpiralFragment?.lifeSpiralView?.clear()
         toolbarTitle.text = mainPerson.name
-//        setRealTimeText(mainPerson)
     }
 
 
@@ -248,19 +244,10 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView,LifeSpiralView.L
     override fun getPersonFromList(person: Person) {
         toolbarTitle.text = person.name
         presenter.setLastPersonOnDb(person)
+//        getLastPerson(person)
         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
     }
-
-    override fun setPointList(pointList: List<Point>) {
-        this.pointList = pointList
-
-//        lifeSpiralFragment?.lifeSpiralView?.setParameters(
-//            pointList,
-//            this.person!!
-//        )
-    }
-
 
     override fun onDestroy() {
         presenter.onDetach()
