@@ -3,7 +3,6 @@ package com.example.lifetime.ui.main.main_activity
 import android.graphics.Bitmap
 import android.graphics.Point
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import androidx.core.view.marginBottom
@@ -18,7 +17,6 @@ import com.example.lifetime.data.database.repository.person.Person
 import com.example.lifetime.ui.base.view.BaseActivity
 import com.example.lifetime.ui.addperson.AddPersonDialog
 import com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiralFragment
-import com.example.lifetime.ui.main.life_spiral_fragment.view.LifeSpiralView
 import com.example.lifetime.util.LocaleController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.content_main.*
@@ -35,7 +33,7 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
     @Inject
     lateinit var presenter: MainInteractor.MainMVPPresenter<MainInteractor.MainMVPView>
 
-    @Inject
+
     lateinit var adapter: PersonAdapter
 
     private lateinit var navController: NavController
@@ -57,6 +55,13 @@ class MainActivity : BaseActivity(), MainInteractor.MainMVPView {
         bottomNavigationViewSetup()
         bottomSheetSetup()
         presenter.getPersons()
+        adapter = PersonAdapter {person, action ->
+            when (action) {
+                PersonAction.VIEW -> presenter.onPersonClicked(person)
+                PersonAction.EDIT -> presenter.getView()?.openUserDialog(person)
+                PersonAction.DELETE -> presenter.deletePerson(person)
+            }
+        }
     }
 
     private var lastFragmentId: Int = R.id.navigationHome

@@ -16,20 +16,12 @@
         android:id="@+id/navigationMessage"
         android:name="com.example.lifetime.ui.message.MessageFragment"
         tools:layout="@layout/fragment_message"
-        android:label="Message">
-        <action
-            android:id="@+id/action_navigationMessage_to_navigationHome"
-            app:destination="@id/navigationHome" />
-    </fragment>
+        android:label="Message"/>
 
     <fragment
         android:id="@+id/navigationAbout"
         android:name="com.example.lifetime.ui.about.AboutFragment"
         tools:layout="@layout/fragment_about"
         android:label="AboutFragment"
-        >
-        <action
-            android:id="@+id/action_navigationAbout_to_navigationHome"
-            app:destination="@id/navigationHome" />
-    </fragment>
+        />
 </navigation>

@@ -8,14 +8,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lifetime.R
 import com.example.lifetime.data.database.repository.person.Person
-import javax.inject.Inject
-class PersonAdapter @Inject constructor(val presenter: MainInteractor.MainMVPPresenter<MainInteractor.MainMVPView>) : RecyclerView.Adapter<PersonAdapter.ViewHolder>() {
+class PersonAdapter constructor(val personEvent: (person: Person, action: PersonAction) -> (Unit)) : RecyclerView.Adapter<PersonAdapter.ViewHolder>() {
     private var checkPersonId: Int = 0
 
     var persons: List<Person>? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_person, parent, false)
-        return ViewHolder(view,presenter)
+        return ViewHolder(view)
     }
 
     override fun getItemCount(): Int = persons?.size ?: 0
@@ -30,7 +29,7 @@ class PersonAdapter @Inject constructor(val presenter: MainInteractor.MainMVPPre
     }
 
 
-    inner class ViewHolder(val view: View,val presenter: MainInteractor.MainMVPPresenter<MainInteractor.MainMVPView>): RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(val view: View): RecyclerView.ViewHolder(view) {
         private val fullName: TextView = view.findViewById(R.id.fullName)
         private val delete: ImageView = view.findViewById(R.id.delete)
         private val edit: ImageView = view.findViewById(R.id.edit)
@@ -39,7 +38,7 @@ class PersonAdapter @Inject constructor(val presenter: MainInteractor.MainMVPPre
 
         init {
             delete.setOnClickListener {
-                presenter.deletePerson(pair?.second!!)
+                personEvent(pair?.second!!,PersonAction.DELETE)
             }
             view.setOnClickListener{
                 val p = pair?.second!!.copy()
@@ -47,7 +46,7 @@ class PersonAdapter @Inject constructor(val presenter: MainInteractor.MainMVPPre
                 p.email = pair?.second!!.email
                 p.isMainUser = pair?.second!!.isMainUser
                 checkPersonId = p.id
-                presenter.onPersonClicked(p)
+                personEvent(p,PersonAction.VIEW)
             }
             edit.setOnClickListener {
                 val p = pair?.second!!.copy()
@@ -55,7 +54,7 @@ class PersonAdapter @Inject constructor(val presenter: MainInteractor.MainMVPPre
                 p.email = pair?.second!!.email
                 p.isMainUser = pair?.second!!.isMainUser
                 notifyDataSetChanged()
-                presenter.getView()?.openUserDialog(p)
+                personEvent.invoke( p,PersonAction.EDIT)
             }
         }
 
@@ -72,4 +71,8 @@ class PersonAdapter @Inject constructor(val presenter: MainInteractor.MainMVPPre
             fullName.text = person.name
         }
     }
+
+}
+enum class PersonAction{
+    DELETE,EDIT,VIEW
 }
